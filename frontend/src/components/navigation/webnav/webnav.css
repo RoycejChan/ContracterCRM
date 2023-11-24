@@ -1,0 +1,8 @@
+.webNav {
+    background-color:#313949;
+    color:#f6eede;
+}
+.webNav-link:hover {
+    border-bottom: 3px solid white;
+}
+
