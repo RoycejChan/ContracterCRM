@@ -1,4 +1,5 @@
 
+const backendURL = 'http://localhost:3000';
 
 import CreateNewNav from "../createNav/createNav"
 import "./newContact.css"
@@ -9,6 +10,17 @@ import { Stack } from "@chakra-ui/react"
 import pfp from "../../../assets/otherpfp.png"
 
 export default function CreateContact() {
+
+    async function check() { 
+        try {
+            const response = await fetch(`${backendURL}/Contacts`);
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+          } catch (error) {
+            console.error('Error fetching user data:', error);
+          }
+    }
 
     return (
         <>
@@ -42,6 +54,7 @@ export default function CreateContact() {
                     <Input placeholder='Asst Phone' size='lg' width="40rem"/>
 
                 </Stack>
+                <button onClick={()=>check()}>check connection</button>
                 </div>
             </div>
         </div>
