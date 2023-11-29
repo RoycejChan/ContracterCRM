@@ -31,28 +31,25 @@ app.use(
       title,
       department,
       fax,
-      dob,
       asstPhone,
     } = newContact;
   
-    // Construct SQL query with placeholders for optional fields
     const query =
-      'INSERT INTO contact (firstName, lastName, accountName, email, workPhone, mobilePhone, assistantName, title, department, fax, dob, asstPhone) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+      'INSERT INTO contact (FirstName, LastName, AccountName, Email, WorkPhone, MobilePhone, Title, Department, Fax, AssistantName, AssistantPhone) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
   
     // Placeholders avoid SQL injection
     const values = [
       firstName,
       lastName,
-      accountName,
+      accountName || null,
       email,
-      workPhone,
+      workPhone || null,
       mobilePhone,
-      assistantName,
-      title,
+      title, 
       department,
-      fax,
-      dob,
-      asstPhone,
+      fax || null,
+      assistantName || null,
+      asstPhone || null,
     ];
   
     connection.query(query, values, (error, results) => {

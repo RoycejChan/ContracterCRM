@@ -1,24 +1,32 @@
-import { Button, Stack } from '@chakra-ui/react'
-import "./createNav.css"
+import { Button, Stack } from '@chakra-ui/react';
+import './createNav.css';
 
+interface CreateNewNavProps {
+  page: string;
+  onButtonClick: () => void;
+}
 
-export default function CreateNewNav({ page }:any) {
-    return (
-        <>
-            <div className="createNewNav flex justify-between">
-                <h1 className='text-2xl'>Create {page}</h1>
+export default function CreateNewNav({ page, onButtonClick}: CreateNewNavProps) {
+  const handleSaveClick = () => {
+    if (onButtonClick) {
+      onButtonClick();
+    }
+  };
 
-                <Stack spacing={4} direction='row' align='center'>
-                    <Button size='md'>
-                        Cancel
-                    </Button>
-                    <Button colorScheme='blue' size='md'>
-                        Save
-                    </Button>
-                </Stack>
+  return (
+    <>
+      <div className="createNewNav flex justify-between">
+        <h1 className="text-2xl">Create {page}</h1>
 
-            </div>
-
-        </>
-    )
+        <Stack spacing={4} direction="row" align="center">
+          <Button size="md">
+            Cancel
+          </Button>
+          <Button colorScheme="blue" size="md" onClick={handleSaveClick} type="submit">
+            Save
+          </Button>
+        </Stack>
+      </div>
+    </>
+  );
 }
