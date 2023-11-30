@@ -19,6 +19,7 @@ interface ContactInfo {
   asstPhone: string | null;
 }
 
+
 export default function CreateContact() {
 
   const [contactInfo, setContactInfo] = useState<ContactInfo>({
@@ -49,7 +50,7 @@ export default function CreateContact() {
         }
       }
   
-      const response = await fetch(`${backendURL}/Contacts`, {
+      const response = await fetch(`${backendURL}/Contact/newContact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -92,12 +93,15 @@ export default function CreateContact() {
       [field]: sanitizedValue,
     }));
   };
-
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    save(); // Trigger the save function when the form is submitted
+  };
 
 
   return (
     <>
-      <form action="#">
+      <form onSubmit={handleSubmit}>
         <CreateNewNav page="Contact" onButtonClick={save} />
 
         <div className="new-container">

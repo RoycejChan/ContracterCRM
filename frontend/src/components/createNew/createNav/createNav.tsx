@@ -22,7 +22,7 @@ export default function CreateNewNav({ page, onButtonClick}: CreateNewNavProps) 
           <Button size="md">
             Cancel
           </Button>
-          <Button colorScheme="blue" size="md" onClick={handleSaveClick} type="submit">
+          <Button colorScheme="blue" size="md" onClick={handleSaveClick}>
             Save
           </Button>
         </Stack>
