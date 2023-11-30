@@ -1,0 +1,33 @@
+.tasks {
+    padding: 2rem;
+}
+.task-list-headers {
+  display: flex;
+  gap: 10rem;
+}
+
+.task-list-headers li {
+    width:15%;
+    padding: 1rem;
+    margin-left: -.2rem;
+}
+
+.task-list {
+  list-style: none;
+  padding: 0;
+}
+
+.task {
+  display: flex;
+  gap: 10rem;
+  padding: 1rem;
+  border-top:1px solid gray;
+  border-bottom:1px solid gray;
+}
+.task p {
+    width:15%;
+}
+
+.task-list-headers li {
+  font-weight: bold;
+}

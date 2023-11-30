@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const contactRoutes = require('./routes/Contacts/contactRoutes');
+const accountRoutes = require('./routes/Accounts/accountRoutes');
+const taskRoutes = require('./routes/Tasks/taskRoutes');
 
 const port = 3000;
 
@@ -14,9 +16,11 @@ app.use(
   })
 );
 
-app.use('/Contact', contactRoutes); // Use the contactRoutes
+app.use('/Contact', contactRoutes); 
+app.use('/Account', accountRoutes); 
+app.use('/Task', taskRoutes); 
 
-// Start the server
+// Start the servers
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });

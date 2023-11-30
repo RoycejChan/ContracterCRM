@@ -1,0 +1,27 @@
+.new-container {
+    margin-left: auto;
+    margin-right: auto;
+    width:1500px;
+    padding-bottom: 2rem;
+}
+
+.new-PFP {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap:2rem;
+    margin-top: 2rem;
+}
+
+.accountpfp {
+      width: 150px; 
+      height: 150px; 
+      border-radius: 10%; 
+      object-fit: cover; 
+}
+
+.accountpfp img {
+    width:100%;
+    height: 100%;
+}

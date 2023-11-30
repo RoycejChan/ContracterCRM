@@ -11,6 +11,9 @@ import { Select } from '@chakra-ui/react';
 import CreateContact from '../../createNew/newContact/createContact';
 import CreateTask from '../../createNew/createNewTask/createTask';
 import Contacts from '../../pages/Contacts/contacts';
+import Accounts from '../../pages/Accounts/Accounts';
+import CreateAccount from '../../createNew/newAccount/createAccount';
+import Tasks from '../../pages/Tasks/tasks';
 
 
 export default function Webnav() {
@@ -45,7 +48,9 @@ export default function Webnav() {
                 }}
                 >
                 <option value='createContact'>Contact</option>
-                <option value='Leads'>Lead</option>
+                <option value='createAccount'>Account</option>
+                <option value='createTask'>Task</option>
+
             </Select>                 <p>Calender</p>
                 <div className="profile-img">
                     <img src="#" alt="" />
@@ -56,9 +61,14 @@ export default function Webnav() {
       <Routes>
         <Route index path="/" element={<Home />} />
         <Route index path="/Contacts" element={<Contacts/> } />
+        <Route index path="/Accounts" element={<Accounts/> } />
+        <Route index path="/Tasks" element={<Tasks />} />
 
-        <Route index path="/Tasks" element={<CreateTask />} />
+
         <Route index path="/createContact" element={<CreateContact />} />
+        <Route index path="/createAccount" element={<CreateAccount/> } />
+        <Route index path="/createTask" element={<CreateTask/> } />
+
       </Routes>
       </>
   );
