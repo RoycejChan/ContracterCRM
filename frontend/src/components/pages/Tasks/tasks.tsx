@@ -23,9 +23,9 @@ export default function Tasks() {
               'Content-Type': 'application/json',
             },
           });
-        const data = await response.json();
-        console.log(data);
-        setTasks(data);
+          const [tasks] = await response.json();
+          console.log(tasks);
+          setTasks(tasks);
       } catch (error) {
         console.error('Error fetching Tasks:', error);
       }
@@ -34,6 +34,8 @@ export default function Tasks() {
     fetchData();
   }, []);
 
+
+
   return (
     <>
       <div className="tasks">
@@ -41,13 +43,15 @@ export default function Tasks() {
       <ul className="task-list-headers">
         <li>Subject</li>
         <li>Due Date</li>
-        <li>Status</li>
+        <li>
+          <p>Status</p>
+        </li>
         <li>Priority</li>
         <li>Related To</li>
         <li>Manager</li>
       </ul>
       <ul className="task-list">
-        {Tasks[0] && Tasks[0].map(Task => (
+        {Tasks.map(Task => (
           <li key={Task.TaskID} className="flex gap-3 task">
             <p>{Task.Subject}</p>
             <p>{Task.DueDateTime}</p>

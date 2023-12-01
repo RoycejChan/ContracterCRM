@@ -24,7 +24,6 @@ export default function Webnav() {
         { to: "/Tasks", label: "Tasks" },
         { to: "/Contacts", label: "Contacts" },
         { to: "/Accounts", label: "Accounts" },
-        { to: "/Services", label: "Services" },
         { to: "/Deals", label: "Deals" },
       ];
 

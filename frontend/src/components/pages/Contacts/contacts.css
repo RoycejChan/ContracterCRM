@@ -1,5 +1,7 @@
 .contacts {
     padding: 2rem;
+    display:flex;
+    gap:5rem;
 }
 .contact-list-headers {
   display: flex;
@@ -20,7 +22,7 @@
 .contact {
   display: flex;
   gap: 10rem;
-  padding: 1rem;
+  padding: .5rem;
   border-top:1px solid gray;
   border-bottom:1px solid gray;
 }
@@ -30,4 +32,25 @@
 
 .contact-list-headers li {
   font-weight: bold;
+}
+
+
+.sidebar {
+  width: 200px; 
+  background-color:white;
+  transition: width 0.9s ease-in; 
+  border-radius:1%;
+}
+.sidebar-open {
+  width: 0; 
+}
+
+.mainContent {
+  background-color:white;
+  flex: 3; 
+  padding: 20px; 
+  border-radius:1%;
+}
+
+.sidebar-toggle-btn {
 }

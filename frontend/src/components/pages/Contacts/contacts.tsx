@@ -14,6 +14,7 @@ interface Contact {
 
 export default function Contacts() {
   const [contacts, setContacts] = useState<Contact[]>([]);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,11 +35,20 @@ export default function Contacts() {
 
     fetchData();
   }, []);
-
+  const toggleSidebar = () => {
+    setIsSidebarOpen((prev) => !prev);
+  };
   return (
-    <>
+    <div className="background">
+    
+         <button onClick={toggleSidebar} className="sidebar-toggle-btn">
+          Toggle Sidebar
+        </button>
       <div className="contacts">
-      <h1>Contact List</h1>
+ 
+       { isSidebarOpen ?
+        <div className="sidebar"> <h1>BRUH</h1></div> : <></> }
+      <div className="mainContent">
       <ul className="contact-list-headers">
         <li>Contact Name</li>
         <li>Account Name</li>
@@ -56,6 +66,7 @@ export default function Contacts() {
         ))}
       </ul>
       </div>
-    </>
+      </div>
+    </div>
   );
 }
