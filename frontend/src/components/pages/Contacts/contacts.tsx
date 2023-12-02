@@ -1,8 +1,7 @@
 import { useEffect, useState} from "react";
 import "./contacts.css"
 const backendURL = 'http://localhost:3000'; 
-
-
+import PageNav from "../../navigation/PageNav/PageNav";
 interface Contact {
   ContactID: number;
   FirstName: string;
@@ -25,7 +24,8 @@ export default function Contacts() {
               'Content-Type': 'application/json',
             },
           });
-        const data = await response.json();
+          
+        const [data] = await response.json();
         console.log(data);
         setContacts(data);
       } catch (error) {
@@ -40,28 +40,28 @@ export default function Contacts() {
   };
   return (
     <div className="background">
-    
-         <button onClick={toggleSidebar} className="sidebar-toggle-btn">
-          Toggle Sidebar
-        </button>
+
+    <PageNav amount={contacts.length} toggleFilter={toggleSidebar}/>
+
+
       <div className="contacts">
- 
        { isSidebarOpen ?
         <div className="sidebar"> <h1>BRUH</h1></div> : <></> }
+
       <div className="mainContent">
       <ul className="contact-list-headers">
-        <li>Contact Name</li>
+        <li id="first-header">Contact Name</li>
         <li>Account Name</li>
-        <li>Email</li>
+        <li>Email ✉️</li>
         <li>Phone</li>
       </ul>
       <ul className="contact-list">
-        {contacts[0] && contacts[0].map(contact => (
+        {contacts.map(contact => (
           <li key={contact.ContactID} className="flex gap-3 contact">
             <p>{contact.FirstName} {contact.LastName}</p>
             <p>{contact.AccountName}</p>
-            <p>{contact.Email}</p>
-            <p>{contact.WorkPhone}</p>
+            <p>{contact.Email} </p>
+            <p>{contact.WorkPhone} 📞</p>
           </li>
         ))}
       </ul>

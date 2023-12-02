@@ -22,35 +22,59 @@
 .contact {
   display: flex;
   gap: 10rem;
-  padding: .5rem;
-  border-top:1px solid gray;
+  padding:.5rem 1rem;
   border-bottom:1px solid gray;
 }
 .contact p {
-    width:15%;
+    flex:1;
+    padding:.5rem 1rem;
+
 }
 
 .contact-list-headers li {
   font-weight: bold;
+  flex:1;
+  border-left:1px solid lightgray;
+  margin-left:1rem;
+}
+
+.contact-list-headers {
+  display: flex;
+  width:100%;
+  border-bottom:3px solid lightgray;
 }
 
 
 .sidebar {
-  width: 200px; 
+  width: 335px;
+  height:950px; 
   background-color:white;
   transition: width 0.9s ease-in; 
-  border-radius:1%;
-}
-.sidebar-open {
-  width: 0; 
+  border-radius: 28px 28px 25px 28px;
+  -moz-border-radius: 28px 28px 25px 28px;
+  -webkit-border-radius: 28px 28px 25px 28px;
+  border: 0px solid #000000;
+  -webkit-box-shadow: 2px 3px 11px -2px rgba(0,0,0,0.75);
+  -moz-box-shadow: 2px 3px 11px -2px rgba(0,0,0,0.75);
+  box-shadow: 2px 3px 11px -2px rgba(0,0,0,0.75);  
 }
 
 .mainContent {
   background-color:white;
-  flex: 3; 
-  padding: 20px; 
-  border-radius:1%;
+  flex: 3;
+  height:100%; 
+  border-radius: 28px 28px 25px 28px;
+  -moz-border-radius: 28px 28px 25px 28px;
+  -webkit-border-radius: 28px 28px 25px 28px;
+  border: 0px solid #000000;
+  -webkit-box-shadow: 2px 3px 11px -2px rgba(0,0,0,0.75);
+  -moz-box-shadow: 2px 3px 11px -2px rgba(0,0,0,0.75);
+  box-shadow: 2px 3px 11px -2px rgba(0,0,0,0.75);
 }
 
 .sidebar-toggle-btn {
+}
+
+#first-header {
+  border-left:none;
 }

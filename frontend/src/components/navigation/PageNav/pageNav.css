@@ -1,0 +1,15 @@
+.pageNavTop {
+    background-color: white;
+}
+
+
+
+.pageNavBottom {
+    border:1px solid red;
+    background-color:#edf0f4;
+}
+
+.rightSidePageNav {
+    padding-right: 4rem;
+    align-items: center;
+}
