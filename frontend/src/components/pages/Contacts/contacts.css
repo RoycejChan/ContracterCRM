@@ -23,25 +23,27 @@
   display: flex;
   gap: 10rem;
   padding:.5rem 1rem;
-  border-bottom:1px solid gray;
+  border-bottom:1px solid #eef1f4;
 }
 .contact p {
+  font-size:1.2rem;
     flex:1;
-    padding:.5rem 1rem;
+    padding:1rem 1rem;
 
 }
 
 .contact-list-headers li {
   font-weight: bold;
   flex:1;
-  border-left:1px solid lightgray;
+  border-left:1px solid #eef1f4;
   margin-left:1rem;
+  font-size:1.2rem;
 }
 
 .contact-list-headers {
   display: flex;
   width:100%;
-  border-bottom:3px solid lightgray;
+  border-bottom:3px solid #eef1f4;
 }
 
 
@@ -75,6 +77,3 @@
 .sidebar-toggle-btn {
 }
 
-#first-header {
-  border-left:none;
-}

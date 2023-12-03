@@ -16,3 +16,15 @@ html {
     background-color:#edf0f4;
     height:100vh;
 }
+
+.checkItem {
+    transform: scale(1.5); 
+    margin-right:2rem;
+}
+
+
+#first-header {
+    border-left:none;
+    margin-left:3.5rem;
+    margin-right:-3.5rem;
+  }
