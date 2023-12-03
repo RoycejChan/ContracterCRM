@@ -25,9 +25,9 @@ export default function PageNav({ amount, isCheckboxChecked, onRecordsPerPageCha
       <div className="pageNavBottom flex justify-between">
         {isCheckboxChecked 
         ? 
-        <p>Selected 1 Records</p> 
+        <p className="text-2xl">Selected <span className="amount">2</span> Records</p> 
         : 
-        <p>Total Records <span>{amount}</span></p>
+        <h1 className="text-2xl">Total Records: <span className="amount">{amount}</span></h1>
         }
         <div className="rightSidePageNav flex">
           {isCheckboxChecked ?

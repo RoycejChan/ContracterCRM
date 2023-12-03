@@ -31,7 +31,7 @@ export default function Webnav() {
         <>
         <div className="webNav flex justify-between p-4 ">
 
-                <h1 className='text-xl'>CRM☁️</h1>
+                <h1 className='text-3xl'>CRM 🧭</h1>
             <ul className="webNav-links flex gap-6">
             {navLinks.map(({ to, label }) => (
               <li className="webNav-link" key={to}>
@@ -40,17 +40,19 @@ export default function Webnav() {
             ))}
           </ul>
             <div className="webNav-profile flex gap-6">
-            <Select placeholder='+' size='sm' color='black' bg="cyan" borderColor="cyan" className='' 
+            <Select  defaultValue=""
+
+                 size='md' color='black' bg="cyan" borderColor="cyan" 
                 onChange={(e) => {
                   const selectedOption = e.target.value;
                   navigate(`/${selectedOption}`);
                 }}
                 >
+                <option value="" disabled selected hidden>➕</option>
                 <option value='createContact'>Contact</option>
                 <option value='createAccount'>Account</option>
                 <option value='createTask'>Task</option>
-
-            </Select>                 <p>Calender</p>
+            </Select>                
                 <div className="profile-img">
                     <img src="#" alt="" />
                 </div>

@@ -1,8 +1,12 @@
 .webNav {
     background-color:#313949;
     color:#f6eede;
+    font-size:1.5rem;
+    padding:1.5rem;
+    align-items:center;
 }
 .webNav-link:hover {
     border-bottom: 3px solid white;
 }
+
 

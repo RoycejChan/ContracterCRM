@@ -55,6 +55,8 @@ const createNew = () => {
 
 }
 const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
+const [checkedRecords, setCheckedRecords] = useState<any[]>([]);
+
 
 const handleCheckboxClick = (event: any) => {
   const checkboxes = document.querySelectorAll('.checkItem');
@@ -63,11 +65,13 @@ const handleCheckboxClick = (event: any) => {
 
   const checkbox = event.target;
   const listItem = checkbox.closest('.contact');
-
+  console.log(checkedRecords)
   if (checkbox.checked) {
     listItem.style.backgroundColor = '#f1f7ff';
+    setCheckedRecords((prev) => [...prev, checkbox]); 
   } else {
     listItem.style.backgroundColor = '';
+    setCheckedRecords((prev) => prev.filter((item) => item !== checkbox));
   }
 };
 
