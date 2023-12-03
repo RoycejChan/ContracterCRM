@@ -58,20 +58,21 @@ const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
 const [checkedRecords, setCheckedRecords] = useState<any[]>([]);
 
 
-const handleCheckboxClick = (event: any) => {
+const handleCheckboxClick = (contact:any, event: any) => {
   const checkboxes = document.querySelectorAll('.checkItem');
   const atLeastOneChecked = Array.from(checkboxes).some((checkbox) => checkbox.checked);
   setIsCheckboxChecked(atLeastOneChecked);
-
+  console.log(contact);
   const checkbox = event.target;
   const listItem = checkbox.closest('.contact');
   console.log(checkedRecords)
   if (checkbox.checked) {
     listItem.style.backgroundColor = '#f1f7ff';
-    setCheckedRecords((prev) => [...prev, checkbox]); 
+    setCheckedRecords((prev) => [...prev, contact]);
+ 
   } else {
     listItem.style.backgroundColor = '';
-    setCheckedRecords((prev) => prev.filter((item) => item !== checkbox));
+    setCheckedRecords((prev) => prev.filter((item) => item !== contact));
   }
 };
 
@@ -79,6 +80,41 @@ const handleRecordsPerPageChange = (value: string) => {
   setRecordsPerPage(value);
   console.log(recordsPerPage)
 };
+
+const deleteRecord = async () => {
+  try {
+    const response = await fetch(`${backendURL}/Contact/Contacts`, {
+      method: 'DELETE', 
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ recordsToDelete: checkedRecords }),
+    });
+
+    if (response.ok) {
+      console.log('Contacts deleted successfully');
+    } else {
+      console.error('Error deleting contacts:', response.statusText);
+    }
+  } catch (error) {
+    console.error('Error deleting contacts:', error);
+  }
+};
+
+const clearSelected = () => {
+  const checkboxes = document.querySelectorAll('.checkItem');
+
+  checkboxes.forEach((checkbox) => {
+    const listItem = checkbox.closest('.contact');
+    listItem.style.backgroundColor = '';
+    checkbox.checked = false;
+  });
+
+  setIsCheckboxChecked(false);
+  setCheckedRecords([]);
+  console.log("bruh");
+};
+
 
   return (
     <div className="background">
@@ -97,7 +133,7 @@ const handleRecordsPerPageChange = (value: string) => {
             <Button colorScheme='gray' variant='solid' size='lg' className="filterButtons">
               Create Task
             </Button>
-            <Button colorScheme='gray' variant='solid' size='lg' className="filterButtons">
+            <Button colorScheme='gray' variant='solid' size='lg' className="filterButtons" onClick={()=>deleteRecord()}>
               Delete
             </Button>
       </Stack>
@@ -118,7 +154,7 @@ const handleRecordsPerPageChange = (value: string) => {
       </div>
 
 
-    <PageNav amount={contacts.length} isCheckboxChecked={isCheckboxChecked} onRecordsPerPageChange={handleRecordsPerPageChange}/>
+    <PageNav amount={contacts.length} isCheckboxChecked={isCheckboxChecked} onRecordsPerPageChange={handleRecordsPerPageChange} recordAmountSelected={checkedRecords.length} clearSelection={clearSelected}/>
 
 
       <div className="contacts">
@@ -136,7 +172,7 @@ const handleRecordsPerPageChange = (value: string) => {
         {contacts.map(contact => (
           <li key={contact.ContactID} className="flex gap-3 contact">
             <p>
-              <input type="checkbox" className="checkItem" onClick={handleCheckboxClick}></input>
+              <input type="checkbox" className="checkItem" onClick={()=>handleCheckboxClick(contact, event)}></input>
               {contact.FirstName} {contact.LastName}</p>
             <p>{contact.AccountName}</p>
             <p>{contact.Email} </p>

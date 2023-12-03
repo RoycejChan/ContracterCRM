@@ -25,6 +25,21 @@
     box-shadow:1px 1px 1px 1px;
 }
 
+.recordAmountSelected {
+    display: flex;
+    gap:1.5rem;
+    align-items: end;
+}
+
+.clearBtn {
+    text-decoration: underline;
+}
+
+.clearBtn:hover {
+    color:rgb(95, 134, 160);
+}
+
+
 .amount {
     font-weight: 700;
 }
