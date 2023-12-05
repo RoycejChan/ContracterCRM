@@ -4,11 +4,11 @@ const connection = require('../../db');
 
 router.delete('/', async (req, res) => {
   try {
-
-    const query = `DELETE * FROM contact LIMIT ${limit}`;
-    const contacts = await connection.query(query);
-    console.log(contacts);
-    res.json(contacts);
+    const selectedContactIDs = req.body.recordsToDelete;
+    const query = `DELETE FROM contact WHERE ContactID IN (?)`;
+    const deleteContacts = await connection.query(query, [selectedContactIDs]);
+    console.log(deleteContacts);
+    res.json({ message: 'Contacts deleted successfully' });
 
   } catch (error) {
     console.error('Error executing query:', error);

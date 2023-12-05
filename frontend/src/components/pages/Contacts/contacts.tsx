@@ -83,7 +83,7 @@ const handleRecordsPerPageChange = (value: string) => {
 
 const deleteRecord = async () => {
   try {
-    const response = await fetch(`${backendURL}/Contact/Contacts`, {
+    const response = await fetch(`${backendURL}/Contact/deleteContact`, {
       method: 'DELETE', 
       headers: {
         'Content-Type': 'application/json',
@@ -93,6 +93,7 @@ const deleteRecord = async () => {
 
     if (response.ok) {
       console.log('Contacts deleted successfully');
+      window.location.reload();
     } else {
       console.error('Error deleting contacts:', response.statusText);
     }
@@ -112,7 +113,6 @@ const clearSelected = () => {
 
   setIsCheckboxChecked(false);
   setCheckedRecords([]);
-  console.log("bruh");
 };
 
 
@@ -172,7 +172,7 @@ const clearSelected = () => {
         {contacts.map(contact => (
           <li key={contact.ContactID} className="flex gap-3 contact">
             <p>
-              <input type="checkbox" className="checkItem" onClick={()=>handleCheckboxClick(contact, event)}></input>
+              <input type="checkbox" className="checkItem" onClick={()=>handleCheckboxClick(contact.ContactID, event)}></input>
               {contact.FirstName} {contact.LastName}</p>
             <p>{contact.AccountName}</p>
             <p>{contact.Email} </p>

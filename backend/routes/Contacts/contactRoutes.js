@@ -4,9 +4,8 @@ const getContact = require('./getContacts');
 const deleteContact = require('./deleteContacts');
 const router = express.Router();
 
-
 router.use('/newContact', newContact); 
 router.use('/Contacts', getContact); 
-router.use('./deleteContact', deleteContact);
+router.use('/deleteContact', deleteContact);
 
 module.exports = router;
