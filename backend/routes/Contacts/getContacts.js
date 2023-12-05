@@ -4,10 +4,12 @@ const connection = require('../../db');
 
 router.get('/', async (req, res) => {
   try {
-    let limit = req.query.limit || 10; // Use a default limit of 10 if not provided
+    let limit = req.query.limit || 10; // Use a default limit of 10
     limit = parseInt(limit, 10); 
 
     const query = `SELECT * FROM contact LIMIT ${limit}`;
+
+    // !! ADD ANOTHER SELECT TO SELECT COMPANOES CONTACTID ASSOCIATEDD WUTH
     const contacts = await connection.query(query);
     console.log(contacts);
     res.json(contacts);

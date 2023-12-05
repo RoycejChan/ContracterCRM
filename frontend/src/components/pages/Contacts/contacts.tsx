@@ -115,6 +115,15 @@ const clearSelected = () => {
   setCheckedRecords([]);
 };
 
+const navTo = (contact:any) => {
+  console.log(contact);
+  navigate('/clickedContact',
+    {
+      state:{contact}
+    }
+    )
+}
+
 
   return (
     <div className="background">
@@ -170,9 +179,13 @@ const clearSelected = () => {
       </ul>
       <ul className="contact-list">
         {contacts.map(contact => (
-          <li key={contact.ContactID} className="flex gap-3 contact">
+          <li key={contact.ContactID} className="flex gap-3 contact record" onClick={()=>navTo(contact)}>
             <p>
-              <input type="checkbox" className="checkItem" onClick={()=>handleCheckboxClick(contact.ContactID, event)}></input>
+              <input type="checkbox" className="checkItem" onClick={(event) => {
+            // Stop the event propagation to prevent the li click event
+            event.stopPropagation();
+            handleCheckboxClick(contact.ContactID, event);
+          }}></input>
               {contact.FirstName} {contact.LastName}</p>
             <p>{contact.AccountName}</p>
             <p>{contact.Email} </p>

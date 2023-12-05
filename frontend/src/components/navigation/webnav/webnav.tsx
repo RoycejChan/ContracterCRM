@@ -14,6 +14,7 @@ import Contacts from '../../pages/Contacts/contacts';
 import Accounts from '../../pages/Accounts/Accounts';
 import CreateAccount from '../../createNew/newAccount/createAccount';
 import Tasks from '../../pages/Tasks/tasks';
+import Contact from '../../pages/Contacts/clickedContact';
 
 
 export default function Webnav() {
@@ -24,7 +25,6 @@ export default function Webnav() {
         { to: "/Tasks", label: "Tasks" },
         { to: "/Contacts", label: "Contacts" },
         { to: "/Accounts", label: "Accounts" },
-        { to: "/Deals", label: "Deals" },
       ];
 
   return (
@@ -67,6 +67,7 @@ export default function Webnav() {
 
 
         <Route index path="/createContact" element={<CreateContact />} />
+        <Route index path="/clickedContact" element={<Contact />} />
         <Route index path="/createAccount" element={<CreateAccount/> } />
         <Route index path="/createTask" element={<CreateTask/> } />
 
