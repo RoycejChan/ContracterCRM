@@ -104,7 +104,7 @@ export default function CreateContact() {
     <>
       <form onSubmit={handleSubmit}>
         <CreateNewNav page="Contact" onButtonClick={save} />
-
+        
         <div className="new-container">
           <div className="new-PFP">
             <h1 className="text-2xl">Contact Image</h1>

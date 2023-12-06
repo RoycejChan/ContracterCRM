@@ -1,4 +1,4 @@
-import "./pages/pagedetails.css"
+import "../pagedetails.css"
 
 export default function Home() {
     return (

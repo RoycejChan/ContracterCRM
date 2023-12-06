@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 
-import Home from '../../home';
+import Home from '../../pages/Home/home';
 import "./webnav.css"
 
 
