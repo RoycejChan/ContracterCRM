@@ -13,10 +13,8 @@ html, body {
     padding:0;
     font-family: 'Barlow', sans-serif;
 }
-
-.background {
-    background-color:#edf0f4;
-    height:100vh;
+body {
+    background-color:#edf0f4 !important;
 }
 
 .checkItem {
@@ -39,4 +37,8 @@ html, body {
 
 .email {
     color: #0000EE;
+}
+
+.backBtn {
+    font-size:2rem;
 }

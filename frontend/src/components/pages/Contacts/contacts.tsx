@@ -126,7 +126,7 @@ const navTo = (contact:any) => {
 
 
   return (
-    <div className="background">
+    <>
 
 
       <div className="pageNavTop">
@@ -195,6 +195,6 @@ const navTo = (contact:any) => {
       </ul>
       </div>
       </div>
-    </div>
+    </>
   );
 }

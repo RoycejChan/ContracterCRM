@@ -57,14 +57,15 @@ export default function CreateContact() {
         },
         body: JSON.stringify({ newContact: contactInfo }),
       });
-  
+      
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-  
+      } else {
+        window.location.reload();
       console.log('hello');
       const data = await response.json();
       console.log('Server response:', data);
+      }
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
@@ -95,7 +96,7 @@ export default function CreateContact() {
   };
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    save(); // Trigger the save function when the form is submitted
+    save(); 
   };
 
 
