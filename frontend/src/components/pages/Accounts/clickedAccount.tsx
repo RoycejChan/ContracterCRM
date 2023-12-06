@@ -1,54 +1,73 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button, Stack } from '@chakra-ui/react';
-import { deleteRecordFunction } from "../deleteRecord.js"
 const backendURL = 'http://localhost:3000';
 
 const contactFields = [
+  { label: 'AccountName', key: 'AccountName', type: 'text' },
+  { label: 'AccountSite', key: 'AccountSite', type: 'text' },
+  { label: 'Industry', key: 'Industry', type: 'text' },
   { label: 'Email', key: 'Email', type: 'text' },
-  { label: 'Phone', key: 'WorkPhone', type: 'text' },
-  { label: 'Mobile', key: 'MobilePhone', type: 'text' },
-  { label: 'Department', key: 'Department', type: 'text' },
 ];
 
 const detailsSections = [
   [
     { label: 'Account Name', key: 'AccountName', type: 'text' },
     { label: 'Email', key: 'Email', type: 'text' },
-    { label: 'Work Phone', key: 'WorkPhone', type: 'text' },
-    { label: 'Mobile Phone', key: 'MobilePhone', type: 'text' },
+    { label: 'Account Website', key: 'AccountSite', type: 'text' },
     { label: 'Fax', key: 'Fax', type: 'text' },
-    { label: 'Assistant Name', key: 'AssistantName', type: 'text' },
   ],
   [
-    { label: 'Contact Name', key: 'FirstName', type: 'text' },
-    { label: 'Department', key: 'Department', type: 'text' },
-    { label: 'Title', key: 'Title', type: 'text' },
-    { label: 'Assistant Phone', key: 'AssistantPhone', type: 'text' },
+    { label: 'Industry', key: 'Industry', type: 'text' },
+    { label: 'Annual Revenue', key: 'AnnualRevenue', type: 'text' },
+    { label: 'FrontDesk Phone', key: 'FrontDeskPhone', type: 'text' },
+  ],
+
+];
+
+const detailsSectionAddress = [
+  [
+    { label: 'City', key: 'City', type: 'text' },
+    { label: 'Street', key: 'Street', type: 'text' },
+  ],
+  [
+    { label: 'State', key: 'State', type: 'text' },
+    { label: 'Zip', key: 'Zip', type: 'text' },
+    { label: 'Country', key: 'Country', type: 'text' },
   ],
 ];
 
-export default function Contact() {
+export default function Account() {
   const navigate = useNavigate();
   const location = useLocation();
-  const initialContact = location.state.contact;
-  const [contact, setContact] = useState(initialContact);
+  const initialAccount = location.state.account;
+
+  const [account, setAccount] = useState(initialAccount);
   const [isVisible, setIsVisible] = useState(false);
 
-  const goBack = () => {
-    navigate(-1);
-  };
+  const goBack = () => {navigate(-1);};
 
-  const toggleVisibility = () => { 
-    setIsVisible(!isVisible);
-  };
+  const toggleVisibility = () => {setIsVisible(!isVisible);};
 
-  const deleteRecord = () => {
-    deleteRecordFunction('Contact', 'deleteContact', initialContact.ContactID)
-      .then(goBack())
-      .catch((error:any) => console.error('Error deleting record:', error));
+  const deleteRecord = async () => {
+    try {
+      const response = await fetch(`${backendURL}/Account/deleteAccount`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ recordsToDelete: initialAccount.AccountID }),
+      });
+
+      if (response.ok) {
+        goBack();
+      } else {
+        console.error('Error deleting contacts:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error deleting contacts:', error);
+    }
   };
-  
 
 
   const renderField = (label:string, key:string, type:any) => (
@@ -57,8 +76,7 @@ export default function Contact() {
       <span className={`${type} detail`}>
         <input
           type={type}
-          value={contact[key] || '—'}
-          onChange={() => {}}
+          value={account[key] || '—'}
         />
         <span className='detailIcon'>✏️</span>
       </span>
@@ -72,7 +90,7 @@ export default function Contact() {
           <button onClick={goBack} className='backBtn'>
             ⬅️
           </button>
-          <h1>{contact.FirstName} {contact.LastName}</h1>
+          <h1>{account.AccountName}</h1>
         </div>
         <div className='rightSide-contactPageHeader'>
           <Stack direction='row' spacing={4} align='center'>
@@ -96,12 +114,33 @@ export default function Contact() {
         <div className='showDetails'>
           <button onClick={toggleVisibility}>{isVisible ? 'Hide Details' : 'Toggle Details'}</button>
         </div>
+
+
         <div className={`allDetails-list ${isVisible ? 'visible' : ''}`}>
+        
+        <div className='details-list-container'>
+          <h1>Account Information</h1>
+          <div className="details-list">
           {detailsSections.map((section, index) => (
             <ul className='allDetails-col' key={index}>
               {section.map((field) => renderField(field.label, field.key, field.type))}
             </ul>
           ))}
+          </div>
+          </div>
+
+          
+         <div className='details-list-container'>
+          <h1>Address Information</h1>
+          <div className="details-list">
+          {detailsSectionAddress.map((section, index) => (
+            <ul className='allDetails-col' key={index}>
+            {section.map((field) => renderField(field.label, field.key, field.type))}
+          </ul>
+        ))}
+        </div>
+        </div>
+
         </div>
       </div>
     </>

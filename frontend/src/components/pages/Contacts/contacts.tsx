@@ -4,6 +4,10 @@ import { Button, Stack } from '@chakra-ui/react'
 import "./contacts.css"
 const backendURL = 'http://localhost:3000'; 
 import PageNav from "../../navigation/PageNav/PageNav";
+import { deleteRecordFunction } from "../deleteRecord.js"
+import { clearSelectedFunction } from "../clearSelection.js";
+import { handleCheckboxClickFunction } from "../handleCheckboxClick.js"
+
 interface Contact {
   ContactID: number;
   FirstName: string;
@@ -19,8 +23,12 @@ export default function Contacts() {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [recordsPerPage, setRecordsPerPage] = useState<string>("10");
+  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
+  const [checkedRecords, setCheckedRecords] = useState<any[]>([]);
 
-  useEffect(() => {
+  
+
+useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(`${backendURL}/Contact/Contacts?limit=${recordsPerPage}`, {
@@ -29,111 +37,61 @@ export default function Contacts() {
               'Content-Type': 'application/json',
             },
           });
-          
         const [data] = await response.json();
-        console.log(data);
         setContacts(data);
       } catch (error) {
         console.error('Error fetching contacts:', error);
       }
     };
-
     fetchData();
   }, [recordsPerPage]);
-  const toggleSidebar = () => {
-    setIsSidebarOpen((prev) => !prev);
-  };
 
-const createNew = () => {
-  navigate('/createContact');
-  // !! CANCEL BUTTON GOES BACK 'navigate(-1)'?
-    // !! CANCEL BUTTON GOES BACK 'navigate(-1)'?
+//button to toggle filter sidebar
+const toggleSidebar = () => {setIsSidebarOpen((prev) => !prev);};
 
-      // !! CANCEL BUTTON GOES BACK 'navigate(-1)'?
+//button to create new record
+const createNew = () => {navigate('/createContact');}
 
-        // !! CANCEL BUTTON GOES BACK 'navigate(-1)'?
-
-}
-const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
-const [checkedRecords, setCheckedRecords] = useState<any[]>([]);
-
-
-const handleCheckboxClick = (contact:any, event: any) => {
-  const checkboxes = document.querySelectorAll('.checkItem');
-  const atLeastOneChecked = Array.from(checkboxes).some((checkbox) => checkbox.checked);
-  setIsCheckboxChecked(atLeastOneChecked);
-  console.log(contact);
+//Handles UI change when a record is clicked
+const handleCheckboxClick = (record:any, event:any) => {
   const checkbox = event.target;
-  const listItem = checkbox.closest('.contact');
-  console.log(checkedRecords)
-  if (checkbox.checked) {
-    listItem.style.backgroundColor = '#f1f7ff';
-    setCheckedRecords((prev) => [...prev, contact]);
- 
-  } else {
-    listItem.style.backgroundColor = '';
-    setCheckedRecords((prev) => prev.filter((item) => item !== contact));
-  }
+  const listItem = checkbox.closest('.record');
+  handleCheckboxClickFunction(record, checkbox, listItem, setIsCheckboxChecked, setCheckedRecords);
 };
 
-const handleRecordsPerPageChange = (value: string) => {
-  setRecordsPerPage(value);
-  console.log(recordsPerPage)
-};
+//CHANGES THE AMOUNT OF RECORDS DISPLAYED
+const handleRecordsPerPageChange = (value: string) => {setRecordsPerPage(value)};
 
+//DELETE SELECTED RECORD(s)
 const deleteRecord = async () => {
-  try {
-    const response = await fetch(`${backendURL}/Contact/deleteContact`, {
-      method: 'DELETE', 
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ recordsToDelete: checkedRecords }),
-    });
-
-    if (response.ok) {
-      console.log('Contacts deleted successfully');
-      window.location.reload();
-    } else {
-      console.error('Error deleting contacts:', response.statusText);
-    }
-  } catch (error) {
-    console.error('Error deleting contacts:', error);
-  }
+    await deleteRecordFunction('Contact', 'deleteContact', checkedRecords)
+    .then(window.location.reload())
+    .catch((error:any) => console.error('Error deleting record:', error));
 };
 
+
+//CLEAR CHECK SELECTED RECORD(s)
 const clearSelected = () => {
-  const checkboxes = document.querySelectorAll('.checkItem');
-
-  checkboxes.forEach((checkbox) => {
-    const listItem = checkbox.closest('.contact');
-    listItem.style.backgroundColor = '';
-    checkbox.checked = false;
-  });
-
+  clearSelectedFunction(); 
   setIsCheckboxChecked(false);
   setCheckedRecords([]);
 };
 
+//navigates to clicked record
 const navTo = (contact:any) => {
-  console.log(contact);
-  navigate('/clickedContact',
-    {
-      state:{contact}
-    }
-    )
+  navigate('/clickedContact', {state:{contact}})
 }
 
 
   return (
+
     <>
-
-
       <div className="pageNavTop">
 
     {/* !!MODAL CHAKRA UI FOR ADD TASK */}
       {isCheckboxChecked 
       ? 
+      // THIS SHOWS WHEN A RECORD IS CLICKED, THESE ARE THE FUNCTION THAT CAN BE DONE WITH IT
       <>
         <Stack direction='row' spacing={4} align='center'>
             <Button colorScheme='gray' variant='solid' size='lg' className="filterButtons">
@@ -147,7 +105,7 @@ const navTo = (contact:any) => {
             </Button>
       </Stack>
       </>
-      :
+      : 
       <>
       <Button onClick={()=>toggleSidebar()} size='lg' variant='outline' className="filterToggle">
           FILTER
@@ -157,42 +115,42 @@ const navTo = (contact:any) => {
         </Button >
       </>
       }
-
-
-
       </div>
 
 
     <PageNav amount={contacts.length} isCheckboxChecked={isCheckboxChecked} onRecordsPerPageChange={handleRecordsPerPageChange} recordAmountSelected={checkedRecords.length} clearSelection={clearSelected}/>
 
 
-      <div className="contacts">
-       { isSidebarOpen ?
-        <div className="sidebar"> <h1>BRUH</h1></div> : <></> }
+      <div className="contacts records">
+       { isSidebarOpen ? 
+       <div className="sidebar"> <h1>FILTER</h1></div> 
+       : 
+       <></> }
 
       <div className="mainContent">
-      <ul className="contact-list-headers">
-        <li id="first-header">Contact Name</li>
-        <li>Account Name</li>
-        <li>Email ✉️</li>
-        <li>Phone</li>
-      </ul>
-      <ul className="contact-list">
-        {contacts.map(contact => (
-          <li key={contact.ContactID} className="flex gap-3 contact record" onClick={()=>navTo(contact)}>
-            <p>
-              <input type="checkbox" className="checkItem" onClick={(event) => {
-            // Stop the event propagation to prevent the li click event
-            event.stopPropagation();
-            handleCheckboxClick(contact.ContactID, event);
-          }}></input>
+        <ul className="record-headers">
+          <li id="first-header">Contact Name</li>
+          <li>Account Name</li>
+          <li>Email ✉️</li>
+          <li>Phone</li>
+        </ul>
+        <ul className="record-list">
+          {contacts.map(contact => (
+            <li key={contact.ContactID} className="flex gap-3 contact record" onClick={()=>navTo(contact)}>
+              <p>
+                <input type="checkbox" className="checkItem" onClick={(event) => {
+                  // Stops the onClick function in the parent LI from happening
+                  event.stopPropagation();
+                  handleCheckboxClick(contact.ContactID, event);
+                }}>
+                </input>
               {contact.FirstName} {contact.LastName}</p>
-            <p>{contact.AccountName}</p>
-            <p>{contact.Email} </p>
-            <p>{contact.WorkPhone} 📞</p>
-          </li>
-        ))}
-      </ul>
+              <p>{contact.AccountName}</p>
+              <p>{contact.Email} </p>
+              <p>{contact.WorkPhone} 📞</p>
+            </li>
+          ))}
+        </ul>
       </div>
       </div>
     </>

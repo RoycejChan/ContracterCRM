@@ -36,10 +36,9 @@ export default function CreateTask() {
   const backendURL = 'http://localhost:3000';
 
   const save = async () => {
-    console.log(TaskInfo);
     try {
       const requiredFields = inputFields.filter((field) => field.required);
-  
+      console.log(TaskInfo);
       for (const field of requiredFields) {
         if (!TaskInfo[field.key as TaskInfoKey]) {
           console.error(`${field.label} is required.`);
@@ -60,7 +59,6 @@ export default function CreateTask() {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       const data = await response.json();
-      console.log('Server response:', data);
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
@@ -74,6 +72,7 @@ export default function CreateTask() {
     { label: 'Priority', key: 'Priority', required: true },
     { label: 'Service Type', key: 'Service', required: true},
     { label: 'Related To', key: 'Company', required: true },
+    { label: 'Location', key: 'Location', required: true },
     { label: 'TaskOwner', key: 'Manager', required: true },
     { label: 'Description', key: 'Description'},
 
@@ -109,10 +108,11 @@ export default function CreateTask() {
 
   return (
     <>
+      <div className="background">
       <form onSubmit={handleSubmit}>
         <CreateNewNav page="Task" onButtonClick={save} />
 
-        <div className="new-container">
+        <div className="new-container pt-10">
           <div className="newTask">
             <h1 className="text-2xl mb-4">Task Information</h1>
             <div className="newTaskInfo flex justify-between">
@@ -127,7 +127,6 @@ export default function CreateTask() {
       required={field.required}
       type={field.type === 'date' ? 'date' : 'text'}
       inputMode={field.type === 'number' ? 'numeric' : (field.type === 'email' ? 'email' : 'text')}
-      focusBorderColor='crimson'
       onChange={(e) => handleInputChange(field.key as TaskInfoKey, e.target.value)}
     />
   ))}
@@ -153,6 +152,7 @@ export default function CreateTask() {
           </div>
         </div>
       </form>
+      </div>
     </>
   );
 }

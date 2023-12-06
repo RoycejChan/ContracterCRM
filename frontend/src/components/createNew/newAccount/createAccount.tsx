@@ -41,7 +41,6 @@ export default function CreateAccount() {
   const backendURL = 'http://localhost:3000';
 
   const save = async () => {
-    console.log(AccountInfo);
     try {
       // Validate required fields
       const requiredFields = inputFields.filter((field) => field.required);
@@ -65,9 +64,7 @@ export default function CreateAccount() {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
   
-      console.log('hello');
       const data = await response.json();
-      console.log('Server response:', data);
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
@@ -104,6 +101,7 @@ export default function CreateAccount() {
 
   return (
     <>
+    <div className="background">
       <form onSubmit={handleSubmit}>
         <CreateNewNav page="Account" onButtonClick={save} />
 
@@ -154,6 +152,7 @@ export default function CreateAccount() {
           </div>
         </div>
       </form>
+      </div>
     </>
   );
 }

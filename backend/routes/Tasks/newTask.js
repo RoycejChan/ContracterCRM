@@ -3,9 +3,7 @@ const router = express.Router();
 const connection = require('../../db');
 
 router.post('/', (req, res) => {
-
-      const { newTask } = req.body;
-
+  const { newTask } = req.body;
   // Extract properties from newTask
   const {
     TaskName,
@@ -17,10 +15,13 @@ router.post('/', (req, res) => {
     Company,
     Service,
     Manager
- } = newTask;
+  } = newTask;
 
   const query =
     'INSERT INTO tasks (Subject, Priority, Status, Description, Location, DueDateTime, Account, Service, Manager) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+
+  // Format the date as needed
+  const formattedDueDate = DueDate ? DueDate.replace(/-/g, '') : null;
 
   // Placeholders avoid SQL injection
   const values = [
@@ -29,7 +30,7 @@ router.post('/', (req, res) => {
     Status,
     Description,
     Location,
-    DueDate,
+    formattedDueDate,
     Company,
     Service,
     Manager
@@ -40,7 +41,6 @@ router.post('/', (req, res) => {
       console.error('Error executing query:', error);
       res.status(500).json({ error: 'Internal Server Error' });
     } else {
-      console.log('Task added successfully');
       res.json(results);
     }
   });

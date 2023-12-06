@@ -1,8 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-import 'tailwind.css';
-
 li {
     list-style-type:none;
 }
@@ -17,29 +15,8 @@ body {
     background-color:#edf0f4 !important;
 }
 
-.checkItem {
-    transform: scale(1.5); 
-    margin-right:2rem;
-    z-index:999;
-}
-
-.record:hover {
-    background-color:#f1f7ff;
-}
-
-
-#first-header {
-    border-left:none;
-    margin-left:3.5rem;
-    margin-right:-3.5rem;
-  }
-
-
-.email {
-    color: #0000EE;
-}
-
-.backBtn {
-    font-size:2rem;
+.background {
+    background-color:white;
+    height:100vh;
 }
 

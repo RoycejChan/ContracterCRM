@@ -1,79 +1,37 @@
-.contacts {
-    padding: 2rem;
-    display:flex;
-    gap:5rem;
-}
-.contact-list-headers {
+.record-headers {
   display: flex;
+  width:100%;
   gap: 10rem;
+  border-bottom:3px solid #eef1f4;
 }
 
-.contact-list-headers li {
-    width:15%;
-    padding: 1rem;
-    margin-left: -.2rem;
-}
 
-.contact-list {
-  list-style: none;
-  padding: 0;
-}
-
-.contact {
-  display: flex;
-  gap: 10rem;
-  padding:.5rem 1rem;
-  border-bottom:1px solid #eef1f4;
-}
-.contact p {
-  font-size:1.2rem;
-    flex:1;
-    padding:1rem 1rem;
-
-}
-
-.contact-list-headers li {
+.record-headers li {
   font-weight: bold;
+  padding: 1rem;
   flex:1;
   border-left:1px solid #eef1f4;
   margin-left:1rem;
   font-size:1.2rem;
 }
 
-.contact-list-headers {
+
+.record {
   display: flex;
-  width:100%;
-  border-bottom:3px solid #eef1f4;
+  gap: 10rem;
+  padding:.5rem 1rem;
+  border-bottom:1px solid #eef1f4;
+}
+
+.record p {
+    font-size:1.2rem;
+    flex:1;
+    padding:1rem 1rem;
 }
 
 
-.sidebar {
-  width: 335px;
-  height:865px; 
-  background-color:white;
-  transition: width 0.9s ease-in; 
-  border-radius: 28px 28px 25px 28px;
-  -moz-border-radius: 28px 28px 25px 28px;
-  -webkit-border-radius: 28px 28px 25px 28px;
-  border: 0px solid #000000;
-  -webkit-box-shadow: 2px 3px 11px -2px rgba(0,0,0,0.75);
-  -moz-box-shadow: 2px 3px 11px -2px rgba(0,0,0,0.75);
-  box-shadow: 2px 3px 11px -2px rgba(0,0,0,0.75);  
-}
 
-.mainContent {
-  background-color:white;
-  flex: 3;
-  height:100%; 
-  border-radius: 28px 28px 25px 28px;
-  -moz-border-radius: 28px 28px 25px 28px;
-  -webkit-border-radius: 28px 28px 25px 28px;
-  border: 0px solid #000000;
-  -webkit-box-shadow: 2px 3px 11px -2px rgba(0,0,0,0.75);
-  -moz-box-shadow: 2px 3px 11px -2px rgba(0,0,0,0.75);
-  box-shadow: 2px 3px 11px -2px rgba(0,0,0,0.75);
-}
 
-.sidebar-toggle-btn {
-}
+
+
 

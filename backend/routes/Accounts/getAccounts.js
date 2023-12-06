@@ -9,7 +9,6 @@ router.get('/', async (req, res) => {
 
     const query = `SELECT * FROM accounts LIMIT ${limit}`; 
     const accounts = await connection.query(query);
-    console.log(accounts);
     res.json(accounts);
 
   } catch (error) {

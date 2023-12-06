@@ -11,7 +11,6 @@ router.get('/', async (req, res) => {
 
     // !! ADD ANOTHER SELECT TO SELECT COMPANOES CONTACTID ASSOCIATEDD WUTH
     const contacts = await connection.query(query);
-    console.log(contacts);
     res.json(contacts);
 
   } catch (error) {

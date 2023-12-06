@@ -5,6 +5,10 @@ import { Button, Stack } from "@chakra-ui/react";
 import PageNav from "../../navigation/PageNav/PageNav";
 const backendURL = 'http://localhost:3000'; 
 
+import { deleteRecordFunction } from "../deleteRecord.js"
+import { clearSelectedFunction } from "../clearSelection.js";
+import { handleCheckboxClickFunction } from "../handleCheckboxClick.js"
+
 interface Account {
   AccountID: number;
   AccountName: string;
@@ -18,6 +22,9 @@ export default function Accounts() {
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [recordsPerPage, setRecordsPerPage] = useState<string>("10");
+  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
+  const [checkedRecords, setCheckedRecords] = useState<any[]>([]);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,7 +36,6 @@ export default function Accounts() {
           },
         });
         const [data] = await response.json();
-        console.log(data);
         setAccounts(data);
       } catch (error) {
         console.error('Error fetching accounts:', error);
@@ -39,74 +45,39 @@ export default function Accounts() {
     fetchData();
   }, [recordsPerPage]);
 
-  const createNew = () => {
-    navigate('/createContact');
-  };
+//button to toggle filter sidebar
+const toggleSidebar = () => {setIsSidebarOpen((prev) => !prev);};
 
-  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
-  const [checkedRecords, setCheckedRecords] = useState<any[]>([]);
+//button to create new record
+const createNew = () => {navigate('/createAccount')};
 
-  const handleCheckboxClick = (record: any, event: any) => {
-    const checkboxes = document.querySelectorAll('.checkItem');
-    const atLeastOneChecked = Array.from(checkboxes).some((checkbox) => checkbox.checked);
-    setIsCheckboxChecked(atLeastOneChecked);
-    console.log(record);
+//Handles UI change when a record is clicked
+const handleCheckboxClick = (record:any, event:any) => {
     const checkbox = event.target;
-    const listItem = checkbox.closest('.contact');
-    console.log(checkedRecords);
-    if (checkbox.checked) {
-      listItem.style.backgroundColor = '#f1f7ff';
-      setCheckedRecords((prev) => [...prev, record]);
-    } else {
-      listItem.style.backgroundColor = '';
-      setCheckedRecords((prev) => prev.filter((item) => item !== record));
-    }
-  };
+    const listItem = checkbox.closest('.record');
+    handleCheckboxClickFunction(record, checkbox, listItem, setIsCheckboxChecked, setCheckedRecords);
+};
 
-  const handleRecordsPerPageChange = (value: string) => {
-    setRecordsPerPage(value);
-    console.log(recordsPerPage);
-  };
+//CHANGES THE AMOUNT OF RECORDS DISPLAYED
+const handleRecordsPerPageChange = (value: string) => {setRecordsPerPage(value)};
 
-  const deleteRecord = async () => {
-    try {
-      const response = await fetch(`${backendURL}/Contact/deleteContact`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ recordsToDelete: checkedRecords }),
-      });
+//DELETE SELECTED RECORD(s)
+const deleteRecord = async () => {
+  await deleteRecordFunction('Account', 'deleteAccount', checkedRecords)
+  .then(window.location.reload())
+  .catch((error:any) => console.error('Error deleting record:', error));
+};
 
-      if (response.ok) {
-        console.log('Contacts deleted successfully');
-        window.location.reload();
-      } else {
-        console.error('Error deleting contacts:', response.statusText);
-      }
-    } catch (error) {
-      console.error('Error deleting contacts:', error);
-    }
-  };
-
-  const clearSelected = () => {
-    const checkboxes = document.querySelectorAll('.checkItem');
-
-    checkboxes.forEach((checkbox) => {
-      const listItem = checkbox.closest('.contact');
-      listItem.style.backgroundColor = '';
-      checkbox.checked = false;
-    });
-
+//CLEAR CHECK SELECTED RECORD(s)
+const clearSelected = () => {
+    clearSelectedFunction(); 
     setIsCheckboxChecked(false);
     setCheckedRecords([]);
   };
 
-  const navTo = (contact: any) => {
-    console.log(contact);
-    navigate('/clickedContact', {
-      state: { contact },
-    });
+//navigates to clicked record
+const navTo = (account: any) => {
+    navigate('/clickedAccount', {state: { account }});
   };
 
   return (
@@ -133,7 +104,7 @@ export default function Accounts() {
               FILTER
             </Button>
             <Button colorScheme="twitter" size="lg" onClick={createNew}>
-              Create Contact
+              Create Account
             </Button>
           </>
         )}
@@ -141,19 +112,19 @@ export default function Accounts() {
 
       <PageNav amount={accounts.length} isCheckboxChecked={isCheckboxChecked} onRecordsPerPageChange={handleRecordsPerPageChange} recordAmountSelected={checkedRecords.length} clearSelection={clearSelected} />
 
-      <div className="contacts">
-        {isSidebarOpen ? <div className="sidebar"> <h1>BRUH</h1></div> : <></>}
+      <div className="contacts records">
+        {isSidebarOpen ? <div className="sidebar"> <h1>Filter</h1></div> : <></>}
 
         <div className="mainContent">
-          <ul className="account-list-headers">
-            <li>Account Name</li>
+          <ul className="record-headers">
+            <li id="first-header">Account Name</li>
             <li>Website</li>
             <li>Email</li>
             <li>Phone</li>
           </ul>
-          <ul className="account-list">
+          <ul className="record-list">
             {accounts.map((account) => (
-              <li key={account.AccountID} className="flex gap-3 account record">
+              <li key={account.AccountID} className="flex gap-3 account record" onClick={()=>navTo(account)}>
                 <p>
                   <input type="checkbox" className="checkItem" onClick={(event) => {
                     event.stopPropagation();
@@ -161,7 +132,7 @@ export default function Accounts() {
                   }}></input>{account.AccountName}
                 </p>
                 <p>{account.AccountSite}</p>
-                <p>{account.EMAIL}</p> {/***EMAIL? */}
+                <p>{account.Email}</p> {/***EMAIL? */}
                 <p>{account.FrontDeskPhone}</p>
               </li>
             ))}

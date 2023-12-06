@@ -44,7 +44,6 @@ router.post('/', (req, res) => {
       console.error('Error executing query:', error);
       res.status(500).json({ error: 'Internal Server Error' });
     } else {
-      console.log('Contact added successfully');
       res.json(results);
     }
   });

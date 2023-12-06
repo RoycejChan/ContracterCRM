@@ -6,7 +6,6 @@ router.get('/', async (req, res) => {
   try {
     const query = 'SELECT * FROM tasks'; 
     const tasks = await connection.query(query);
-    console.log(tasks);
     res.json(tasks);
 
   } catch (error) {

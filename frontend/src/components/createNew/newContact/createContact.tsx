@@ -61,7 +61,6 @@ export default function CreateContact() {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       } else {
-        window.location.reload();
       console.log('hello');
       const data = await response.json();
       console.log('Server response:', data);
@@ -102,6 +101,7 @@ export default function CreateContact() {
 
   return (
     <>
+    <div className="background">
       <form onSubmit={handleSubmit}>
         <CreateNewNav page="Contact" onButtonClick={save} />
         
@@ -151,6 +151,7 @@ export default function CreateContact() {
           </div>
         </div>
       </form>
+      </div>
     </>
   );
 }

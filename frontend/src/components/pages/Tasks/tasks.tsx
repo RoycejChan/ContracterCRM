@@ -24,7 +24,6 @@ export default function Tasks() {
             },
           });
           const [tasks] = await response.json();
-          console.log(tasks);
           setTasks(tasks);
       } catch (error) {
         console.error('Error fetching Tasks:', error);
