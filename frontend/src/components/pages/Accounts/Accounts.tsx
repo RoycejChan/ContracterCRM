@@ -24,6 +24,7 @@ export default function Accounts() {
   const [recordsPerPage, setRecordsPerPage] = useState<string>("10");
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
   const [checkedRecords, setCheckedRecords] = useState<any[]>([]);
+  const [selectAll, setSelectAll] = useState(false); 
 
 
   useEffect(() => {
@@ -56,7 +57,8 @@ const handleCheckboxClick = (record:any, event:any) => {
     const checkbox = event.target;
     const listItem = checkbox.closest('.record');
     handleCheckboxClickFunction(record, checkbox, listItem, setIsCheckboxChecked, setCheckedRecords);
-};
+    setSelectAll(false); 
+  };
 
 //CHANGES THE AMOUNT OF RECORDS DISPLAYED
 const handleRecordsPerPageChange = (value: string) => {setRecordsPerPage(value)};
@@ -73,12 +75,19 @@ const clearSelected = () => {
     clearSelectedFunction(); 
     setIsCheckboxChecked(false);
     setCheckedRecords([]);
+    setSelectAll(false);
   };
 
 //navigates to clicked record
 const navTo = (account: any) => {
     navigate('/clickedAccount', {state: { account }});
   };
+
+const handleSelectAll = () => {
+  setSelectAll((prev) => !prev);
+  setIsCheckboxChecked(!selectAll);
+  setCheckedRecords(selectAll ? [] : accounts.map((account) => account.AccountID));
+};
 
   return (
     <>
@@ -117,22 +126,32 @@ const navTo = (account: any) => {
 
         <div className="mainContent">
           <ul className="record-headers">
-            <li id="first-header">Account Name</li>
+            <li id="first-header">
+            {accounts.length != 0 ? <input
+              type="checkbox"
+              className="checkItem"
+              checked={selectAll}
+              onChange={handleSelectAll}
+            /> 
+            :<></>}
+              Account Name</li>
             <li>Website</li>
             <li>Email</li>
             <li>Phone</li>
           </ul>
           <ul className="record-list">
             {accounts.map((account) => (
-              <li key={account.AccountID} className="flex gap-3 account record" onClick={()=>navTo(account)}>
+              <li key={account.AccountID} className={`flex gap-3 account record ${checkedRecords.includes(account.AccountID) ? 'selected' : ''}`} onClick={()=>navTo(account)}>
                 <p>
-                  <input type="checkbox" className="checkItem" onClick={(event) => {
+                  <input type="checkbox" className="checkItem" 
+                    checked={selectAll || checkedRecords.includes(account.AccountID)}
+                    onClick={(event) => {
                     event.stopPropagation();
                     handleCheckboxClick(account.AccountID, event);
                   }}></input>{account.AccountName}
                 </p>
                 <p>{account.AccountSite}</p>
-                <p>{account.Email}</p> {/***EMAIL? */}
+                <p className="email">{account.Email}</p> {/***EMAIL? */}
                 <p>{account.FrontDeskPhone}</p>
               </li>
             ))}

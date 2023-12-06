@@ -1,7 +1,7 @@
 import { useEffect, useState} from "react";
 import { useNavigate } from 'react-router-dom';
 import { Button, Stack } from '@chakra-ui/react'
-import "./contacts.css"
+import "./contacts.css";
 const backendURL = 'http://localhost:3000'; 
 import PageNav from "../../navigation/PageNav/PageNav";
 import { deleteRecordFunction } from "../deleteRecord.js"
@@ -25,6 +25,7 @@ export default function Contacts() {
   const [recordsPerPage, setRecordsPerPage] = useState<string>("10");
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
   const [checkedRecords, setCheckedRecords] = useState<any[]>([]);
+  const [selectAll, setSelectAll] = useState(false); 
 
   
 
@@ -57,6 +58,7 @@ const handleCheckboxClick = (record:any, event:any) => {
   const checkbox = event.target;
   const listItem = checkbox.closest('.record');
   handleCheckboxClickFunction(record, checkbox, listItem, setIsCheckboxChecked, setCheckedRecords);
+  setSelectAll(false); 
 };
 
 //CHANGES THE AMOUNT OF RECORDS DISPLAYED
@@ -75,13 +77,18 @@ const clearSelected = () => {
   clearSelectedFunction(); 
   setIsCheckboxChecked(false);
   setCheckedRecords([]);
+  setSelectAll(false);
 };
 
 //navigates to clicked record
 const navTo = (contact:any) => {
   navigate('/clickedContact', {state:{contact}})
 }
-
+const handleSelectAll = () => {
+  setSelectAll((prev) => !prev);
+  setIsCheckboxChecked(!selectAll);
+  setCheckedRecords(selectAll ? [] : contacts.map((contact) => contact.ContactID));
+};
 
   return (
 
@@ -129,16 +136,26 @@ const navTo = (contact:any) => {
 
       <div className="mainContent">
         <ul className="record-headers">
-          <li id="first-header">Contact Name</li>
+          <li id="first-header">
+          {contacts.length != 0 ? <input
+              type="checkbox"
+              className="checkItem"
+              checked={selectAll}
+              onChange={handleSelectAll}
+            /> 
+            :<></>}
+            Contact Name</li>
           <li>Account Name</li>
           <li>Email ✉️</li>
           <li>Phone</li>
         </ul>
         <ul className="record-list">
           {contacts.map(contact => (
-            <li key={contact.ContactID} className="flex gap-3 contact record" onClick={()=>navTo(contact)}>
+            <li key={contact.ContactID} className={`flex gap-3 contact record ${checkedRecords.includes(contact.ContactID) ? 'selected' : ''}`} onClick={()=>navTo(contact)}>
               <p>
-                <input type="checkbox" className="checkItem" onClick={(event) => {
+                <input type="checkbox" className="checkItem" 
+                       checked={selectAll || checkedRecords.includes(contact.ContactID)}
+                       onClick={(event) => {
                   // Stops the onClick function in the parent LI from happening
                   event.stopPropagation();
                   handleCheckboxClick(contact.ContactID, event);
@@ -146,7 +163,7 @@ const navTo = (contact:any) => {
                 </input>
               {contact.FirstName} {contact.LastName}</p>
               <p>{contact.AccountName}</p>
-              <p>{contact.Email} </p>
+              <p className="email">{contact.Email} </p>
               <p>{contact.WorkPhone} 📞</p>
             </li>
           ))}

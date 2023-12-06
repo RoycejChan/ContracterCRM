@@ -4,7 +4,12 @@ export const clearSelectedFunction = () => {
   
     checkboxes.forEach((checkbox) => {
       const listItem = checkbox.closest('.record');
-      listItem.style.backgroundColor = '';
+
+      if (listItem) {
+        listItem.style.backgroundColor = '';
+      }
+  
+
       checkbox.checked = false;
     });
   };

@@ -1,11 +1,17 @@
 nodemail
 
 Pages
-//!add checkbox in headers to select all
 //!FILTER SEARCH
 //!SEND EMAIL
 //!Able to upload pictures?
 //!Edit record 
-
+//?CONTACTS.css not working?
 
 //!make new record save function reusable in own file
+//!input for specific location table
+make fetchdata reusable
+change createselect whhen page change
+
+
+done
+//*add checkbox in headers to select all and only renders if there is > 0 records

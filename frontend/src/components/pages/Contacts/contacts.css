@@ -28,10 +28,11 @@
     flex:1;
     padding:1rem 1rem;
 }
+#task-longer-headers {
+  gap: 8rem;
+}
 
 
-
-
-
-
-
+.email {
+  color: #0000EE;
+}
