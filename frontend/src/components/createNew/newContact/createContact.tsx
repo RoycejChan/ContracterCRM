@@ -1,9 +1,10 @@
 import  { useState } from 'react';
 import CreateNewNav from '../createNav/createNav';
-import { Input, Stack} from '@chakra-ui/react';
 import pfp from '../../../assets/otherpfp.png';
 import './newContact.css';
-
+import { Input, InputGroup, InputLeftElement, Stack } from '@chakra-ui/react';
+import { PhoneIcon , EmailIcon} from '@chakra-ui/icons'
+import { useNavigate } from 'react-router-dom';
 
 interface ContactInfo {
   firstName: string;
@@ -21,7 +22,7 @@ interface ContactInfo {
 
 
 export default function CreateContact() {
-
+    const navigate = useNavigate();
   const [contactInfo, setContactInfo] = useState<ContactInfo>({
     firstName: '',
     lastName: '',
@@ -76,13 +77,13 @@ export default function CreateContact() {
     { label: 'Last Name', key: 'lastName', required: true },
     { label: 'Account Name', key: 'accountName', required: true },
     { label: 'Email', key: 'email', required: true, type:'email' },
-    { label: 'Work Phone', key: 'workPhone', required: true, type:"number"},
-    { label: 'Mobile Phone (Optional)', key: 'mobilePhone', type:"number"},
+    { label: 'Work Phone', key: 'workPhone', required: true, type:"tel"},
+    { label: 'Mobile Phone (Optional)', key: 'mobilePhone', type:"tel"},
     { label: 'Assistant Name (Optional)', key: 'assistantName' },
     { label: 'Title', key: 'title', required: true },
     { label: 'Department', key: 'department', required: true },
     { label: 'Fax (Optional)', key: 'fax', type:"number" },
-    { label: 'Asst Phone (Optional)', key: 'asstPhone', type:"number" },
+    { label: 'Asst Phone (Optional)', key: 'asstPhone', type:"tel" },
   ];
 
   const handleInputChange = (field: string, value: string) => {
@@ -99,11 +100,15 @@ export default function CreateContact() {
   };
 
 
+  const cancel = () => {
+    navigate(-1);
+  }
+
   return (
     <>
     <div className="background">
       <form onSubmit={handleSubmit}>
-        <CreateNewNav page="Contact" onButtonClick={save} />
+        <CreateNewNav page="Contact" onButtonClick={save} onCancel={cancel} />
         
         <div className="new-container">
           <div className="new-PFP">
@@ -118,6 +123,18 @@ export default function CreateContact() {
               <div className="input-container">
               <Stack spacing={6}>
               {inputFields.slice(0, 6).map((field) => (
+    <InputGroup key={field.key} size="lg" width="40rem">
+    {(field.key === 'workPhone' || field.key === 'mobilePhone' || field.key === 'asstPhone') && (
+  <InputLeftElement pointerEvents='none'>
+  <PhoneIcon color='gray.300' />
+</InputLeftElement>
+    )}
+
+          {field.key === 'email' && (
+  <InputLeftElement pointerEvents='none'>
+  <EmailIcon color='gray.300' />
+</InputLeftElement>
+    )}
     <Input
       key={field.key}
       placeholder={field.label}
@@ -127,7 +144,9 @@ export default function CreateContact() {
       type={field.type === 'number' ? 'number' : (field.type === 'email' ? 'email' : 'text')}
       inputMode={field.type === 'number' ? 'numeric' : (field.type === 'email' ? 'email' : 'text')}
       onChange={(e) => handleInputChange(field.key, e.target.value)}
+      maxLength={field.key === 'workPhone' ? 10 : field.key === 'mobilePhone' ? 10 : field.key == 'asstPhone' ? 10 : undefined}
     />
+                    </InputGroup>
   ))}
 </Stack>
               </div>

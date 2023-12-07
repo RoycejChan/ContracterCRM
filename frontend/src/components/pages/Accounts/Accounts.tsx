@@ -150,9 +150,17 @@ const handleSelectAll = () => {
                     handleCheckboxClick(account.AccountID, event);
                   }}></input>{account.AccountName}
                 </p>
-                <p>{account.AccountSite}</p>
-                <p className="email">{account.Email}</p> {/***EMAIL? */}
-                <p>{account.FrontDeskPhone}</p>
+                <p
+                  onClick={(event) => {event.stopPropagation();}}>
+                  <a href={`${account.AccountSite}`} target="_blank"
+                  className="website">
+                  {account.AccountSite}
+                  </a>
+                  </p>
+                <p className="email"
+                    onClick={(event) => {event.stopPropagation();}}>
+                {account.Email}</p> {/***EMAIL? */}
+                <p>📞{account.FrontDeskPhone}</p>
               </li>
             ))}
           </ul>

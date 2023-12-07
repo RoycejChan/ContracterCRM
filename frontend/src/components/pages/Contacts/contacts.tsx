@@ -163,7 +163,12 @@ const handleSelectAll = () => {
                 </input>
               {contact.FirstName} {contact.LastName}</p>
               <p>{contact.AccountName}</p>
-              <p className="email">{contact.Email} </p>
+              <p className="email"
+                    onClick={(event) => {
+                    event.stopPropagation();
+                    handleCheckboxClick(contact.ContactID, event);
+                  }}
+              >{contact.Email} </p>
               <p>{contact.WorkPhone} 📞</p>
             </li>
           ))}

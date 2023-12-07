@@ -1,8 +1,8 @@
 import  { useState } from 'react';
 import CreateNewNav from '../createNav/createNav';
-import { Input, Stack} from '@chakra-ui/react';
+import { Input, Select, Stack} from '@chakra-ui/react';
 import './newTask.css';
-
+import { useNavigate } from 'react-router-dom';
 
 interface TaskInfo {
   TaskName: string;
@@ -19,7 +19,7 @@ interface TaskInfo {
 
 
 export default function CreateTask() {
-
+  const navigate = useNavigate();
   const [TaskInfo, setTaskInfo] = useState<TaskInfo>({
     TaskName: '',
     DueDate: null,
@@ -68,7 +68,7 @@ export default function CreateTask() {
   const inputFields = [
     { label: 'Task Name', key: 'TaskName', required: true },
     { label: 'Due Date', key: 'DueDate', required: true, type:'date'},
-    { label: 'Status', key: 'Status', required: true, type:'select', options:['Not Started','Deffered','In Progress', 'Completed', 'Waitng For Input'] },
+    { label: 'Status', key: 'Status', required: true, type:'select', options:['Not Started','Deffered','In Progress', 'Completed', 'Waiting For Input'] },
     { label: 'Priority', key: 'Priority', required: true, type:'select', options:['Low','Mid','High','Highest'] },
     { label: 'Service Type', key: 'Service', required: true},
     { label: 'Related To', key: 'Company', required: true },
@@ -101,7 +101,7 @@ export default function CreateTask() {
   const renderInputField = (field: any) => {
     if (field.type === 'select') {
       return (
-        <select
+        <Select
           key={field.key}
           required={field.required}
           onChange={(e) => handleInputChange(field.key as TaskInfoKey, e.target.value)}
@@ -114,7 +114,7 @@ export default function CreateTask() {
               {option}
             </option>
           ))}
-        </select>
+        </Select>
       );
     } else {
       return (
@@ -143,12 +143,15 @@ export default function CreateTask() {
     save(); 
   };
 
+  const cancel = () => {
+    navigate(-1);
+  }
 
   return (
     <>
     <div className="background">
       <form onSubmit={handleSubmit}>
-        <CreateNewNav page="Task" onButtonClick={save} />
+        <CreateNewNav page="Task" onButtonClick={save} onCancel={cancel} />
 
         <div className="new-container pt-10">
           <div className="newTask">

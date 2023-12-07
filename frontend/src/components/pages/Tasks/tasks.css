@@ -1,0 +1,36 @@
+#Inprogress {
+    color:rgb(255, 1, 158)
+}
+
+#Completed {
+    color:rgb(3, 255, 3);
+}
+
+#Deffered {
+    color:rgb(255, 174, 0);
+
+}
+
+#NotStarted {
+    color:rgb(255, 0, 0);
+}
+
+#Waiting-for-input {
+    color:rgb(0, 238, 255);
+}
+
+#Low {
+    color:green;
+}
+
+#Mid {
+    color:orange
+}
+
+#High {
+    color:orangered;
+}
+
+#Highest {
+    color:rgb(255, 0, 0);
+}

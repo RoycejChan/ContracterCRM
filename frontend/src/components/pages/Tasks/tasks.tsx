@@ -131,9 +131,10 @@ const handleSelectAll = () => {
        <div className="sidebar"> <h1>FILTER</h1></div> 
        : 
        <></> }
-       <div className="mainContent">
+       <div className="mainContent" id="mainContent-tasks">
+      <div className="record-headers-wrapper">
       <ul className="record-headers" id="task-longer-headers">
-        <li id="first-header">
+        <li id="firstRecordTask">
         {Tasks.length != 0 ? <input
               type="checkbox"
               className="checkItem"
@@ -148,10 +149,13 @@ const handleSelectAll = () => {
         <li>Related To</li>
         <li>Manager</li>
       </ul>
-      <ul className="record-list">
+      </div>
+      <div className="record-list-wrapper">
+      <ul className="record-list" id="task-longer">
         {Tasks.map(Task => (
-          <li key={Task.TaskID} className={`flex gap-3 task record ${checkedRecords.includes(Task.TaskID) ? 'selected' : ''}`} onClick={()=>navTo(Task)}>
-              <p>
+          <div className="recordlist-record">
+          <li key={Task.TaskID} id="task-longer" className={`flex gap-3 task record${checkedRecords.includes(Task.TaskID) ? 'selected' : ''}`} onClick={()=>navTo(Task)} >
+              <p id="firstRecord">
                 <input type="checkbox" className="checkItem" 
                 checked={selectAll || checkedRecords.includes(Task.TaskID)}
                 onClick={(event) => {
@@ -161,14 +165,19 @@ const handleSelectAll = () => {
                 }}>
                 </input>
               {Task.Subject}</p>
-            <p>{Task.DueDateTime}</p>
-            <p>{Task.Status}</p>
-            <p>{Task.Priority}</p>
+            <p>{new Date(Task.DueDateTime)
+                    .toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })
+                    .replace(/\//g, '-')}
+                </p>
+            <p id={Task.Status === 'In Progress' ? 'Inprogress' : Task.Status === 'Completed' ? 'Completed' : Task.Status === 'Deffered' ? 'Deffered' : Task.Status === 'Not Started' ? 'NotStarted' : Task.Status === 'Waiting For Input' ? 'Waiting-for-input' : "" }>{Task.Status}</p>
+            <p id={Task.Priority === 'Low' ? 'Low' : Task.Priority === 'Mid' ? 'Mid' : Task.Priority === 'High' ? 'High' : Task.Priority === 'Highest' ? 'Highest' :  "" }>{Task.Priority}</p>
             <p>{Task.Account}</p>
             <p>{Task.Manager}</p>
           </li>
+          </div>
         ))}
       </ul>
+      </div>
       </div>
       </div>
     </>

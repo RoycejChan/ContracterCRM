@@ -21,9 +21,6 @@
   }
 
 
-.email {
-    color: #0000EE;
-}
 
 .backBtn {
     font-size:2rem;
@@ -63,7 +60,6 @@
     display: flex;
     width:100%;
     gap: 10rem;
-    border-bottom:3px solid #eef1f4;
   }
   
   
@@ -102,3 +98,65 @@
   background-color: #f1f7ff;
 }
 
+
+//BELOW CLASSES EFFECTING TABLE WHEN CHECKED ???
+
+.record-headers-wrapper {
+  display:flex;
+  width:100%;
+  border-bottom:3px solid #eef14;
+}
+#task-longer-headers {
+  width: 93%;
+  display: flex; 
+  
+}
+
+.record-list-wrapper {
+  width: 100%;
+}
+
+
+.recordlist-record {
+  width: 100%;
+  border-bottom: 1px solid #eef1f4;
+  display: flex; 
+}
+
+#task-longer {
+  width: 100%;
+
+}
+
+#task-longer p {
+  fon-size:1rem;
+  width:5px;
+}
+
+.recordlist-record li p{
+
+}
+
+.record-list {
+  width: 100%;
+}
+.record-list li {
+  width: 100%; /* Set the width to 100% of the wrapper */
+}
+
+
+
+#task-longer {
+  gap:1rem;
+}
+
+#firstRecordTask {
+  border-left:none;
+}
+
+
+
+/* END WIERD CLASSES */
+.record:hover .website {
+  color:#338cf0;
+}
