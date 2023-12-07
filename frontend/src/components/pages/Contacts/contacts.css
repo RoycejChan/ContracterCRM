@@ -36,3 +36,7 @@
 .email {
   color: #338cf0;
 }
+
+#recordDetailInput {
+  border:0 !important;
+}

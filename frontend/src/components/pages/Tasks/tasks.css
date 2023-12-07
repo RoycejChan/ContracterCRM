@@ -1,3 +1,5 @@
+/* Colors for status  */
+
 #Inprogress {
     color:rgb(255, 1, 158)
 }
@@ -19,6 +21,8 @@
     color:rgb(0, 238, 255);
 }
 
+
+/* colors for priority  */
 #Low {
     color:green;
 }
@@ -34,3 +38,9 @@
 #Highest {
     color:rgb(255, 0, 0);
 }
+
+/* colors for duedate message */
+
+.due-today-message { color:red}
+.due-tomorrow-message { color:orange}
+.past-due-message { color: rgb(255, 0, 0)}

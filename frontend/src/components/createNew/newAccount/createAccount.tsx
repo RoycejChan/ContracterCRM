@@ -13,8 +13,8 @@ interface AccountInfo {
   AccountSite: string;
   Industry: string;
   Email:string;
-  AnnualRevenue: number;
-  FrontDeskPhone: number | null;
+  AnnualRevenue: string;
+  FrontDeskPhone: string | null;
   Fax: number | null;
   Street: string;
   City: string;
@@ -32,7 +32,7 @@ export default function CreateAccount() {
     AccountSite: '',
     Industry: '',
     Email:'',
-    AnnualRevenue: 0,
+    AnnualRevenue: '',
     FrontDeskPhone: null,
     Fax: null,
     Street: '',
@@ -60,6 +60,27 @@ export default function CreateAccount() {
 
   const backendURL = 'http://localhost:3000';
 
+  
+  const formatPhoneNumber = (value: string): string => {
+    const numericValue = value.replace(/\D/g, '');
+    const formattedPhoneNumber = numericValue.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+    return formattedPhoneNumber;
+  };
+  
+
+  function formatCompactNumber(number:any) {
+    if (number < 1000) {
+      return number;
+    } else if (number >= 1000 && number < 1_000_000) {
+      return (number / 1000).toFixed(1) + "K +";
+    } else if (number >= 1_000_000 && number < 1_000_000_000) {
+      return (number / 1_000_000).toFixed(1) + "M +";
+    } else if (number >= 1_000_000_000 && number < 1_000_000_000_000) {
+      return (number / 1_000_000_000).toFixed(1) + "B +";
+    } else if (number >= 1_000_000_000_000 && number < 1_000_000_000_000_000) {
+      return (number / 1_000_000_000_000).toFixed(1) + "T +";
+    }
+  }
   const save = async () => {
     try {
       // Validate required fields
@@ -80,11 +101,16 @@ export default function CreateAccount() {
         return;
       }
 
-      const updatedAccountInfo = {
-        ...AccountInfo,
-        AccountSite: `https://${AccountInfo.AccountSite}.com`,
-      };
-  
+
+ // Format phone number
+    const formattedPhoneNumber = formatPhoneNumber(AccountInfo.FrontDeskPhone || '');
+    // const formattedRevenue = parseFloat(AccountInfo.AnnualRevenue).toLocaleString(); // Format with commas
+    const updatedAccountInfo = {
+      ...AccountInfo,
+      FrontDeskPhone: formattedPhoneNumber,
+      AccountSite: `https://${AccountInfo.AccountSite}.com`,
+      AnnualRevenue: formatCompactNumber(AccountInfo.AnnualRevenue),
+    };
       const response = await fetch(`${backendURL}/Account/newAccount`, {
         method: 'POST',
         headers: {
@@ -92,7 +118,6 @@ export default function CreateAccount() {
         },
         body: JSON.stringify({ newAccount: updatedAccountInfo }),
       });
-  
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -104,23 +129,10 @@ export default function CreateAccount() {
   };
   
 
-// I also dont know
-  const formatPhoneNumber = (value: string): string => {
-    const numericValue = value.replace(/\D/g, '');
-  
-    // Apply the desired phone number format
-    const formattedPhoneNumber = numericValue.replace(/(\d{3})(\d{3})(\d{3})/, '$1-$2-$3');
-  
-    return formattedPhoneNumber;
-  };
-
 
   const handleInputChange = (field: AccountInfoKey, value: string) => {
     let sanitizedValue = value.trim() === '' ? null : value;
-    if (field === 'FrontDeskPhone' && sanitizedValue) {
-      // Format the phone number
-      sanitizedValue = formatPhoneNumber(sanitizedValue);
-    }
+
     setAccountInfo((prevInfo) => ({
       ...prevInfo,
       [field]: sanitizedValue,
@@ -188,7 +200,8 @@ const cancel = () => {
         inputMode={field.type === 'number' ? 'numeric' : field.type === 'email' ? 'email' : 'text'}
         focusBorderColor="crimson"
         onChange={(e) => handleInputChange(field.key as AccountInfoKey, e.target.value)}
-        maxLength={field.key === 'FrontDeskPhone' ? 10 : undefined}
+        maxLength={field.key === 'FrontDeskPhone' ? 10 : field.key === 'AnnualRevenue' ? 15 : undefined}
+        pattern={field.key === 'FrontDeskPhone' ? '[0-9]{3}-[0-9]{2}-[0-9]{4}' : undefined}
         />
       {field.key === 'AccountSite' && (
     <InputRightAddon children='.com' />

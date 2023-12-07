@@ -30,7 +30,6 @@ export default function Tasks() {
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
   const [checkedRecords, setCheckedRecords] = useState<any[]>([]);
   const [selectAll, setSelectAll] = useState(false); 
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -41,12 +40,12 @@ export default function Tasks() {
             },
           });
           const [data] = await response.json();
+
           setTasks(data);
       } catch (error) {
         console.error('Error fetching Tasks:', error);
       }
     };
-
     fetchData();
   }, [recordsPerPage]);
 
@@ -84,8 +83,8 @@ const clearSelected = () => {
 };
 
 //navigates to clicked record
-const navTo = (contact:any) => {
-  navigate('/clickedContact', {state:{contact}})
+const navTo = (Task:any) => {
+  navigate('/clickedTask', {state:{Task}})
 }
 
 const handleSelectAll = () => {
@@ -96,7 +95,36 @@ const handleSelectAll = () => {
 
 
 
+const isDueTomorrow = (dueDateTime:any) => {
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const dueDate = new Date(dueDateTime);
+  
+  return (
+    dueDate.getDate() === tomorrow.getDate() &&
+    dueDate.getMonth() === tomorrow.getMonth() &&
+    dueDate.getFullYear() === tomorrow.getFullYear()
+  );
+};
 
+const isDueToday = (dueDateTime:any) => {
+  const today = new Date();
+  const dueDate = new Date(dueDateTime);
+  
+  return (
+    dueDate.getDate() === today.getDate() &&
+    dueDate.getMonth() === today.getMonth() &&
+    dueDate.getFullYear() === today.getFullYear() &&
+    dueDate <= today
+  );
+};
+
+const isPastDue = (dueDateTime:any) => {
+  const today = new Date();
+  const dueDate = new Date(dueDateTime);
+  
+  return dueDate.getDate() < today.getDate(); // Only returns true if it's in the past
+};
 
   return (
     <>
@@ -168,6 +196,20 @@ const handleSelectAll = () => {
             <p>{new Date(Task.DueDateTime)
                     .toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })
                     .replace(/\//g, '-')}
+
+              {isDueTomorrow(Task.DueDateTime) && (
+                  <span className="due-tomorrow-message"> (DUE TOMMOROW)</span>
+                )}
+
+                {isDueToday(Task.DueDateTime) && (
+                  <span className="due-today-message"> (DUE TODAY)</span>
+                )}
+
+                {isPastDue(Task.DueDateTime) && (
+                  <span className="past-due-message"> (PAST DUE)</span>
+                )}
+                {/* If new date tmr =, due tmr, or today, or past due ? */}
+                
                 </p>
             <p id={Task.Status === 'In Progress' ? 'Inprogress' : Task.Status === 'Completed' ? 'Completed' : Task.Status === 'Deffered' ? 'Deffered' : Task.Status === 'Not Started' ? 'NotStarted' : Task.Status === 'Waiting For Input' ? 'Waiting-for-input' : "" }>{Task.Status}</p>
             <p id={Task.Priority === 'Low' ? 'Low' : Task.Priority === 'Mid' ? 'Mid' : Task.Priority === 'High' ? 'High' : Task.Priority === 'Highest' ? 'Highest' :  "" }>{Task.Priority}</p>

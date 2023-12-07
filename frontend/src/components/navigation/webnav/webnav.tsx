@@ -16,7 +16,7 @@ import CreateAccount from '../../createNew/newAccount/createAccount';
 import Tasks from '../../pages/Tasks/tasks';
 import Contact from '../../pages/Contacts/clickedContact';
 import Account from '../../pages/Accounts/clickedAccount';
-
+import Task from '../../pages/Tasks/clickedTask';
 
 export default function Webnav() {
   const navigate = useNavigate();
@@ -70,7 +70,7 @@ export default function Webnav() {
         <Route index path="/createContact" element={<CreateContact />} />
         <Route index path="/clickedContact" element={<Contact />} />
         <Route index path="/clickedAccount" element={<Account />} />
-
+        <Route index path="/clickedTask" element={<Task />} />
         <Route index path="/createAccount" element={<CreateAccount/> } />
         <Route index path="/createTask" element={<CreateTask/> } />
 

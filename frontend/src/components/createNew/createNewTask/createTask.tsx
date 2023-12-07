@@ -38,7 +38,6 @@ export default function CreateTask() {
   const save = async () => {
     try {
       const requiredFields = inputFields.filter((field) => field.required);
-      console.log(TaskInfo);
       for (const field of requiredFields) {
         if (!TaskInfo[field.key as TaskInfoKey]) {
           console.error(`${field.label} is required.`);
@@ -54,12 +53,16 @@ export default function CreateTask() {
         },
         body: JSON.stringify({ newTask: TaskInfo }),
       });
-  
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
+      } else {
+        //!doesnt work idk why
+        const result = await response.json();
+        console.log('Save successful!', result);
+        console.log('Response status:', response.status);
+        console.log('Response text:', await response.text());
       }
-       await response.json();
-    } catch (error) {
+      } catch (error) {
       console.error('Error fetching user data:', error);
     }
   };
@@ -72,9 +75,9 @@ export default function CreateTask() {
     { label: 'Priority', key: 'Priority', required: true, type:'select', options:['Low','Mid','High','Highest'] },
     { label: 'Service Type', key: 'Service', required: true},
     { label: 'Related To', key: 'Company', required: true },
-    { label: 'Location', key: 'Location', required: true },
     { label: 'TaskOwner', key: 'Manager', required: true },
     { label: 'Description', key: 'Description'},
+    { label: 'Location', key: 'Location', required: true },
 
   ];
 

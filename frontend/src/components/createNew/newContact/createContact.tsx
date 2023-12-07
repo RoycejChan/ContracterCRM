@@ -11,8 +11,8 @@ interface ContactInfo {
   lastName: string;
   accountName: string;
   email: string;
-  workPhone: number | null;
-  mobilePhone: number | null;
+  workPhone: string | null;
+  mobilePhone: string | null;
   assistantName: string;
   title: string;
   department: string;
@@ -39,6 +39,12 @@ export default function CreateContact() {
 
   const backendURL = 'http://localhost:3000';
 
+  const formatPhoneNumber = (value: string): string => {
+    const numericValue = value.replace(/\D/g, '');
+    const formattedPhoneNumber = numericValue.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+    return formattedPhoneNumber;
+  };
+
   const save = async () => {
     try {
       // Validate required fields
@@ -50,21 +56,41 @@ export default function CreateContact() {
           return;
         }
       }
+      
+      //!IDk Validate email format, 
+      const emailField = inputFields.find((field) => field.key === 'email');
+      const email = contactInfo.email;
+      if (emailField && (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))) {
+        console.error('Invalid email format.');
+        return;
+      }
+  
+    //!IDk Format phone numbers idk
+    const formattedWorkPhone = formatPhoneNumber(contactInfo.workPhone || '');
+    const formattedMobilePhone = formatPhoneNumber(contactInfo.mobilePhone || '');
+    const formattedAsstPhone = formatPhoneNumber(contactInfo.asstPhone || '');
+
+    const updatedContactInfo = {
+      ...contactInfo,
+      workPhone: formattedWorkPhone,
+      mobilePhone: formattedMobilePhone,
+      asstPhone: formattedAsstPhone,
+    };
   
       const response = await fetch(`${backendURL}/Contact/newContact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ newContact: contactInfo }),
+        body: JSON.stringify({ newContact: updatedContactInfo }),
       });
-      
+  
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       } else {
-      console.log('hello');
-      const data = await response.json();
-      console.log('Server response:', data);
+        console.log('hello');
+        const data = await response.json();
+        console.log('Server response:', data);
       }
     } catch (error) {
       console.error('Error fetching user data:', error);
@@ -145,6 +171,7 @@ export default function CreateContact() {
       inputMode={field.type === 'number' ? 'numeric' : (field.type === 'email' ? 'email' : 'text')}
       onChange={(e) => handleInputChange(field.key, e.target.value)}
       maxLength={field.key === 'workPhone' ? 10 : field.key === 'mobilePhone' ? 10 : field.key == 'asstPhone' ? 10 : undefined}
+      pattern={field.key === 'workPhone' ? '[0-9]{3}-[0-9]{2}-[0-9]{4}' : undefined}
     />
                     </InputGroup>
   ))}

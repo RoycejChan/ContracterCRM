@@ -5,22 +5,22 @@ const backendURL = 'http://localhost:3000';
 
 const contactFields = [
   { label: 'AccountName', key: 'AccountName', type: 'text' },
-  { label: 'AccountSite', key: 'AccountSite', type: 'text' },
+  { label: 'Website', key: 'AccountSite', type: 'text' },
   { label: 'Industry', key: 'Industry', type: 'text' },
-  { label: 'Email', key: 'Email', type: 'text' },
+  { label: 'Email', key: 'Email', type: 'text', className:'email' },
 ];
 
 const detailsSections = [
   [
     { label: 'Account Name', key: 'AccountName', type: 'text' },
-    { label: 'Email', key: 'Email', type: 'text' },
+    { label: 'Email', key: 'Email', type: 'text', className:'email' },
     { label: 'Account Website', key: 'AccountSite', type: 'text' },
     { label: 'Fax', key: 'Fax', type: 'text' },
   ],
   [
     { label: 'Industry', key: 'Industry', type: 'text' },
     { label: 'Annual Revenue', key: 'AnnualRevenue', type: 'text' },
-    { label: 'FrontDesk Phone', key: 'FrontDeskPhone', type: 'text' },
+    { label: 'Front Desk Phone', key: 'FrontDeskPhone', type: 'text' },
   ],
 
 ];
@@ -70,13 +70,17 @@ export default function Account() {
   };
 
 
-  const renderField = (label:string, key:string, type:any) => (
+ const renderField = (label:string, key:string, type:any, inputClass?:any) => (
+
     <li className='overviewDetail' key={key}>
       {label}
-      <span className={`${type} detail`}>
+      <span className={`detail`}>
         <input
           type={type}
           value={account[key] || '—'}
+          onChange={() => {}}
+          className={`${inputClass}`}
+          id="recordDetailInput"
         />
         <span className='detailIcon'>✏️</span>
       </span>
@@ -105,8 +109,9 @@ export default function Account() {
       </div>
 
       <div className='overviewDetails'>
+        <h1 className='font-bold pb-4'>Account Information</h1>
         <ul className='flex flex-col gap-6 overviewDetails-header'>
-          {contactFields.map((field) => renderField(field.label, field.key, field.type))}
+          {contactFields.map((field) => renderField(field.label, field.key, field.type, field.className))}
         </ul>
       </div>
 
@@ -123,7 +128,7 @@ export default function Account() {
           <div className="details-list">
           {detailsSections.map((section, index) => (
             <ul className='allDetails-col' key={index}>
-              {section.map((field) => renderField(field.label, field.key, field.type))}
+              {section.map((field) => renderField(field.label, field.key, field.type, field.className))}
             </ul>
           ))}
           </div>
