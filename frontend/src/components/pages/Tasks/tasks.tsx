@@ -29,11 +29,13 @@ export default function Tasks() {
   const [recordsPerPage, setRecordsPerPage] = useState<string>("10");
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
   const [checkedRecords, setCheckedRecords] = useState<any[]>([]);
-  const [selectAll, setSelectAll] = useState(false); 
+  const [selectAll, setSelectAll] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+ 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${backendURL}/Task/Tasks?limit=${recordsPerPage}`, {
+        const response = await fetch(`${backendURL}/Task/Tasks?limit=${recordsPerPage}&page=${currentPage}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -47,7 +49,7 @@ export default function Tasks() {
       }
     };
     fetchData();
-  }, [recordsPerPage]);
+  }, [recordsPerPage, currentPage]);
 
 //button to toggle filter sidebar
 const toggleSidebar = () => {setIsSidebarOpen((prev) => !prev);};
@@ -126,6 +128,24 @@ const isPastDue = (dueDateTime:any) => {
   return dueDate.getDate() < today.getDate(); // Only returns true if it's in the past
 };
 
+const nextPage = () => {
+
+  console.log("next");
+  console.log(currentPage)
+  setCurrentPage(currentPage + 1);
+}
+
+const prevPage = () => {
+  console.log("prev");
+  console.log(currentPage)
+
+  if (currentPage == 1) {
+    return;
+  } else {
+  setCurrentPage(currentPage -1);
+  }}
+
+
   return (
     <>
           <div className="pageNavTop">
@@ -152,7 +172,9 @@ const isPastDue = (dueDateTime:any) => {
 
   </div>
 
-  <PageNav amount={Tasks.length} isCheckboxChecked={isCheckboxChecked} onRecordsPerPageChange={handleRecordsPerPageChange} recordAmountSelected={checkedRecords.length} clearSelection={clearSelected}/>
+  <PageNav amount={Tasks.length} isCheckboxChecked={isCheckboxChecked} onRecordsPerPageChange={handleRecordsPerPageChange} recordAmountSelected={checkedRecords.length} clearSelection={clearSelected}
+          nextPageClick={nextPage} prevPageClick={prevPage}
+          />
 
       <div className="tasks records">
       { isSidebarOpen ? 

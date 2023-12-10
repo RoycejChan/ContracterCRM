@@ -7,7 +7,7 @@ import PageNav from "../../navigation/PageNav/PageNav";
 import { deleteRecordFunction } from "../deleteRecord.js"
 import { clearSelectedFunction } from "../clearSelection.js";
 import { handleCheckboxClickFunction } from "../handleCheckboxClick.js"
-
+import { Select } from "@chakra-ui/react";
 interface Contact {
   ContactID: number;
   FirstName: string;
@@ -26,13 +26,15 @@ export default function Contacts() {
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
   const [checkedRecords, setCheckedRecords] = useState<any[]>([]);
   const [selectAll, setSelectAll] = useState(false); 
+  const [currentPage, setCurrentPage] = useState(1);
 
-  
+  const[column, setColumn] = useState('');
+  const[rank, setRank] = useState('');
 
 useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${backendURL}/Contact/Contacts?limit=${recordsPerPage}`, {
+        const response = await fetch(`${backendURL}/Contact/Contacts?limit=${recordsPerPage}&page=${currentPage}&column=${column}&rank=${rank}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -45,7 +47,7 @@ useEffect(() => {
       }
     };
     fetchData();
-  }, [recordsPerPage]);
+  }, [recordsPerPage, currentPage, rank]);
 
 //button to toggle filter sidebar
 const toggleSidebar = () => {setIsSidebarOpen((prev) => !prev);};
@@ -90,6 +92,32 @@ const handleSelectAll = () => {
   setCheckedRecords(selectAll ? [] : contacts.map((contact) => contact.ContactID));
 };
 
+const nextPage = () => {
+
+  console.log("next");
+  console.log(currentPage)
+  setCurrentPage(currentPage + 1);
+}
+
+const prevPage = () => {
+  console.log("prev");
+  console.log(currentPage)
+
+  if (currentPage == 1) {
+    return;
+  } else {
+  setCurrentPage(currentPage -1);
+  }}
+
+
+const rankFilter = (column:string, rankBy:string) => {
+  setColumn(column);
+  setRank(rankBy);
+  console.log(column);
+  console.log(rank);
+}
+
+
   return (
 
     <>
@@ -125,7 +153,8 @@ const handleSelectAll = () => {
       </div>
 
 
-    <PageNav amount={contacts.length} isCheckboxChecked={isCheckboxChecked} onRecordsPerPageChange={handleRecordsPerPageChange} recordAmountSelected={checkedRecords.length} clearSelection={clearSelected}/>
+    <PageNav amount={contacts.length} isCheckboxChecked={isCheckboxChecked} onRecordsPerPageChange={handleRecordsPerPageChange} recordAmountSelected={checkedRecords.length} clearSelection={clearSelected}
+    nextPageClick={nextPage} prevPageClick={prevPage}/>
 
 
       <div className="contacts records">
@@ -145,7 +174,13 @@ const handleSelectAll = () => {
             /> 
             :<></>}
             Contact Name</li>
-          <li>Account Name</li>
+          <li className="flex">
+            Account Name
+            <Select onChange={(e)=> rankFilter('AccountName',e.target.value )}>
+              <option value="asc">asc</option>
+              <option value="desc">desc</option>
+            </Select> 
+          </li>
           <li>Email ✉️</li>
           <li>Phone</li>
         </ul>

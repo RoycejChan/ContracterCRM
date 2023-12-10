@@ -40,3 +40,14 @@
 #recordDetailInput {
   border:0 !important;
 }
+
+.form-control-container {
+}
+
+.requiredLabel {
+  margin-left:-.75rem;
+}
+
+.bruh {
+  bordeR:1px solid red;
+}

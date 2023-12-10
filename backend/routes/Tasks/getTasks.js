@@ -5,9 +5,13 @@ const connection = require('../../db');
 router.get('/', async (req, res) => {
   try {
     let limit = req.query.limit || 10; // Use a default limit of 10
-    limit = parseInt(limit, 10); 
+    let page = req.query.page || 1;   // Use a default page of 1
+    page = parseInt(page, 10);
 
-    const query = `SELECT * FROM tasks LIMIT ${limit}`; 
+    limit = parseInt(limit, 10); 
+    const offset = (page - 1) * limit;
+
+    const query = `SELECT * FROM tasks LIMIT ${limit} OFFSET ${offset}`; 
     const tasks = await connection.query(query);
     res.json(tasks);
 

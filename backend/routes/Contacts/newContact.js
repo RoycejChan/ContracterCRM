@@ -44,7 +44,7 @@ router.post('/', (req, res) => {
       console.error('Error executing query:', error);
       res.status(500).json({ error: 'Internal Server Error' });
     } else {
-      res.json(results);
+      res.json("hello");
     }
   });
 });

@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import CreateNewNav from '../createNav/createNav';
 import { Input, InputGroup, InputLeftElement, Stack, InputLeftAddon, InputRightAddon } from '@chakra-ui/react';
 import { PhoneIcon , EmailIcon, } from '@chakra-ui/icons'
-
+import { FormControl } from '@chakra-ui/react';
+import { FormLabel } from '@chakra-ui/react';
 import accountImage from '../../../assets/otherpfp.png';
 import './newAccount.css';
 
@@ -81,14 +82,15 @@ export default function CreateAccount() {
       return (number / 1_000_000_000_000).toFixed(1) + "T +";
     }
   }
+
   const save = async () => {
     try {
       // Validate required fields
       const requiredFields = inputFields.filter((field) => field.required);
-  
+
       for (const field of requiredFields) {
         if (!AccountInfo[field.key as AccountInfoKey]) {
-          console.error(`${field.label} is required.`);
+          alert(`${field.label} is required.`);
           return;
         }
       }
@@ -167,6 +169,9 @@ const cancel = () => {
               <div className="input-container">
               <Stack spacing={6}>
   {inputFields.slice(0, 6).map((field) => (
+    <div key={field.key} className={`form-control-container ${field.required ? 'requiredLabel' : ''}`}>
+    <FormControl isRequired={field.required} className='flex'>
+    <FormLabel></FormLabel>
     <InputGroup key={field.key} size="lg" width="40rem">
       {field.key === 'AnnualRevenue' && (
         <InputLeftElement
@@ -202,17 +207,23 @@ const cancel = () => {
         onChange={(e) => handleInputChange(field.key as AccountInfoKey, e.target.value)}
         maxLength={field.key === 'FrontDeskPhone' ? 10 : field.key === 'AnnualRevenue' ? 15 : undefined}
         pattern={field.key === 'FrontDeskPhone' ? '[0-9]{3}-[0-9]{2}-[0-9]{4}' : undefined}
+
         />
       {field.key === 'AccountSite' && (
     <InputRightAddon children='.com' />
       )}
     </InputGroup>
+    </FormControl>
+    </div>
   ))}
 </Stack>
               </div>
               <div className="input-container">
     <Stack spacing={6}>
               {inputFields.slice(6).map((field) => (
+                <div key={field.key} className={`form-control-container ${field.required ? 'requiredLabel' : ''}`}>
+                <FormControl isRequired={field.required} className='flex'>
+                <FormLabel></FormLabel>
     <Input
       key={field.key}
       placeholder={field.label}
@@ -223,6 +234,8 @@ const cancel = () => {
       inputMode={field.type === 'number' ? 'numeric' : (field.type === 'email' ? 'email' : 'text')}
       onChange={(e) => handleInputChange(field.key as AccountInfoKey, e.target.value)}
     />
+    </FormControl>
+    </div>
   ))}
 </Stack>
               </div>

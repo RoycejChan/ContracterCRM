@@ -5,7 +5,8 @@ import './newContact.css';
 import { Input, InputGroup, InputLeftElement, Stack } from '@chakra-ui/react';
 import { PhoneIcon , EmailIcon} from '@chakra-ui/icons'
 import { useNavigate } from 'react-router-dom';
-
+import { FormControl } from '@chakra-ui/react';
+import { FormLabel } from '@chakra-ui/react';
 interface ContactInfo {
   firstName: string;
   lastName: string;
@@ -52,7 +53,7 @@ export default function CreateContact() {
   
       for (const field of requiredFields) {
         if (!contactInfo[field.key]) {
-          console.error(`${field.label} is required.`);
+          alert(`${field.label} is required.`);
           return;
         }
       }
@@ -76,27 +77,23 @@ export default function CreateContact() {
       mobilePhone: formattedMobilePhone,
       asstPhone: formattedAsstPhone,
     };
-  
+    console.log('Before fetch');
       const response = await fetch(`${backendURL}/Contact/newContact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ newContact: updatedContactInfo }),
-      });
+        body: JSON.stringify({ newContact: updatedContactInfo })
+      })
+        ///wont log dont know why
+      console.log("After fetch"); 
   
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      } else {
-        console.log('hello');
-        const data = await response.json();
-        console.log('Server response:', data);
-      }
-    } catch (error) {
+
+        } catch (error) {
       console.error('Error fetching user data:', error);
     }
   };
-  
+
 
   const inputFields = [
     { label: 'First Name', key: 'firstName', required: true },
@@ -149,6 +146,10 @@ export default function CreateContact() {
               <div className="input-container">
               <Stack spacing={6}>
               {inputFields.slice(0, 6).map((field) => (
+
+<div key={field.key} className={`form-control-container ${field.required ? 'requiredLabel' : ''}`}>
+                    <FormControl isRequired={field.required} className='flex'>
+                    <FormLabel></FormLabel>
     <InputGroup key={field.key} size="lg" width="40rem">
     {(field.key === 'workPhone' || field.key === 'mobilePhone' || field.key === 'asstPhone') && (
   <InputLeftElement pointerEvents='none'>
@@ -161,6 +162,7 @@ export default function CreateContact() {
   <EmailIcon color='gray.300' />
 </InputLeftElement>
     )}
+
     <Input
       key={field.key}
       placeholder={field.label}
@@ -174,12 +176,19 @@ export default function CreateContact() {
       pattern={field.key === 'workPhone' ? '[0-9]{3}-[0-9]{2}-[0-9]{4}' : undefined}
     />
                     </InputGroup>
+                    </FormControl>
+                    </div>
+
+
   ))}
 </Stack>
               </div>
               <div className="input-container">
               <Stack spacing={6}>
               {inputFields.slice(6).map((field) => (
+                              <div key={field.key} className={`form-control-container ${field.required ? 'requiredLabel' : ''}`}>
+                <FormControl isRequired={field.required} className='flex'>
+                  <FormLabel id='formlabel'></FormLabel>
     <Input
       key={field.key}
       placeholder={field.label}
@@ -190,6 +199,8 @@ export default function CreateContact() {
       inputMode={field.type === 'number' ? 'numeric' : (field.type === 'email' ? 'email' : 'text')}
       onChange={(e) => handleInputChange(field.key, e.target.value)}
     />
+    </FormControl>
+    </div>
   ))}
 </Stack>
               </div>

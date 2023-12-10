@@ -25,12 +25,12 @@ export default function Accounts() {
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
   const [checkedRecords, setCheckedRecords] = useState<any[]>([]);
   const [selectAll, setSelectAll] = useState(false); 
-
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${backendURL}/Account/accounts?limit=${recordsPerPage}`, {
+        const response = await fetch(`${backendURL}/Account/accounts?limit=${recordsPerPage}&page=${currentPage}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -44,7 +44,7 @@ export default function Accounts() {
     };
 
     fetchData();
-  }, [recordsPerPage]);
+  }, [recordsPerPage, currentPage]);
 
 //button to toggle filter sidebar
 const toggleSidebar = () => {setIsSidebarOpen((prev) => !prev);};
@@ -89,6 +89,23 @@ const handleSelectAll = () => {
   setCheckedRecords(selectAll ? [] : accounts.map((account) => account.AccountID));
 };
 
+const nextPage = () => {
+
+  console.log("next");
+  console.log(currentPage)
+  setCurrentPage(currentPage + 1);
+}
+
+const prevPage = () => {
+  console.log("prev");
+  console.log(currentPage)
+
+  if (currentPage == 1) {
+    return;
+  } else {
+  setCurrentPage(currentPage -1);
+  }}
+  
   return (
     <>
       <div className="pageNavTop">
@@ -119,7 +136,11 @@ const handleSelectAll = () => {
         )}
       </div>
 
-      <PageNav amount={accounts.length} isCheckboxChecked={isCheckboxChecked} onRecordsPerPageChange={handleRecordsPerPageChange} recordAmountSelected={checkedRecords.length} clearSelection={clearSelected} />
+      <PageNav 
+        amount={accounts.length} isCheckboxChecked={isCheckboxChecked} onRecordsPerPageChange={handleRecordsPerPageChange} 
+        recordAmountSelected={checkedRecords.length} clearSelection={clearSelected} 
+        nextPageClick={nextPage} prevPageClick={prevPage}
+        />
 
       <div className="contacts records">
         {isSidebarOpen ? <div className="sidebar"> <h1>Filter</h1></div> : <></>}
