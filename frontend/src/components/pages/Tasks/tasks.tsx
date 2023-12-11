@@ -7,7 +7,8 @@ import PageNav from "../../navigation/PageNav/PageNav";
 import { deleteRecordFunction } from "../deleteRecord.js"
 import { clearSelectedFunction } from "../clearSelection.js";
 import { handleCheckboxClickFunction } from "../handleCheckboxClick.js"
-
+import { Select } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 interface Task {
   TaskID:number;
   Subject:string;
@@ -31,11 +32,14 @@ export default function Tasks() {
   const [checkedRecords, setCheckedRecords] = useState<any[]>([]);
   const [selectAll, setSelectAll] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+
+  const[column, setColumn] = useState('');
+  const[rank, setRank] = useState('');
  
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${backendURL}/Task/Tasks?limit=${recordsPerPage}&page=${currentPage}`, {
+        const response = await fetch(`${backendURL}/Task/Tasks?limit=${recordsPerPage}&page=${currentPage}&column=${column}&rank=${rank}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -49,7 +53,7 @@ export default function Tasks() {
       }
     };
     fetchData();
-  }, [recordsPerPage, currentPage]);
+  }, [recordsPerPage, currentPage, rank]);
 
 //button to toggle filter sidebar
 const toggleSidebar = () => {setIsSidebarOpen((prev) => !prev);};
@@ -146,6 +150,14 @@ const prevPage = () => {
   }}
 
 
+  const rankFilter = (column:string, rankBy:string) => {
+    setColumn(column);
+    setRank(rankBy);
+    console.log(column);
+    console.log(rank);
+  }
+
+
   return (
     <>
           <div className="pageNavTop">
@@ -184,7 +196,7 @@ const prevPage = () => {
        <div className="mainContent" id="mainContent-tasks">
       <div className="record-headers-wrapper">
       <ul className="record-headers" id="task-longer-headers">
-        <li id="firstRecordTask">
+        <li id="firstRecordTask" className="flex items-center">
         {Tasks.length != 0 ? <input
               type="checkbox"
               className="checkItem"
@@ -192,12 +204,57 @@ const prevPage = () => {
               onChange={handleSelectAll}
             /> 
             :<></>}
-            Subject</li>
-        <li>Due Date</li>
-        <li>Status</li>
-        <li>Priority</li>
-        <li>Related To</li>
-        <li>Manager</li>
+            Subject
+            <Box w="100px" className="ml-2">
+            <Select onChange={(e)=> rankFilter('Subject',e.target.value )}>
+            <option value="" disabled selected hidden>☰</option>
+              <option value="asc">asc</option>
+              <option value="desc">desc</option>
+            </Select> 
+            </Box>
+            </li>
+        <li className="flex items-center">
+          Due Date
+          <Box w="100px" className="ml-2">
+            <Select onChange={(e)=> rankFilter('DueDateTime ',e.target.value )}>
+            <option value="" disabled selected hidden>☰</option>
+              <option value="asc">asc</option>
+              <option value="desc">desc</option>
+            </Select> 
+            </Box>
+          </li>
+        <li className="flex items-center">Status</li>
+        <li className="flex items-center">
+          Priority
+          <Select onChange={() => rankFilter((e)=>'Priority', e.target.value)}>
+  <option value="" disabled selected hidden>☰</option>
+  <option value="Low">Low</option>
+  <option value="Mid">Mid</option>
+  <option value="High">High</option>
+  <option value="Highest">Highest</option>
+</Select>
+</li>
+        <li className="flex items-center">
+          Related To
+          <Box w="100px" className="ml-2">
+            <Select onChange={(e)=> rankFilter('Account',e.target.value )}>
+            <option value="" disabled selected hidden>☰</option>
+              <option value="asc">asc</option>
+              <option value="desc">desc</option>
+            </Select> 
+            </Box>
+
+        </li>
+        <li className="flex items-center">
+          Manager
+          <Box w="100px" className="ml-2">
+            <Select onChange={(e)=> rankFilter('Manager',e.target.value )}>
+            <option value="" disabled selected hidden>☰</option>
+              <option value="asc">asc</option>
+              <option value="desc">desc</option>
+            </Select> 
+            </Box>
+          </li>
       </ul>
       </div>
       <div className="record-list-wrapper">

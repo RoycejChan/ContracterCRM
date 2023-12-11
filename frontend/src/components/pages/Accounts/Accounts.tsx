@@ -8,6 +8,8 @@ const backendURL = 'http://localhost:3000';
 import { deleteRecordFunction } from "../deleteRecord.js"
 import { clearSelectedFunction } from "../clearSelection.js";
 import { handleCheckboxClickFunction } from "../handleCheckboxClick.js"
+import { Select } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 
 interface Account {
   AccountID: number;
@@ -27,10 +29,14 @@ export default function Accounts() {
   const [selectAll, setSelectAll] = useState(false); 
   const [currentPage, setCurrentPage] = useState(1);
 
+  const[column, setColumn] = useState('');
+  const[rank, setRank] = useState('');
+
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${backendURL}/Account/accounts?limit=${recordsPerPage}&page=${currentPage}`, {
+        const response = await fetch(`${backendURL}/Account/accounts?limit=${recordsPerPage}&page=${currentPage}&column=${column}&rank=${rank}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -44,7 +50,7 @@ export default function Accounts() {
     };
 
     fetchData();
-  }, [recordsPerPage, currentPage]);
+  }, [recordsPerPage, currentPage, rank]);
 
 //button to toggle filter sidebar
 const toggleSidebar = () => {setIsSidebarOpen((prev) => !prev);};
@@ -105,6 +111,13 @@ const prevPage = () => {
   } else {
   setCurrentPage(currentPage -1);
   }}
+
+  const rankFilter = (column:string, rankBy:string) => {
+    setColumn(column);
+    setRank(rankBy);
+    console.log(column);
+    console.log(rank);
+  }
   
   return (
     <>
@@ -147,7 +160,7 @@ const prevPage = () => {
 
         <div className="mainContent">
           <ul className="record-headers">
-            <li id="first-header">
+            <li id="first-header" className="flex items-center">
             {accounts.length != 0 ? <input
               type="checkbox"
               className="checkItem"
@@ -155,10 +168,30 @@ const prevPage = () => {
               onChange={handleSelectAll}
             /> 
             :<></>}
-              Account Name</li>
-            <li>Website</li>
-            <li>Email</li>
-            <li>Phone</li>
+              Account Name
+              <Box w="100px" className="ml-2">
+            <Select onChange={(e)=> rankFilter('AccountName',e.target.value )}>
+            <option value="" disabled selected hidden>☰</option>
+              <option value="asc">asc</option>
+              <option value="desc">desc</option>
+            </Select> 
+            </Box>
+              </li>
+            <li className="flex items-center">
+              Website</li>
+            <li className="flex items-center">            
+              Email ✉️
+              <Box w="100px" className="ml-2">
+            <Select onChange={(e)=> rankFilter('Email',e.target.value )}>
+            <option value="" disabled selected hidden>☰</option>
+              <option value="asc">asc</option>
+              <option value="desc">desc</option>
+            </Select> 
+            </Box>
+            </li>
+            <li className="flex items-center">
+            Phone Number
+            </li>
           </ul>
           <ul className="record-list">
             {accounts.map((account) => (
