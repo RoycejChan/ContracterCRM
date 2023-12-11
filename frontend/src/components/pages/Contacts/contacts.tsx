@@ -8,6 +8,7 @@ import { deleteRecordFunction } from "../deleteRecord.js"
 import { clearSelectedFunction } from "../clearSelection.js";
 import { handleCheckboxClickFunction } from "../handleCheckboxClick.js"
 import { Select } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 interface Contact {
   ContactID: number;
   FirstName: string;
@@ -165,7 +166,7 @@ const rankFilter = (column:string, rankBy:string) => {
 
       <div className="mainContent">
         <ul className="record-headers">
-          <li id="first-header">
+          <li id="first-header" className="flex items-center">
           {contacts.length != 0 ? <input
               type="checkbox"
               className="checkItem"
@@ -173,16 +174,36 @@ const rankFilter = (column:string, rankBy:string) => {
               onChange={handleSelectAll}
             /> 
             :<></>}
-            Contact Name</li>
-          <li className="flex">
-            Account Name
-            <Select onChange={(e)=> rankFilter('AccountName',e.target.value )}>
+            Contact Name
+            <Box w="100px" className="ml-2">
+            <Select onChange={(e)=> rankFilter('LastName',e.target.value )}>
+            <option value="" disabled selected hidden>☰</option>
               <option value="asc">asc</option>
               <option value="desc">desc</option>
             </Select> 
+            </Box>
+            </li>
+          <li className="flex items-center">
+            Account Name
+            <Box w="100px" className="ml-2">
+            <Select onChange={(e)=> rankFilter('AccountName',e.target.value )}>
+            <option value="" disabled selected hidden>☰</option>
+              <option value="asc">asc</option>
+              <option value="desc">desc</option>
+            </Select> 
+            </Box>
           </li>
-          <li>Email ✉️</li>
-          <li>Phone</li>
+          <li className="flex items-center">
+            Email ✉️
+            <Box w="100px" className="ml-2">
+            <Select onChange={(e)=> rankFilter('Email',e.target.value )}>
+            <option value="" disabled selected hidden>☰</option>
+              <option value="asc">asc</option>
+              <option value="desc">desc</option>
+            </Select> 
+            </Box>
+          </li>
+          <li className="flex items-center">Phone</li>
         </ul>
         <ul className="record-list">
           {contacts.map(contact => (
@@ -196,7 +217,7 @@ const rankFilter = (column:string, rankBy:string) => {
                   handleCheckboxClick(contact.ContactID, event);
                 }}>
                 </input>
-              {contact.FirstName} {contact.LastName}</p>
+              {contact.LastName}, {contact.FirstName}</p>
               <p>{contact.AccountName}</p>
               <p className="email"
                     onClick={(event) => {

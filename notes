@@ -2,24 +2,32 @@ nodemail
 //!FILTER SEARCH
 //!SEND EMAIL
 //!Able to upload pictures?
-//!Edit record 
-//?CONTACTS.css not working?
-//!make new record save function reusable in own file
-make fetchdata reusable
+//!Edit record SELECT * FROM contact
 in creaeteTask, add specific locaiton inputs, but how to put them in their own table ad make it a foreign key
 make sql normalized
 work on home page
 add sortin feature
+reminders sms and email?
+
+
+
+
 
 
 
 done
-//addded next and previous page for tables on PageNav
-//create select button stays as + sign and doesnt change pages.
-//added alert to if required field is empty on create record pages, and required symbol, create Task looks ugly bc i like ugly
+
+
+
+
 could be done better
 //array of inputs and mapping over them is more complicated if there is many different types, better if all the same type and no conditionals
 navigate-1 after create record save -- dont know why it wont work,. save = posts and sql gets it, but no response, stays pending response in network tab
 //?? ( Over complicatedion? )reusable function typed 3 times into the 3 pages, put reusable function in one function then put that one function in the three files instead lol ?
+//?CONTACTS.css not working?, home page rendering all pages, so contacts.css acts as index.for the pages
 
+SELECT * FROM CONTACTS
+ORDER BY LastName ASC, FirstName DESC;
 
+SELECT * FROM contact LIMIT ${limit} OFFSET ${offset}
+ORDER BY {$column} {$order}
