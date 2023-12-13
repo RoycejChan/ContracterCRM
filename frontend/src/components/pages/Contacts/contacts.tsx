@@ -22,6 +22,8 @@ import { useDisclosure } from "@chakra-ui/react";
 import { Input } from "@chakra-ui/react";
 
 
+import { sendEmail } from "../sendEmail.js"
+
 interface Contact {
   ContactID: number;
   FirstName: string;
@@ -148,37 +150,12 @@ const uploadFile = (files: FileList | null) => {
   }
 };
 
-const sendEmail = async () => {
-  try {
-    const formData = new FormData();
+const sendEmailFunction = () => {
+  
+  sendEmail(checkedRecords, (record:any) => contacts.find((c) => c.ContactID === record), backendURL, emailSubject, emailMsg, emailFile, onClose);
+}
 
-    const toEmails = checkedRecords.map((record) => {
-      const contact = contacts.find((c) => c.ContactID === record);
-      return contact && contact.Email;
-    });
 
-    formData.append('to', toEmails.join(',')); 
-    formData.append('subject', emailSubject);
-    formData.append('text', emailMsg);
-    console.log(emailFile);
-    if (emailFile) {
-      formData.append('file', emailFile);
-    }
-    const response = await fetch(`${backendURL}/sendEmail`, {
-      method: 'POST',
-      body: formData,
-    });
-
-    if (response.ok) {
-      console.log('Email sent successfully');
-      onClose();
-    } else {
-      console.error('Failed to send email');
-    }
-  } catch (error) {
-    console.error('Error sending email:', error);
-  }
-};
 
   
 
@@ -227,7 +204,7 @@ const sendEmail = async () => {
       <Button colorScheme="gray" mr={3} onClick={onClose}>
         Close
       </Button>
-      <Button colorScheme="twitter" onClick={()=>{sendEmail()}}>Send 📫</Button>
+      <Button colorScheme="twitter" onClick={()=>{sendEmailFunction()}}>Send 📫</Button>
     </ModalFooter>
   </ModalContent>
 </Modal>

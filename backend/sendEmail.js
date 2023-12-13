@@ -1,11 +1,12 @@
 const express = require('express');
 const nodemailer = require('nodemailer');
 const multer  = require('multer')
+const upload = multer({ dest: 'uploads/' })
 
 const router = express.Router();
 require('dotenv').config({ path: '.././.env' });
 
-router.post('/', (req, res) => {
+router.post('/', upload.single('file'), (req, res) => {
   console.log("hi");
   const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -15,13 +16,14 @@ router.post('/', (req, res) => {
     },
   });
 
-  const { to, subject, text } = req.body;
+  const { to, subject, text, file } = req.body;
   console.log();
   const mailOptions = {
     from: 'roycecollege@gmail.com',
     to,
     subject,
     text,
+    file,
   };
 
   transporter.sendMail(mailOptions, (error, info) => {

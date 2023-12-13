@@ -9,8 +9,6 @@ import { clearSelectedFunction } from "../clearSelection.js";
 import { handleCheckboxClickFunction } from "../handleCheckboxClick.js"
 import { Select } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
-
-
 interface Task {
   TaskID:number;
   Subject:string;
@@ -225,7 +223,21 @@ const prevPage = () => {
             </Select> 
             </Box>
           </li>
-        <li className="flex items-center">Status</li>
+        <li className="flex items-center">
+          Status
+          <Box w="100px" className="ml-2">
+
+          <Select onChange={(e) => rankFilter('Status', e.target.value)}>
+  <option value="" disabled selected hidden>☰</option>
+  <option value="Not Started">Not Started</option>
+  <option value="Deffered">Deffered</option>
+  <option value="In Progress">In Progress</option>
+  <option value="Completed">Completed</option>
+  <option value="Waiting For Input">Waiting For Input</option>
+</Select>
+</Box>
+
+        </li>
         <li className="flex items-center">
           Priority
           <Box w="100px" className="ml-2">
@@ -238,6 +250,7 @@ const prevPage = () => {
   <option value="Highest">Highest</option>
 </Select>
 </Box>
+
 </li>
         <li className="flex items-center">
           Related To
@@ -266,7 +279,7 @@ const prevPage = () => {
       <ul className="record-list" id="task-longer">
         {Tasks.map(Task => (
           <div className="recordlist-record">
-          <li key={Task.TaskID} id="task-longer" className={`flex gap-3 task record${checkedRecords.includes(Task.TaskID) ? 'selected' : ''}`} onClick={()=>navTo(Task)} >
+          <li key={Task.TaskID} id="task-longer" className={`flex gap-3 task record ${checkedRecords.includes(Task.TaskID) ? 'selected' : ''}`} onClick={()=>navTo(Task)} >
               <p id="firstRecord">
                 <input type="checkbox" className="checkItem" 
                 checked={selectAll || checkedRecords.includes(Task.TaskID)}
