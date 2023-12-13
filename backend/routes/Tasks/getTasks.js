@@ -4,31 +4,17 @@ const connection = require('../../db');
 
 router.get('/', async (req, res) => {
   try {
-    let limit = req.query.limit || 10;
-    let page = req.query.page || 1;
-    let rank = req.query.rank;
-    let column = req.query.column;
+    let limit = req.query.limit || 10; // Use a default limit of 10
+    let page = req.query.page || 1;   // Use a default page of 1
     page = parseInt(page, 10);
-    limit = parseInt(limit, 10);
+
+    limit = parseInt(limit, 10); 
     const offset = (page - 1) * limit;
 
-    let orderByClause = '';
+    const query = `SELECT * FROM tasks LIMIT ${limit} OFFSET ${offset}`; 
+    const tasks = await connection.query(query);
+    res.json(tasks);
 
-    if (column && rank) {
-      if (column === 'Priority') {
-        orderByClause = `ORDER BY FIELD(${column}, 'Low', 'Mid', 'High', 'Highest') ${rank}`;
-      } else if (column === 'Status') {
-        orderByClause = `ORDER BY FIELD(${column}, 'Not Started', 'In Progress', 'Waiting For Input', 'Deffered', 'Completed') ${rank}`;
-      } else {
-        orderByClause = `ORDER BY ${column} ${rank}`;
-      }
-    }
-    
-
-    const query = `SELECT * FROM tasks ${orderByClause} LIMIT ${limit} OFFSET ${offset}`;
-
-    const contacts = await connection.query(query);
-    res.json(contacts);
   } catch (error) {
     console.error('Error executing query:', error);
     res.status(500).json({ error: 'Internal Server Error' });
