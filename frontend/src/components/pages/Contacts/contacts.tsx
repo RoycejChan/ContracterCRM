@@ -9,6 +9,19 @@ import { clearSelectedFunction } from "../clearSelection.js";
 import { handleCheckboxClickFunction } from "../handleCheckboxClick.js"
 import { Select } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+} from '@chakra-ui/react'
+import { useDisclosure } from "@chakra-ui/react";
+import { Input } from "@chakra-ui/react";
+
+
 interface Contact {
   ContactID: number;
   FirstName: string;
@@ -31,7 +44,11 @@ export default function Contacts() {
 
   const[column, setColumn] = useState('');
   const[rank, setRank] = useState('');
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
+  const [emailSubject,setEmailSubject] = useState('');
+  const [emailMsg, setEmailMsg] = useState('');
+  
 useEffect(() => {
     const fetchData = async () => {
       try {
@@ -60,7 +77,7 @@ const createNew = () => {navigate('/createContact');}
 const handleCheckboxClick = (record:any, event:any) => {
   const checkbox = event.target;
   const listItem = checkbox.closest('.record');
-  handleCheckboxClickFunction(record, checkbox, listItem, setIsCheckboxChecked, setCheckedRecords);
+  handleCheckboxClickFunction(record, checkbox, listItem, setIsCheckboxChecked, setCheckedRecords, contacts);
   setSelectAll(false); 
 };
 
@@ -91,10 +108,11 @@ const handleSelectAll = () => {
   setSelectAll((prev) => !prev);
   setIsCheckboxChecked(!selectAll);
   setCheckedRecords(selectAll ? [] : contacts.map((contact) => contact.ContactID));
+  console.log(emailMsg);
+  console.log(emailSubject);
 };
 
 const nextPage = () => {
-
   console.log("next");
   console.log(currentPage)
   setCurrentPage(currentPage + 1);
@@ -116,13 +134,103 @@ const rankFilter = (column:string, rankBy:string) => {
   setRank(rankBy);
   console.log(column);
   console.log(rank);
+  console.log(emailFile);
 }
+
+const [emailFile, setEmailFile] = useState<File | null>(null);
+
+
+const uploadFile = (files: FileList | null) => {
+  if (files && files.length > 0) {
+    setEmailFile(files[0]);
+  } else {
+    setEmailFile(null);
+  }
+};
+
+const sendEmail = async () => {
+  try {
+    const formData = new FormData();
+
+    const toEmails = checkedRecords.map((record) => {
+      const contact = contacts.find((c) => c.ContactID === record);
+      return contact && contact.Email;
+    });
+
+    formData.append('to', toEmails.join(',')); 
+    formData.append('subject', emailSubject);
+    formData.append('text', emailMsg);
+    console.log(emailFile);
+    if (emailFile) {
+      formData.append('file', emailFile);
+    }
+    const response = await fetch(`${backendURL}/sendEmail`, {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (response.ok) {
+      console.log('Email sent successfully');
+      onClose();
+    } else {
+      console.error('Failed to send email');
+    }
+  } catch (error) {
+    console.error('Error sending email:', error);
+  }
+};
+
+  
+
+
 
 
   return (
 
     <>
       <div className="pageNavTop">
+      <Modal isOpen={isOpen} onClose={onClose} blockScrollOnMount={false} isCentered size="xl">
+  <ModalOverlay />
+  <ModalContent>
+    <ModalHeader>Contact Details</ModalHeader>
+    <ModalCloseButton />
+    <ModalBody className="flex flex-col gap-4">
+
+        <h1>From: <span className="email"> CRMCompanyEmail.com</span></h1>
+
+        <h1>To:</h1>
+        <div className="flex overflow-scroll overflow-y-hidden pb-2">
+          {checkedRecords.map((record) => {
+            const contact = contacts.find((c) => c.ContactID === record);
+            return (
+
+              <span key={record} className="mr-2">
+                {contact && (
+                  <p className="bg-gray-200 rounded-md inline-block px-2 whitespace-nowrap">
+                    {contact.LastName}, {contact.FirstName}
+                  </p>
+                )}
+              </span>
+            );
+          })}
+        </div>
+  
+        <label htmlFor="emailSubject" className="-mb-4 font-bold">Subject:</label>
+        <Input variant='flushed' name="emailSubject" onChange={(e)=>setEmailSubject(e.target.value)}/>
+        <label htmlFor="emailMsg" className="font-bold">Message:</label>
+        <Input variant='outline' name="emailMsg" onChange={(e)=>setEmailMsg(e.target.value)}/>
+        <label htmlFor="file" className="font-bold">Attachment:</label>
+        <Input type="file" name="file" onChange={(e) => uploadFile(e.target.files)} />
+
+    </ModalBody>
+    <ModalFooter>
+      <Button colorScheme="gray" mr={3} onClick={onClose}>
+        Close
+      </Button>
+      <Button colorScheme="twitter" onClick={()=>{sendEmail()}}>Send 📫</Button>
+    </ModalFooter>
+  </ModalContent>
+</Modal>
 
     {/* !!MODAL CHAKRA UI FOR ADD TASK */}
       {isCheckboxChecked 
@@ -130,7 +238,7 @@ const rankFilter = (column:string, rankBy:string) => {
       // THIS SHOWS WHEN A RECORD IS CLICKED, THESE ARE THE FUNCTION THAT CAN BE DONE WITH IT
       <>
         <Stack direction='row' spacing={4} align='center'>
-            <Button colorScheme='gray' variant='solid' size='lg' className="filterButtons">
+            <Button colorScheme='gray' variant='solid' size='lg' className="filterButtons" onClick={onOpen}>
               Send Email
             </Button>
             <Button colorScheme='gray' variant='solid' size='lg' className="filterButtons">
