@@ -16,14 +16,14 @@ router.get('/', async (req, res) => {
 
     if (column && rank) {
       if (column === 'Priority') {
-        orderByClause = `ORDER BY ${column} = '${rank}' DESC, ${column}`;
-      } else if (column === 'Status')  {
-        orderByClause = `ORDER BY ${column} = '${rank}' DESC, ${column}`;
-      }
-      else {
+        orderByClause = `ORDER BY FIELD(${column}, 'Low', 'Mid', 'High', 'Highest') ${rank}`;
+      } else if (column === 'Status') {
+        orderByClause = `ORDER BY FIELD(${column}, 'Not Started', 'In Progress', 'Waiting For Input', 'Deffered', 'Completed') ${rank}`;
+      } else {
         orderByClause = `ORDER BY ${column} ${rank}`;
       }
     }
+    
 
     const query = `SELECT * FROM tasks ${orderByClause} LIMIT ${limit} OFFSET ${offset}`;
 
