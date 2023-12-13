@@ -206,7 +206,7 @@ const sendEmailFunction = () => {
               <Button colorScheme="gray" variant="solid" size="lg" className="filterButtons" onClick={onOpen}>
                 Send Email
               </Button>
-              <Button colorScheme="gray" variant="solid" size="lg" className="filterButtons">
+              <Button colorScheme="gray" isDisabled variant="solid" size="lg" className="filterButtons">
                 Create Task
               </Button>
               <Button colorScheme="gray" variant="solid" size="lg" className="filterButtons" onClick={() => deleteRecord()}>

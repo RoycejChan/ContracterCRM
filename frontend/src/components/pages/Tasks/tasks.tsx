@@ -189,10 +189,16 @@ const prevPage = () => {
           />
 
       <div className="tasks records">
+
       { isSidebarOpen ? 
+       
        <div className="sidebar"> <h1>FILTER</h1></div> 
+          
        : 
-       <></> }
+       
+       <></> 
+       }
+
        <div className="mainContent" id="mainContent-tasks">
       <div className="record-headers-wrapper">
       <ul className="record-headers" id="task-longer-headers">

@@ -1,26 +1,26 @@
-nodemail
 //!FILTER SEARCH
-//!SEND EMAIL
-//!Able to upload pictures?
-//!Edit record SELECT * FROM contact
-in creaeteTask, add specific locaiton inputs, but how to put them in their own table ad make it a foreign key
-make sql normalized
-work on home page
-add sortin feature
-reminders sms and email?
 
-//!STORE GMAIL CREDSD IN .ENV
+//!STORE port/backend url
 
 
 
 
 
 done
-
+add sortin feature
+no home page
+SEND EMAIL with nodemail
+able to edit records. only in contacts and accounts, not tasks, though-----no rules. ex. if number input is longer than sql schma = fail fetch;
 
 
 
 could be done better
+
+
+able to edit records. only in contacts and accounts, not tasks, though-----no rules. ex. if number input is longer than sql schma = fail fetch;
+no create Task functionality.
+able to edit records. only in contacts though-----no rules. ex. if number input is longer than sql schma = fail fetch;
+no picture uploads
 //array of inputs and mapping over them is more complicated if there is many different types, better if all the same type and no conditionals
 navigate-1 after create record save -- dont know why it wont work,. save = posts and sql gets it, but no response, stays pending response in network tab
 //?? ( Over complicatedion? )reusable function typed 3 times into the 3 pages, put reusable function in one function then put that one function in the three files instead lol ?

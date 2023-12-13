@@ -113,12 +113,17 @@
 }
 
 .detail {
-  width:60%;
+  width:400px;
   display:flex;
   justify-content:flex-start;
   border-radius:5%;
   padding:.5rem;
 }
+
+.editInput {
+  border:1px solid black;
+}
+
 .detailIcon {
   opacity:0;
   margin-left:1rem;
@@ -129,9 +134,6 @@
 
 .detail:hover .detailIcon {
   opacity:1;
-}
-.detail:hover {
-  border:1px solid gray;
 }
 
 .details-header {

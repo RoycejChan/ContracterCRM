@@ -1,11 +1,15 @@
 export const sendEmail = async (records, getEmailFunction, backendURL, emailSubject, emailMsg, emailFile, onClose) => {
   try {
     const formData = new FormData();
-
-    const toEmails = records.map((record) => {
+    var toEmails;
+    if (getEmailFunction != null) {
+    var toEmails = records.map((record) => {
       const contact = getEmailFunction(record);
       return contact && contact.Email;
     });
+} else {
+    toEmails = records;
+}
 
     formData.append('to', toEmails.join(',')); 
     formData.append('subject', emailSubject);

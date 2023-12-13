@@ -2,6 +2,18 @@ import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button, Stack } from '@chakra-ui/react';
 const backendURL = 'http://localhost:3000';
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+} from '@chakra-ui/react'
+import { useDisclosure } from "@chakra-ui/react";
+import { Input } from "@chakra-ui/react";
+import { sendEmail } from "../sendEmail.js"
 
 const contactFields = [
   { label: 'AccountName', key: 'AccountName', type: 'text' },
@@ -44,7 +56,10 @@ export default function Account() {
 
   const [account, setAccount] = useState(initialAccount);
   const [isVisible, setIsVisible] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const [emailSubject,setEmailSubject] = useState('');
+  const [emailMsg, setEmailMsg] = useState('');
   const goBack = () => {navigate(-1);};
 
   const toggleVisibility = () => {setIsVisible(!isVisible);};
@@ -68,27 +83,130 @@ export default function Account() {
       console.error('Error deleting contacts:', error);
     }
   };
+  const [editingFieldIndex, setEditingFieldIndex] = useState(null);
+
+  const changeEditMode = (index:any) => {
+    setEditingFieldIndex((prevIndex) => (prevIndex === index ? null : index));
+
+  };
+
+  const cancelEdit = () => {
+    setEditingFieldIndex(null);
+    setAccount(initialAccount);
+  };
+
+const saveRecordChange = () => {
+  console.log(account);
+  fetch(`${backendURL}/Account/updateAccount`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      updatedAccountData: account,
+    }),
+  })
+    .then(response => {
+
+      if (!response.ok) {
+        throw new Error('Failed to save changes');
+      }
+      setEditingFieldIndex(null);
+      console.log('Changes saved successfully');
+    })
+    .catch(error => {
+      console.error('Error saving changes:', error);
+    });
+}
 
 
- const renderField = (label:string, key:string, type:any, inputClass?:any) => (
+ const renderField = (label:string, key:string, type:any, index:any, inputClass?:any) => (
 
-    <li className='overviewDetail' key={key}>
-      {label}
-      <span className={`detail`}>
-        <input
-          type={type}
-          value={account[key] || '—'}
-          onChange={() => {}}
-          className={`${inputClass}`}
-          id="recordDetailInput"
-        />
-        <span className='detailIcon'>✏️</span>
+  <li className='overviewDetail' key={key}>
+  {label}
+<span className={`detail`}>
+        {editingFieldIndex === index ? (
+          <div className='flex items-center'>
+            <input
+              type={type}
+              value={account[key] || ''}
+              onChange={(e) => setAccount({ ...account, [key]: e.target.value })}
+              className={`${inputClass} p-2 editInput rounded-md`}
+            />
+            <div className="editBtns flex gap-3">
+              <p onClick={()=> saveRecordChange()}>✅</p>
+              <p onClick={() => cancelEdit()}>x</p>
+            </div>
+          </div>
+        ) : (
+          <span>{account[key] || '—'}</span>
+        )}
+        {editingFieldIndex !== index && (
+          <span className='detailIcon cursor-pointer' onClick={() => changeEditMode(index)}>
+            ✏️
+          </span>
+        )}
       </span>
     </li>
   );
 
+
+  
+  const [emailFile, setEmailFile] = useState<File | null>(null);
+
+
+  const uploadFile = (files: FileList | null) => {
+    if (files && files.length > 0) {
+      setEmailFile(files[0]);
+    } else {
+      setEmailFile(null);
+    }
+  };
+
+  const sendEmailFunction = () => {
+    const toEmail = [account.Email];
+    const backendURL = 'http://localhost:3000'; 
+
+    sendEmail(toEmail, null, backendURL, emailSubject, emailMsg, emailFile, onClose);
+  };
+
   return (
     <>
+
+<Modal isOpen={isOpen} onClose={onClose} blockScrollOnMount={false} isCentered size="xl">
+  <ModalOverlay />
+  <ModalContent>
+    <ModalHeader>Contact Details</ModalHeader>
+    <ModalCloseButton />
+    <ModalBody className="flex flex-col gap-4">
+
+        <h1>From: <span className="email"> CRMCompanyEmail.com</span></h1>
+
+        <div className="flex overflow-scroll overflow-y-hidden pb-2">
+        <h1>To:</h1>
+
+                  <p className="bg-gray-200 rounded-md inline-block px-2 whitespace-nowrap ml-2">
+                    {account.Email}
+                  </p>
+        </div>
+  
+        <label htmlFor="emailSubject" className="-mb-4 font-bold">Subject:</label>
+        <Input variant='flushed' name="emailSubject" onChange={(e)=>setEmailSubject(e.target.value)}/>
+        <label htmlFor="emailMsg" className="font-bold">Message:</label>
+        <Input variant='outline' name="emailMsg" onChange={(e)=>setEmailMsg(e.target.value)}/>
+        <label htmlFor="file" className="font-bold">Attachment:</label>
+        <Input type="file" name="file" onChange={(e) => uploadFile(e.target.files)} />
+
+    </ModalBody>
+    <ModalFooter>
+      <Button colorScheme="gray" mr={3} onClick={onClose}>
+        Close
+      </Button>
+      <Button colorScheme="twitter" onClick={()=>{sendEmailFunction()}}>Send 📫</Button>
+    </ModalFooter>
+  </ModalContent>
+</Modal>
+
       <div className='contactPageHeader'>
         <div className='leftSide-contactPageHeader'>
           <button onClick={goBack} className='backBtn'>
@@ -98,7 +216,7 @@ export default function Account() {
         </div>
         <div className='rightSide-contactPageHeader'>
           <Stack direction='row' spacing={4} align='center'>
-            <Button colorScheme='twitter' variant='solid' size='lg' className='filterButtons'>
+            <Button colorScheme='twitter' variant='solid' size='lg' className='filterButtons' onClick={onOpen}>
               Send Email
             </Button>
             <Button colorScheme='gray' variant='solid' size='lg' className='filterButtons' onClick={deleteRecord}>
@@ -128,7 +246,7 @@ export default function Account() {
           <div className="details-list">
           {detailsSections.map((section, index) => (
             <ul className='allDetails-col' key={index}>
-              {section.map((field) => renderField(field.label, field.key, field.type, field.className))}
+              {section.map((field, index) => renderField(field.label, field.key, field.type, index, field.className))}
             </ul>
           ))}
           </div>
@@ -140,7 +258,7 @@ export default function Account() {
           <div className="details-list">
           {detailsSectionAddress.map((section, index) => (
             <ul className='allDetails-col' key={index}>
-            {section.map((field) => renderField(field.label, field.key, field.type))}
+            {section.map((field, index) => renderField(field.label, field.key, field.type,index))}
           </ul>
         ))}
         </div>
