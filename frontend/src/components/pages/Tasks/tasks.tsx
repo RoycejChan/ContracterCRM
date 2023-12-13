@@ -223,16 +223,34 @@ const prevPage = () => {
             </Select> 
             </Box>
           </li>
-        <li className="flex items-center">Status</li>
+        <li className="flex items-center">
+          Status
+          <Box w="100px" className="ml-2">
+
+          <Select onChange={(e) => rankFilter('Status', e.target.value)}>
+  <option value="" disabled selected hidden>☰</option>
+  <option value="Not Started">Not Started</option>
+  <option value="Deffered">Deffered</option>
+  <option value="In Progress">In Progress</option>
+  <option value="Completed">Completed</option>
+  <option value="Waiting For Input">Waiting For Input</option>
+</Select>
+</Box>
+
+        </li>
         <li className="flex items-center">
           Priority
-          <Select onChange={() => rankFilter((e)=>'Priority', e.target.value)}>
+          <Box w="100px" className="ml-2">
+
+          <Select onChange={(e) => rankFilter('Priority', e.target.value)}>
   <option value="" disabled selected hidden>☰</option>
   <option value="Low">Low</option>
   <option value="Mid">Mid</option>
   <option value="High">High</option>
   <option value="Highest">Highest</option>
 </Select>
+</Box>
+
 </li>
         <li className="flex items-center">
           Related To
