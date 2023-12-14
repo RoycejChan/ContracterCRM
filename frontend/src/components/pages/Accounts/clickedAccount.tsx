@@ -83,11 +83,10 @@ export default function Account() {
       console.error('Error deleting contacts:', error);
     }
   };
-  const [editingFieldIndex, setEditingFieldIndex] = useState(null);
+  const [editingFieldIndex, setEditingFieldIndex] = useState<number | null>(null);
 
-  const changeEditMode = (index:any) => {
+  const changeEditMode = (index: number) => {
     setEditingFieldIndex((prevIndex) => (prevIndex === index ? null : index));
-
   };
 
   const cancelEdit = () => {
@@ -120,7 +119,7 @@ const saveRecordChange = () => {
 }
 
 
- const renderField = (label:string, key:string, type:any, index:any, inputClass?:any) => (
+ const renderField = (label:string, key:string, type:'text', index:number, inputClass?:any) => (
 
   <li className='overviewDetail' key={key}>
   {label}

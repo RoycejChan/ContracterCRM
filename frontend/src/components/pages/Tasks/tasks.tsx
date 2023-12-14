@@ -29,7 +29,7 @@ export default function Tasks() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [recordsPerPage, setRecordsPerPage] = useState<string>("10");
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
-  const [checkedRecords, setCheckedRecords] = useState<any[]>([]);
+  const [checkedRecords, setCheckedRecords] = useState<number[]>([]);
   const [selectAll, setSelectAll] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -62,7 +62,7 @@ const toggleSidebar = () => {setIsSidebarOpen((prev) => !prev);};
 const createNew = () => {navigate('/createTask');}
 
 //Handles UI change when a record is clicked
-const handleCheckboxClick = (record:any, event:any) => {
+const handleCheckboxClick = (record:number, event:any) => {
   const checkbox = event.target;
   const listItem = checkbox.closest('.record');
   handleCheckboxClickFunction(record, checkbox, listItem, setIsCheckboxChecked, setCheckedRecords);
@@ -76,7 +76,7 @@ const handleRecordsPerPageChange = (value: string) => {setRecordsPerPage(value)}
 const deleteRecord = async () => {
     await deleteRecordFunction('Task', 'deleteTask', checkedRecords)
     .then(window.location.reload())
-    .catch((error:any) => console.error('Error deleting record:', error));
+    .catch((error:Error) => console.error('Error deleting record:', error));
 };
 
 
@@ -89,8 +89,8 @@ const clearSelected = () => {
 };
 
 //navigates to clicked record
-const navTo = (Task:any) => {
-  navigate('/clickedTask', {state:{Task}})
+const navTo = (Task:Task) => {
+  navigate('/clickedTask', {state:{Task: Task}})
 }
 
 const handleSelectAll = () => {
@@ -101,7 +101,7 @@ const handleSelectAll = () => {
 
 
 
-const isDueTomorrow = (dueDateTime:any) => {
+const isDueTomorrow = (dueDateTime:string) => {
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
   const dueDate = new Date(dueDateTime);
@@ -113,7 +113,7 @@ const isDueTomorrow = (dueDateTime:any) => {
   );
 };
 
-const isDueToday = (dueDateTime:any) => {
+const isDueToday = (dueDateTime:string) => {
   const today = new Date();
   const dueDate = new Date(dueDateTime);
   
@@ -125,7 +125,7 @@ const isDueToday = (dueDateTime:any) => {
   );
 };
 
-const isPastDue = (dueDateTime:any) => {
+const isPastDue = (dueDateTime:string) => {
   const today = new Date();
   const dueDate = new Date(dueDateTime);
   
@@ -283,6 +283,10 @@ const prevPage = () => {
       </div>
       <div className="record-list-wrapper">
       <ul className="record-list" id="task-longer">
+
+          {Tasks.length === 0 ? <p className="noRecord flex justify-center p-4 text-gray-500">No Tasks Found.</p> 
+          : 
+          <>
         {Tasks.map(Task => (
           <div className="recordlist-record">
           <li key={Task.TaskID} id="task-longer" className={`flex gap-3 task record ${checkedRecords.includes(Task.TaskID) ? 'selected' : ''}`} onClick={()=>navTo(Task)} >
@@ -320,7 +324,9 @@ const prevPage = () => {
             <p>{Task.Manager}</p>
           </li>
           </div>
+
         ))}
+        </>}
       </ul>
       </div>
       </div>

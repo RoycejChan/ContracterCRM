@@ -289,6 +289,9 @@ const sendEmailFunction = () => {
           <li className="flex items-center">Phone</li>
         </ul>
         <ul className="record-list">
+        {contacts.length === 0 ? <p className="noRecord flex justify-center p-4 text-gray-500">No Contacts Found.</p> 
+          : 
+          <>
           {contacts.map(contact => (
             <li key={contact.ContactID} className={`flex gap-3 contact record ${checkedRecords.includes(contact.ContactID) ? 'selected' : ''}`} onClick={()=>navTo(contact)}>
               <p>
@@ -310,7 +313,7 @@ const sendEmailFunction = () => {
               >{contact.Email} </p>
               <p>{contact.WorkPhone} 📞</p>
             </li>
-          ))}
+          ))}</>}
         </ul>
       </div>
       </div>

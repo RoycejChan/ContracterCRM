@@ -32,12 +32,18 @@ const detailsSections = [
   //   { label: 'Assistant Phone', key: 'AssistantPhone', type: 'text' },
   // ],
 ];
-
+interface Task {
+  Subject: string;
+  DueDateTime: string;
+  Priority: string;
+  Status: string;
+  // Add other fields as needed
+}
 export default function Task() {
   const navigate = useNavigate();
   const location = useLocation();
   const initialTask = location.state.Task;
-  const [Task, setTask] = useState(initialTask);
+  const [Task, setTask] = useState<Task>(initialTask);
   const [isVisible, setIsVisible] = useState(false);
 
   const goBack = () => {
@@ -50,13 +56,13 @@ export default function Task() {
 
   const deleteRecord = () => {
     deleteRecordFunction('Task', 'deleteTask', initialTask.TaskID)
-      .then(goBack())
-      .catch((error:any) => console.error('Error deleting record:', error));
+      .then(()=>goBack())
+      .catch((error:Error) => console.error('Error deleting record:', error));
   };
   
 
 
-  const renderField = (label:any, key:any, type:any) => {
+  const renderField = (label: string, key: keyof Task, type: string) => {
     const getPriorityClass = () => {
       if (key === 'Priority') {
         return Task.Priority === 'Low' ? 'Low' : Task.Priority === 'Mid' ? 'Mid' : Task.Priority === 'High' ? 'High' : Task.Priority === 'Highest' ? 'Highest' : '';
@@ -117,7 +123,7 @@ export default function Task() {
       <div className='overviewDetails'>
       <h1 className='font-bold pb-4'>Task Information</h1>
         <ul className='flex flex-col gap-6 overviewDetails-header'>
-          {TaskFields.map((field) => renderField(field.label, field.key, field.type))}
+          {TaskFields.map((field) => renderField(field.label, field.key as keyof Task, field.type))}
         </ul>
       </div>
 
@@ -131,7 +137,7 @@ export default function Task() {
         <div className='detail-list-container'>
           {detailsSections.map((section, index) => (
             <ul className='allDetails-col' key={index}>
-              {section.map((field) => renderField(field.label, field.key, field.type))}
+    {section.map((field) => renderField(field.label, field.key as keyof Task, field.type))}
             </ul>
           ))}
           </div>

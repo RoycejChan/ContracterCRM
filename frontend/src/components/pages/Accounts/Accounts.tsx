@@ -271,6 +271,10 @@ const sendEmailFunction = () => {
             </li>
           </ul>
           <ul className="record-list">
+
+          {accounts.length === 0 ? <p className="noRecord flex justify-center p-4 text-gray-500">No Accounts Found.</p> 
+          : 
+          <>
             {accounts.map((account) => (
               <li key={account.AccountID} className={`flex gap-3 account record ${checkedRecords.includes(account.AccountID) ? 'selected' : ''}`} onClick={()=>navTo(account)}>
                 <p>
@@ -293,7 +297,8 @@ const sendEmailFunction = () => {
                 {account.Email}</p> {/***EMAIL? */}
                 <p>📞{account.FrontDeskPhone}</p>
               </li>
-            ))}
+            ))}</>
+          }
           </ul>
         </div>
       </div>

@@ -16,7 +16,18 @@ import {
 } from '@chakra-ui/react'
 import { useDisclosure } from "@chakra-ui/react";
 import { Input } from "@chakra-ui/react";
-import { sendEmail } from "../sendEmail.js"
+import { sendEmail } from "../sendEmail.js";
+
+interface Contact {
+  ContactID: number;
+  FirstName: string;
+  LastName: string;
+  Email: string;
+  WorkPhone: string;
+  MobilePhone: string;
+  Department: string;
+  // Add other fields as needed
+}
 
 const contactFields = [
   { label: 'Email', key: 'Email', type: 'text',className:'email' },
@@ -46,7 +57,7 @@ export default function Contact() {
   const navigate = useNavigate();
   const location = useLocation();
   const initialContact = location.state.contact;
-  const [contact, setContact] = useState(initialContact);
+  const [contact, setContact] = useState<Contact>(initialContact);
   const [isVisible, setIsVisible] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -63,16 +74,16 @@ export default function Contact() {
   const deleteRecord = () => {
     deleteRecordFunction('Contact', 'deleteContact', initialContact.ContactID)
       .then(goBack())
-      .catch((error:any) => console.error('Error deleting record:', error));
+      .catch((error:Error) => console.error('Error deleting record:', error));
   };
 
 
-  const [editingFieldIndex, setEditingFieldIndex] = useState(null);
+  const [editingFieldIndex, setEditingFieldIndex] = useState<number | null>(null);
 
-  const changeEditMode = (index:any) => {
+  const changeEditMode = (index: number) => {
     setEditingFieldIndex((prevIndex) => (prevIndex === index ? null : index));
-
   };
+
 
 const saveRecordChange = () => {
   console.log(contact);
@@ -103,7 +114,7 @@ const cancelEdit = () => {
 };
 
 
-  const renderField = (label:string, key:string, type:any, index:any,  inputClass?:any) => (
+  const renderField = (label:string, key: keyof Contact, type:string, index:number,  inputClass?:any) => (
 
     <li className='overviewDetail' key={key}>
       {label}

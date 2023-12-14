@@ -7,6 +7,7 @@
 
 
 done
+if no record found, display theres none
 add sortin feature
 no home page
 SEND EMAIL with nodemail
@@ -15,7 +16,6 @@ able to edit records. only in contacts and accounts, not tasks, though-----no ru
 
 
 could be done better
-
 
 able to edit records. only in contacts and accounts, not tasks, though-----no rules. ex. if number input is longer than sql schma = fail fetch;
 no create Task functionality.
@@ -26,6 +26,7 @@ navigate-1 after create record save -- dont know why it wont work,. save = posts
 //?? ( Over complicatedion? )reusable function typed 3 times into the 3 pages, put reusable function in one function then put that one function in the three files instead lol ?
 //?CONTACTS.css not working?, home page rendering all pages, so contacts.css acts as index.for the pages
 
+pages and contacts.css has duplicated bc i dont wanna mess up the css rip
 SELECT * FROM CONTACTS
 ORDER BY LastName ASC, FirstName DESC;
 

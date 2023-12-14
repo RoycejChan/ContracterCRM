@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
-import Home from '../../pages/Home/home';
 import "./webnav.css"
 
 
@@ -23,9 +22,8 @@ export default function Webnav() {
   const [selectedOption, setSelectedOption] = useState('');
 
     const navLinks = [
-        { to: "/", label: "Home" },
         { to: "/Tasks", label: "Tasks" },
-        { to: "/Contacts", label: "Contacts" },
+        { to: "/", label: "Contacts" },
         { to: "/Accounts", label: "Accounts" },
       ];
       useEffect(() => {
@@ -66,8 +64,7 @@ export default function Webnav() {
         </div>
 
       <Routes>
-        <Route index path="/" element={<Home />} />
-        <Route index path="/Contacts" element={<Contacts/> } />
+        <Route index path="/" element={<Contacts/> } />
         <Route index path="/Accounts" element={<Accounts/> } />
         <Route index path="/Tasks" element={<Tasks />} />
 
