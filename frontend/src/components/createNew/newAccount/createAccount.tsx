@@ -69,7 +69,7 @@ export default function CreateAccount() {
   };
   
 
-  function formatCompactNumber(number:any) {
+  function formatCompactNumber(number:number) {
     if (number < 1000) {
       return number;
     } else if (number >= 1000 && number < 1_000_000) {

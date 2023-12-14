@@ -1,7 +1,4 @@
-//!FILTER SEARCH
-
 //!STORE port/backend url
-
 
 
 
@@ -16,7 +13,8 @@ able to edit records. only in contacts and accounts, not tasks, though-----no ru
 
 
 could be done better
-
+//forgot to add sorting of, last and first made sort
+//!FILTER SEARCH, space in records messing up value, insert values with no space?? 
 able to edit records. only in contacts and accounts, not tasks, though-----no rules. ex. if number input is longer than sql schma = fail fetch;
 no create Task functionality.
 able to edit records. only in contacts though-----no rules. ex. if number input is longer than sql schma = fail fetch;

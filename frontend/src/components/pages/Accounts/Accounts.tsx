@@ -32,6 +32,24 @@ interface Account {
   FrontDeskPhone: number;
 }
 
+
+const filters = [
+  'AccountName',
+  'AccountSite',
+  'Industry',
+  'AnnualRevenue',
+  'FrontDeskPhone',
+  'Fax',
+  'Street',
+  'City',
+  'State',
+  'Zip',
+  'Country',
+  'Email',
+]
+
+
+
 export default function Accounts() {
   const navigate = useNavigate();
   const [accounts, setAccounts] = useState<Account[]>([]);
@@ -44,7 +62,7 @@ export default function Accounts() {
 
   const[column, setColumn] = useState('');
   const[rank, setRank] = useState('');
-
+  const[unfilter, setfilter] = useState<boolean>(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [emailSubject,setEmailSubject] = useState('');
@@ -66,7 +84,7 @@ export default function Accounts() {
     };
 
     fetchData();
-  }, [recordsPerPage, currentPage, rank]);
+  }, [recordsPerPage, currentPage, rank, unfilter]);
 
 //button to toggle filter sidebar
 const toggleSidebar = () => {setIsSidebarOpen((prev) => !prev);};
@@ -89,7 +107,7 @@ const handleRecordsPerPageChange = (value: string) => {setRecordsPerPage(value)}
 const deleteRecord = async () => {
   await deleteRecordFunction('Account', 'deleteAccount', checkedRecords)
   .then(window.location.reload())
-  .catch((error:any) => console.error('Error deleting record:', error));
+  .catch((error:Error) => console.error('Error deleting record:', error));
 };
 
 //CLEAR CHECK SELECTED RECORD(s)
@@ -151,11 +169,84 @@ const sendEmailFunction = () => {
 
 }
 
+//handles dropdown for each filter
+const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+const toggleDropdown = (dropdownKey: string) => {
+  setFilterQuery('');
+  setOpenDropdown((prevDropdown) => (prevDropdown === dropdownKey ? null : dropdownKey));
+};
+
+
+
+
+
+
+
+const [filterQuery, setFilterQuery] = useState('');
+const [sqlFilter, setSqlFilter] = useState('is')
+
+
+const filterRecords = async () => {
+  try {
+    let filterCondition = '';
+
+    switch (sqlFilter) {
+      case 'is':
+        filterCondition = `${filterQuery}%`;
+        break;
+      case 'contains':
+        filterCondition = `%${filterQuery}%`;
+        break;
+      case 'startsWith':
+        filterCondition = `${filterQuery}%`;
+        break;
+      case 'endsWith':
+        filterCondition = `%${filterQuery}`;
+        break;
+      case 'isEmpty':
+        filterCondition = `${openDropdown}`;
+        break;
+      default:
+        break;
+    }
+
+    console.log(filterCondition);
+
+    const response = await fetch(
+      `${backendURL}/Account/accounts?limit=${recordsPerPage}&page=${currentPage}&column=${column}&rank=${rank}&filterCondition=${filterCondition}&filterColumn=${openDropdown}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const [data] = await response.json();
+    setAccounts(data);
+    console.log(data);
+
+  } catch (error) {
+    console.error('Error fetching accounts:', error);
+  }
+};
+
+useEffect(() => {
+  console.log(sqlFilter);
+}, [sqlFilter]);
+
+const clearFilter = () => { 
+  setSqlFilter('');
+  setFilterQuery('');
+  setOpenDropdown(null);
+  setfilter((prevFilter) => !prevFilter);
+}
+
 
   return (
     <>
       <div className="pageNavTop">
-
+{/* EMAIL POPUP FORM */}
       <Modal isOpen={isOpen} onClose={onClose} blockScrollOnMount={false} isCentered size="xl">
   <ModalOverlay />
   <ModalContent>
@@ -198,7 +289,7 @@ const sendEmailFunction = () => {
     </ModalFooter>
   </ModalContent>
 </Modal>
-
+{/* END MODAL FOR EMAIL POPUP */}
         {/* !!MODAL CHAKRA UI FOR ADD TASK */}
         {isCheckboxChecked ? (
           <>
@@ -233,7 +324,71 @@ const sendEmailFunction = () => {
         />
 
       <div className="accounts records">
-{isSidebarOpen ? <div className="sidebar"> <h1>Filter</h1></div> : <></>}
+
+
+
+
+
+
+        {/* Filter Bar */}
+        {isSidebarOpen ? (
+  <div className="sidebar">
+    <div className="insidePadding p-6">
+    <h1 className="font-bold text-center text-xl">Filter Accounts By</h1>
+    <h1 className="font-bold my-3 text-lg">Filter By Field</h1>
+
+
+    {filters.map((filterName) => (
+  <div className="flex gap-2 p-1 text-md flex-col overflow-y-clip" key={filterName}>
+
+    <div className="flex gap-2 p-1">
+      <input
+        type="checkbox"
+        name={filterName}
+        onChange={() => toggleDropdown(filterName)}
+        checked={openDropdown === filterName}
+      />
+      <label htmlFor={filterName}>{filterName}</label>
+    </div>
+
+    {openDropdown === filterName && (
+      <div className="selectDropDown">
+        <Select name="" id="" size="sm" onChange={(e)=>setSqlFilter(e.target.value)}>
+          <option value="is">is</option>
+          <option value="contains">contains</option>
+          <option value="startsWith">starts with</option>
+          <option value="endsWith">ends with</option>
+          <option value="isEmpty">is empty</option>
+        </Select>
+        {sqlFilter == 'isEmpty' 
+          ? <></> 
+          : 
+          <Input type="text" placeholder="Type Here" onChange={(e)=>setFilterQuery(e.target.value)}/>
+        }
+      </div>
+    )}
+  </div>
+))}
+</div>
+  
+<div className="filterFooter w-full  flex gap-4 justify-start p-2 border-t-2">
+<Button colorScheme="telegram" width='120px' onClick={()=>filterRecords()}>Apply Filter</Button>
+<Button colorScheme="gray" width='120px' onClick={()=>clearFilter()}>Clear</Button>
+</div>
+  </div>
+) : (
+  <></>
+)}
+
+
+
+
+
+
+
+
+
+
 
         <div className="mainContent">
           <ul className="record-headers">

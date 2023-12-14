@@ -8,18 +8,26 @@ router.get('/', async (req, res) => {
     let page = req.query.page || 1;
     let rank = req.query.rank;
     let column = req.query.column;
+    let filterCondition = req.query.filterCondition || '';
+    let filterColumn = req.query.filterColumn;
     page = parseInt(page, 10);
     limit = parseInt(limit, 10);
     const offset = (page - 1) * limit;
     let orderByClause = '';
+    let whereClause = '';
 
     if (column && rank) {
-      console.log(rank);
       orderByClause = `ORDER BY ${column} ${rank}`;
     }
+    if (filterColumn && filterCondition) {
+      if (filterCondition === filterColumn) {
+        whereClause = `WHERE ${filterColumn} IS NULL`
+      } else {
+        whereClause = `WHERE ${filterColumn} LIKE '${filterCondition}'`;
+      }
+      }
 
-    const query = `SELECT * FROM accounts ${orderByClause} LIMIT ${limit} OFFSET ${offset}`;
-
+    const query = `SELECT * FROM accounts ${whereClause} ${orderByClause} LIMIT ${limit} OFFSET ${offset}`;
     const contacts = await connection.query(query);
     res.json(contacts);
   } catch (error) {
