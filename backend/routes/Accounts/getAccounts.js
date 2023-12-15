@@ -19,6 +19,7 @@ router.get('/', async (req, res) => {
     if (column && rank) {
       orderByClause = `ORDER BY ${column} ${rank}`;
     }
+    
     if (filterColumn && filterCondition) {
       if (filterCondition === filterColumn) {
         whereClause = `WHERE ${filterColumn} IS NULL`

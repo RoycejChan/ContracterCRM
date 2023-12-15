@@ -41,6 +41,7 @@
   }
 
   .mainContent {
+
     background-color:white;
     flex: 3;
     height:100%; 
@@ -131,7 +132,6 @@
 
 #task-longer p {
   font-size:1rem;
-  width:5px;
 }
 
 

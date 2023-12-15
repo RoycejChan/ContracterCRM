@@ -29,7 +29,7 @@
     padding:1rem 1rem;
 }
 #task-longer-headers {
-  gap: 5rem;
+  gap: 1rem;
 }
 
 
@@ -230,8 +230,9 @@
 }
 
 .sidebar {
-  width: 335px;
-  height:835px; 
+  position:fixed;
+  width: 305px;
+  height:90%; 
   background-color:white;
   transition: width 0.9s ease-in; 
   border-radius: 28px 28px 25px 28px;
@@ -242,8 +243,11 @@
   -moz-box-shadow: 2px 3px 11px -2px rgba(0,0,0,0.75);
   box-shadow: 2px 3px 11px -2px rgba(0,0,0,0.75);  
 }
-
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
 .mainContent {
+  margin-left: ; 
   background-color:white;
   flex: 3;
   height:100%; 
@@ -254,6 +258,12 @@
   -webkit-box-shadow: 2px 3px 11px -2px rgba(0,0,0,0.75);
   -moz-box-shadow: 2px 3px 11px -2px rgba(0,0,0,0.75);
   box-shadow: 2px 3px 11px -2px rgba(0,0,0,0.75);
+  transition: margin-left 0.1s ease; 
+}
+
+.mainContent.withSidebar {
+  margin-left: 335px; 
+
 }
 
 
@@ -313,7 +323,6 @@ border-bottom:3px solid #eef14;
 #task-longer-headers {
 width: 93%;
 display: flex; 
-
 }
 
 .record-list-wrapper {
@@ -363,4 +372,8 @@ color:#338cf0;
 
 .noRecord {
   width:100% !important;
+}
+
+.insidePadding {
+  height:69%;
 }

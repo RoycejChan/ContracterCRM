@@ -176,12 +176,6 @@ const toggleDropdown = (dropdownKey: string) => {
   setOpenDropdown((prevDropdown) => (prevDropdown === dropdownKey ? null : dropdownKey));
 };
 
-
-
-
-
-
-
 const [filterQuery, setFilterQuery] = useState('');
 const [sqlFilter, setSqlFilter] = useState('is')
 
@@ -333,7 +327,7 @@ const clearFilter = () => {
         {/* Filter Bar */}
         {isSidebarOpen ? (
   <div className="sidebar">
-    <div className="insidePadding p-6">
+    <div className="insidePadding p-6 overflow-y-scroll no-scrollbar">
     <h1 className="font-bold text-center text-xl">Filter Accounts By</h1>
     <h1 className="font-bold my-3 text-lg">Filter By Field</h1>
 
@@ -371,9 +365,9 @@ const clearFilter = () => {
 ))}
 </div>
   
-<div className="filterFooter w-full  flex gap-4 justify-start p-2 border-t-2">
-<Button colorScheme="telegram" width='120px' onClick={()=>filterRecords()}>Apply Filter</Button>
-<Button colorScheme="gray" width='120px' onClick={()=>clearFilter()}>Clear</Button>
+<div className="filterFooter w-full items-center flex gap-4 justify-start p-2 border-t-2 h-24">
+<Button colorScheme="telegram" width='130px' size="lg" onClick={()=>filterRecords()}>Apply Filter</Button>
+<Button colorScheme="gray" width='130px'  size="lg" onClick={()=>clearFilter()}>Clear</Button>
 </div>
   </div>
 ) : (
@@ -390,7 +384,7 @@ const clearFilter = () => {
 
 
 
-        <div className="mainContent">
+<div className={`mainContent ${isSidebarOpen ? 'withSidebar' : ''}`}>
           <ul className="record-headers">
             <li id="first-header" className="flex items-center">
             {accounts.length != 0 ? <input

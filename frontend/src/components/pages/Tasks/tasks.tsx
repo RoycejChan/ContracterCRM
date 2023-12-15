@@ -9,6 +9,7 @@ import { clearSelectedFunction } from "../clearSelection.js";
 import { handleCheckboxClickFunction } from "../handleCheckboxClick.js"
 import { Select } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
+import { Input } from "@chakra-ui/react";
 interface Task {
   TaskID:number;
   Subject:string;
@@ -22,6 +23,20 @@ interface Task {
   Manager:string;
 }
 
+const filters = [
+  'Subject',
+  'Priority',
+  'Status',
+  'Description',
+  'Location',
+  'DueDateTime',
+  'Account',
+  'Service',
+  'Manager',
+,
+]
+
+
 export default function Tasks() {
   const navigate = useNavigate();
 
@@ -32,6 +47,7 @@ export default function Tasks() {
   const [checkedRecords, setCheckedRecords] = useState<number[]>([]);
   const [selectAll, setSelectAll] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const[unfilter, setfilter] = useState<boolean>(false);
 
   const[column, setColumn] = useState('');
   const[rank, setRank] = useState('');
@@ -53,7 +69,7 @@ export default function Tasks() {
       }
     };
     fetchData();
-  }, [recordsPerPage, currentPage, rank]);
+  }, [recordsPerPage, currentPage, rank, unfilter]);
 
 //button to toggle filter sidebar
 const toggleSidebar = () => {setIsSidebarOpen((prev) => !prev);};
@@ -158,6 +174,74 @@ const prevPage = () => {
   }
 
 
+//handles dropdown for each filter
+const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+const toggleDropdown = (dropdownKey: string) => {
+  setFilterQuery('');
+  setOpenDropdown((prevDropdown) => (prevDropdown === dropdownKey ? null : dropdownKey));
+};
+
+const [filterQuery, setFilterQuery] = useState('');
+const [sqlFilter, setSqlFilter] = useState('is')
+
+
+const filterRecords = async () => {
+  try {
+    let filterCondition = '';
+
+    switch (sqlFilter) {
+      case 'is':
+        filterCondition = `${filterQuery}%`;
+        break;
+      case 'contains':
+        filterCondition = `%${filterQuery}%`;
+        break;
+      case 'startsWith':
+        filterCondition = `${filterQuery}%`;
+        break;
+      case 'endsWith':
+        filterCondition = `%${filterQuery}`;
+        break;
+      case 'isEmpty':
+        filterCondition = `${openDropdown}`;
+        break;
+      default:
+        break;
+    }
+
+    console.log(filterCondition);
+
+    const response = await fetch(
+      `${backendURL}/Task/Tasks?limit=${recordsPerPage}&page=${currentPage}&column=${column}&rank=${rank}&filterCondition=${filterCondition}&filterColumn=${openDropdown}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const [data] = await response.json();
+    setTasks(data);
+    console.log(data);
+
+  } catch (error) {
+    console.error('Error fetching accounts:', error);
+  }
+};
+
+useEffect(() => {
+  console.log(sqlFilter);
+}, [sqlFilter]);
+
+const clearFilter = () => { 
+  setSqlFilter('');
+  setFilterQuery('');
+  setOpenDropdown(null);
+  setfilter((prevFilter) => !prevFilter);
+}
+
+
   return (
     <>
           <div className="pageNavTop">
@@ -190,17 +274,62 @@ const prevPage = () => {
 
       <div className="tasks records">
 
-      { isSidebarOpen ? 
-       
-       <div className="sidebar"> <h1>FILTER</h1></div> 
-          
-       : 
-       
-       <></> 
-       }
+            {/* Filter Bar */}
+            {isSidebarOpen ? (
+  <div className="sidebar">
+    <div className="insidePadding p-6 overflow-y-scroll no-scrollbar">
+    <h1 className="font-bold text-center text-xl">Filter Accounts By</h1>
+    <h1 className="font-bold my-3 text-lg">Filter By Field</h1>
 
-       <div className="mainContent" id="mainContent-tasks">
-      <div className="record-headers-wrapper">
+
+    {filters.map((filterName) => (
+  <div className="flex gap-2 p-1 text-md flex-col overflow-y-clip" key={filterName}>
+
+    <div className="flex gap-2 p-1">
+      <input
+        type="checkbox"
+        name={filterName}
+        onChange={() => toggleDropdown(filterName)}
+        checked={openDropdown === filterName}
+      />
+      <label htmlFor={filterName}>{filterName}</label>
+    </div>
+
+    {openDropdown === filterName && (
+      <div className="selectDropDown">
+        <Select name="" id="" size="sm" onChange={(e)=>setSqlFilter(e.target.value)}>
+          <option value="is">is</option>
+          <option value="contains">contains</option>
+          <option value="startsWith">starts with</option>
+          <option value="endsWith">ends with</option>
+          <option value="isEmpty">is empty</option>
+        </Select>
+        {sqlFilter == 'isEmpty' 
+          ? <></> 
+          : 
+          <Input type="text" placeholder="Type Here" onChange={(e)=>setFilterQuery(e.target.value)}/>
+        }
+      </div>
+    )}
+  </div>
+))}
+</div>
+  
+<div className="filterFooter w-full items-center flex gap-4 justify-start p-2 border-t-2 h-24">
+<Button colorScheme="telegram" width='130px' size="lg" onClick={()=>filterRecords()}>Apply Filter</Button>
+<Button colorScheme="gray" width='130px'  size="lg" onClick={()=>clearFilter()}>Clear</Button>
+</div>
+  </div>
+) : (
+  <></>
+)}
+
+
+
+
+
+       <div className={`mainContent text-xs ${isSidebarOpen ? 'withSidebar' : ''}`} id="mainContent-tasks">
+      <div className="record-headers-wrapper ">
       <ul className="record-headers" id="task-longer-headers">
         <li id="firstRecordTask" className="flex items-center">
         {Tasks.length != 0 ? <input
