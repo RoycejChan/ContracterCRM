@@ -7,7 +7,6 @@ const router = express.Router();
 require('dotenv').config({ path: '.././.env' });
 
 router.post('/', upload.single('file'), (req, res) => {
-  console.log("hi");
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -31,7 +30,6 @@ router.post('/', upload.single('file'), (req, res) => {
       console.error(error);
       res.status(500).send('Internal Server Error');
     } else {
-      console.log('Email sent: ' + info.response);
       res.status(200).send('Email sent successfully');
     }
   });

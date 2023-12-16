@@ -77,6 +77,7 @@ export default function Accounts() {
           },
         });
         const [data] = await response.json();
+        console.log(data);
         setAccounts(data);
       } catch (error) {
         console.error('Error fetching accounts:', error);

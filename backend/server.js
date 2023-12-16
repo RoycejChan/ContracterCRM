@@ -5,7 +5,7 @@ const accountRoutes = require('./routes/Accounts/accountRoutes');
 const taskRoutes = require('./routes/Tasks/taskRoutes');
 const sendEmailRouter = require('./sendEmail.js');
 require('dotenv').config({ path: '../.env' });
-const port = process.env.RDS_PORT;
+const port = 3000;
 
 const app = express();
 
@@ -24,8 +24,8 @@ app.use('/sendEmail', sendEmailRouter);
 
 // Start the server
 app.listen(port, () => {
-  console.log(process.env.RDS_HOST);
-  console.log(process.env.RDS_PORT);
+  console.log(`${process.env.RDS_ENDPOINT} the host`);
+  console.log(`${process.env.RDS_PORT} the port`);
 
   console.log(`Server is running on http://localhost:${port}`);
 });
