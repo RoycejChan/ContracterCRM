@@ -1,8 +1,7 @@
-const backendURL = 'http://localhost:3000'; 
 
 export const deleteRecordFunction = async (route,task,records) => {
   try {
-    const response = await fetch(`${backendURL}/${route}/${task}`, {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL.replace(/\/$/, '')}/${route}/${task}`, {
       method: `DELETE`,
       headers: {
         'Content-Type': 'application/json',
@@ -11,6 +10,8 @@ export const deleteRecordFunction = async (route,task,records) => {
     });
   
     if (response.ok) {
+      console.log('Records deleted successfully');
+
     } else {
       console.error('Error deleting contacts:', response.statusText);
       const responseData = await response.json();

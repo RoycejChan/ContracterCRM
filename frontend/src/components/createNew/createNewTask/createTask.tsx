@@ -33,7 +33,6 @@ export default function CreateTask() {
   });
   type TaskInfoKey = keyof TaskInfo;
 
-  const backendURL = 'http://localhost:3000';
 
   const save = async () => {
     try {
@@ -45,7 +44,7 @@ export default function CreateTask() {
         }
       }
 
-      const response = await fetch(`${backendURL}/Task/newTask`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL.replace(/\/$/, '')}/Task/newTask`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

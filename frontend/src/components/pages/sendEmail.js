@@ -1,4 +1,4 @@
-export const sendEmail = async (records, getEmailFunction, backendURL, emailSubject, emailMsg, emailFile, onClose) => {
+export const sendEmail = async (records, getEmailFunction, emailSubject, emailMsg, emailFile, onClose) => {
   try {
     const formData = new FormData();
     var toEmails;
@@ -19,7 +19,7 @@ export const sendEmail = async (records, getEmailFunction, backendURL, emailSubj
       formData.append('file', emailFile);
     }
 
-    const response = await fetch(`${backendURL}/sendEmail`, {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL.replace(/\/$/, '')}/sendEmail`, {
       method: 'POST',
       body: formData,
     });

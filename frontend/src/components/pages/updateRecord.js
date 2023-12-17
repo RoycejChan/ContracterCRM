@@ -1,4 +1,3 @@
-// // Assuming you have an API endpoint for updating a contact record
 // const updateRecordFunction = async (endpoint, record) => {
 //     try {
 //       const response = await fetch(`${backendURL}/`, {

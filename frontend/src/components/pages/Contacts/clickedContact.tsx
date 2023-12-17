@@ -87,7 +87,7 @@ export default function Contact() {
 
 const saveRecordChange = () => {
   console.log(contact);
-  fetch(`${backendURL}/Contact/updateContact`, {
+  fetch(`${import.meta.env.VITE_BACKEND_URL.replace(/\/$/, '')}/Contact/updateContact`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -158,9 +158,8 @@ const cancelEdit = () => {
 
   const sendEmailFunction = () => {
     const toEmail = [contact.Email];
-    const backendURL = 'http://localhost:3000'; 
 
-    sendEmail(toEmail, null, backendURL, emailSubject, emailMsg, emailFile, onClose);
+    sendEmail(toEmail, null, emailSubject, emailMsg, emailFile, onClose);
   };
 
 

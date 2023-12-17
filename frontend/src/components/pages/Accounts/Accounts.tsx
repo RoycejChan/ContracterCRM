@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import "./accounts.css";
 import { Button, Stack } from "@chakra-ui/react";
 import PageNav from "../../navigation/PageNav/PageNav";
-const backendURL = 'http://localhost:3000'; 
 
 import { deleteRecordFunction } from "../deleteRecord.js"
 import { clearSelectedFunction } from "../clearSelection.js";
@@ -69,8 +68,10 @@ export default function Accounts() {
   const [emailMsg, setEmailMsg] = useState('');
   useEffect(() => {
     const fetchData = async () => {
+      console.log(import.meta.env.VITE_BACKEND_URL.replace(/\/$/, ''));
+
       try {
-        const response = await fetch(`${backendURL}/Account/accounts?limit=${recordsPerPage}&page=${currentPage}&column=${column}&rank=${rank}`, {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL.replace(/\/$/, '')}/Account/accounts?limit=${recordsPerPage}&page=${currentPage}&column=${column}&rank=${rank}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -208,7 +209,7 @@ const filterRecords = async () => {
     console.log(filterCondition);
 
     const response = await fetch(
-      `${backendURL}/Account/accounts?limit=${recordsPerPage}&page=${currentPage}&column=${column}&rank=${rank}&filterCondition=${filterCondition}&filterColumn=${openDropdown}`,
+      `${import.meta.env.VITE_BACKEND_URL.replace(/\/$/, '')}/Account/accounts?limit=${recordsPerPage}&page=${currentPage}&column=${column}&rank=${rank}&filterCondition=${filterCondition}&filterColumn=${openDropdown}`,
       {
         method: "GET",
         headers: {

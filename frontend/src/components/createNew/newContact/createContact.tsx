@@ -38,7 +38,6 @@ export default function CreateContact() {
     asstPhone: null,
   });
 
-  const backendURL = 'http://localhost:3000';
 
   const formatPhoneNumber = (value: string): string => {
     const numericValue = value.replace(/\D/g, '');
@@ -78,7 +77,7 @@ export default function CreateContact() {
       asstPhone: formattedAsstPhone,
     };
     console.log('Before fetch');
-      const response = await fetch(`${backendURL}/Contact/newContact`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL.replace(/\/$/, '')}/Contact/newContact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -87,7 +86,7 @@ export default function CreateContact() {
       })
         ///wont log dont know why
       console.log("After fetch"); 
-  
+      await response.json();
 
         } catch (error) {
       console.error('Error fetching user data:', error);

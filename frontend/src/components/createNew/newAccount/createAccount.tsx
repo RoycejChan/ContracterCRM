@@ -59,7 +59,6 @@ export default function CreateAccount() {
     { label: 'Country', key: 'Country', required: true },
   ];
 
-  const backendURL = 'http://localhost:9999';
 
   
   const formatPhoneNumber = (value: string): string => {
@@ -113,7 +112,7 @@ export default function CreateAccount() {
       AccountSite: `https://${AccountInfo.AccountSite}.com`,
       AnnualRevenue: formatCompactNumber(AccountInfo.AnnualRevenue),
     };
-      const response = await fetch(`${backendURL}/Account/newAccount`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL.replace(/\/$/, '')}/Account/newAccount`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

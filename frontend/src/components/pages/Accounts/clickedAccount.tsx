@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button, Stack } from '@chakra-ui/react';
-const backendURL = 'http://localhost:3000';
 import {
   Modal,
   ModalOverlay,
@@ -66,7 +65,7 @@ export default function Account() {
 
   const deleteRecord = async () => {
     try {
-      const response = await fetch(`${backendURL}/Account/deleteAccount`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL.replace(/\/$/, '')}/Account/deleteAccount`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -96,7 +95,7 @@ export default function Account() {
 
 const saveRecordChange = () => {
   console.log(account);
-  fetch(`${backendURL}/Account/updateAccount`, {
+  fetch(`${import.meta.env.VITE_BACKEND_URL}/Account/updateAccount`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -164,9 +163,8 @@ const saveRecordChange = () => {
 
   const sendEmailFunction = () => {
     const toEmail = [account.Email];
-    const backendURL = 'http://localhost:3000'; 
 
-    sendEmail(toEmail, null, backendURL, emailSubject, emailMsg, emailFile, onClose);
+    sendEmail(toEmail, null, emailSubject, emailMsg, emailFile, onClose);
   };
 
   return (

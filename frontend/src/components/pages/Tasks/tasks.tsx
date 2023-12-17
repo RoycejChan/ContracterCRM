@@ -1,7 +1,6 @@
 import { useEffect, useState} from "react";
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@chakra-ui/react'
-const backendURL = 'http://localhost:3000'; 
 import './tasks.css'
 import PageNav from "../../navigation/PageNav/PageNav";
 import { deleteRecordFunction } from "../deleteRecord.js"
@@ -55,7 +54,7 @@ export default function Tasks() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${backendURL}/Task/Tasks?limit=${recordsPerPage}&page=${currentPage}&column=${column}&rank=${rank}`, {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL.replace(/\/$/, '')}/Task/Tasks?limit=${recordsPerPage}&page=${currentPage}&column=${column}&rank=${rank}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -90,6 +89,7 @@ const handleRecordsPerPageChange = (value: string) => {setRecordsPerPage(value)}
 
 //DELETE SELECTED RECORD(s)
 const deleteRecord = async () => {
+  console.log(checkedRecords);
     await deleteRecordFunction('Task', 'deleteTask', checkedRecords)
     .then(window.location.reload())
     .catch((error:Error) => console.error('Error deleting record:', error));
@@ -182,7 +182,7 @@ const toggleDropdown = (dropdownKey: string) => {
 };
 
 const [filterQuery, setFilterQuery] = useState('');
-const [sqlFilter, setSqlFilter] = useState('is')
+const [sqlFilter, setSqlFilter] = useState('is');
 
 
 const filterRecords = async () => {
@@ -202,7 +202,7 @@ const filterRecords = async () => {
       case 'endsWith':
         filterCondition = `%${filterQuery}`;
         break;
-      case 'isEmpty':
+      case 'isEmpty': 
         filterCondition = `${openDropdown}`;
         break;
       default:
@@ -212,7 +212,7 @@ const filterRecords = async () => {
     console.log(filterCondition);
 
     const response = await fetch(
-      `${backendURL}/Task/Tasks?limit=${recordsPerPage}&page=${currentPage}&column=${column}&rank=${rank}&filterCondition=${filterCondition}&filterColumn=${openDropdown}`,
+      `${import.meta.env.VITE_BACKEND_URL.replace(/\/$/, '')}/Task/Tasks?limit=${recordsPerPage}&page=${currentPage}&column=${column}&rank=${rank}&filterCondition=${filterCondition}&filterColumn=${openDropdown}`,
       {
         method: "GET",
         headers: {
