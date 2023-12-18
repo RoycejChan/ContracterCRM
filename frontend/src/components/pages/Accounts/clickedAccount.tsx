@@ -12,6 +12,7 @@ import {
 } from '@chakra-ui/react'
 import { useDisclosure } from "@chakra-ui/react";
 import { Input } from "@chakra-ui/react";
+// @ts-ignore
 import { sendEmail } from "../sendEmail.js"
 
 const contactFields = [
@@ -243,7 +244,7 @@ const saveRecordChange = () => {
           <div className="details-list">
           {detailsSections.map((section, index) => (
             <ul className='allDetails-col' key={index}>
-              {section.map((field, index) => renderField(field.label, field.key, field.type, index, field.className))}
+              {section.map((field, index) => renderField(field.label, field.key , field.type, index, field.className))}
             </ul>
           ))}
           </div>

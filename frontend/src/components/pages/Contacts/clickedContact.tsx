@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button, Stack } from '@chakra-ui/react';
+// @ts-ignore
 import { deleteRecordFunction } from "../deleteRecord.js";
 import "./contacts.css";
-const backendURL = 'http://localhost:3000'; 
 
 import {
   Modal,
@@ -16,6 +16,7 @@ import {
 } from '@chakra-ui/react'
 import { useDisclosure } from "@chakra-ui/react";
 import { Input } from "@chakra-ui/react";
+// @ts-ignore
 import { sendEmail } from "../sendEmail.js";
 
 interface Contact {

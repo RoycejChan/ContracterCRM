@@ -4,8 +4,11 @@ import { Button, Stack } from '@chakra-ui/react'
 import "./contacts.css";
 const backendURL = 'http://localhost:3000'; 
 import PageNav from "../../navigation/PageNav/PageNav";
+// @ts-ignore
 import { deleteRecordFunction } from "../deleteRecord.js"
+// @ts-ignore
 import { clearSelectedFunction } from "../clearSelection.js";
+// @ts-ignore
 import { handleCheckboxClickFunction } from "../handleCheckboxClick.js"
 import { Select } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
@@ -20,6 +23,7 @@ import {
 } from '@chakra-ui/react'
 import { useDisclosure } from "@chakra-ui/react";
 import { Input } from "@chakra-ui/react";
+// @ts-ignore
 import { sendEmail } from "../sendEmail.js"
 
 interface Contact {

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button, Stack } from '@chakra-ui/react';
+// @ts-ignore
 import { deleteRecordFunction } from "../deleteRecord.js";
 
 
@@ -48,6 +49,7 @@ export default function Task() {
 
   const goBack = () => {
     navigate(-1);
+    setTask(Task);
   };
 
   const toggleVisibility = () => { 
