@@ -119,7 +119,7 @@ const saveRecordChange = () => {
 }
 
 
- const renderField = (label:string, key:string, type:'text', index:number, inputClass?:any) => (
+ const renderField = (label:string, key:string, type:string, index:number, inputClass?:any) => (
 
   <li className='overviewDetail' key={key}>
   {label}

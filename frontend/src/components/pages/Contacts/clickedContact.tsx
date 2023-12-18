@@ -115,7 +115,7 @@ const cancelEdit = () => {
 };
 
 
-  const renderField = (label:string, key: keyof Contact, type:string, index:number,  inputClass?:any) => (
+  const renderField = (label:string, key:string, type:string, index:number,  inputClass?:any) => (
 
     <li className='overviewDetail' key={key}>
       {label}
@@ -124,7 +124,7 @@ const cancelEdit = () => {
           <div className='flex items-center'>
             <input
               type={type}
-              value={contact[key] || ''}
+              value={contact[key as keyof Contact] || ''}
               onChange={(e) => setContact({ ...contact, [key]: e.target.value })}
               className={`${inputClass} p-2 editInput rounded-md`}
             />
@@ -134,7 +134,7 @@ const cancelEdit = () => {
             </div>
           </div>
         ) : (
-          <span>{contact[key] || '—'}</span>
+          <span>{contact[key as keyof Contact] || '—'}</span>
         )}
         {editingFieldIndex !== index && (
           <span className='detailIcon cursor-pointer' onClick={() => changeEditMode(index)}>
