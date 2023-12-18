@@ -1,0 +1,141 @@
+.overviewDetails, .allDetails {
+    background-color:white;
+    padding:3.5rem;
+    font-size:1.3rem;
+    width:85%;
+    margin:4rem auto;
+    border-radius: 8px 8px 5px 8px;
+  -moz-border-radius: 8px 8px 5px 8px;
+  -webkit-border-radius: 8px 8px 5px 8px;
+  border: 0px solid #000000;
+  -webkit-box-shadow: 2px 3px 11px -2px rgba(0,0,0,0.75);
+  -moz-box-shadow: 2px 3px 11px -2px rgba(0,0,0,0.75);
+  box-shadow: 2px 3px 11px -2px rgba(0,0,0,0.75);
+}
+
+.overviewDetails-header {
+    margin-left:5rem;
+}
+
+.overviewDetail {
+    display: flex;
+  justify-content: space-between; 
+  width: 500px; 
+  gap:1rem;
+
+}
+
+.contactPageHeader {
+  background:white;
+  height:5rem;
+  width:100%;
+  border-bottom:1px solid lightgray;
+}
+
+.showDetails {
+  font-weight:700;
+}
+.allDetails {
+  padding:1rem;
+}
+
+.detail-list {
+  display:flex;
+}
+.detail-list-container {
+  display:flex;
+}
+
+
+.details-list-container {
+  display:flex;
+  flex-direction:column;
+
+}
+.details-list-container h1 {
+  margin-bottom:1rem;
+  font-weight: bold;
+
+}
+.details-list {
+  display:flex;
+}
+
+.allDetails-list {
+  display:flex;
+  flex-direction:column;
+  gap:5rem;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out; 
+}
+.allDetails-list.visible {
+  border-top:2px solid lightgray;
+  flex-direction:column;
+  max-height: 1000px; 
+  padding:2rem;
+  margin-top:.75rem;
+}
+.allDetails-col {
+  width:45%;
+  display:flex;
+  flex-direction:column;
+  gap:1.5rem;
+  align-items:flex-start;
+  text-transform: capitalize;
+}
+
+.allDetails-col li{
+  width:70%;
+  display:flex;
+  justify-content:space-between;
+  gap:1rem;
+  align-items:center;
+}
+
+.contactPageHeader {
+  display:flex;
+  justify-content:space-between;
+  padding:0rem 1.5rem; 
+}
+
+.leftSide-contactPageHeader {
+  display:flex;
+  align-items:center;
+  font-weight: 700;
+  text-transform: capitalize;
+  font-size:2rem;
+  gap:1rem;
+}
+
+.rightSide-contactPageHeader {
+  display:flex;
+}
+
+.detail {
+  width:400px;
+  display:flex;
+  justify-content:flex-start;
+  border-radius:5%;
+  padding:.5rem;
+}
+
+.editInput {
+  border:1px solid black;
+}
+
+.detailIcon {
+  opacity:0;
+  margin-left:1rem;
+  font-size:1rem;
+  display:flex;
+  align-items:center;
+}
+
+.detail:hover .detailIcon {
+  opacity:1;
+}
+
+.details-header {
+  margin-bottom:-4rem;
+}

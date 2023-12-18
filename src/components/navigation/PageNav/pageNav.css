@@ -1,0 +1,45 @@
+.pageNavTop {
+    background-color: white;
+    padding:1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+
+.pageNavBottom {
+    padding:.75rem 2.5rem;
+    background-color:#edf0f4;
+    align-items: center;
+    margin-bottom: -1.5rem;
+}
+
+.rightSidePageNav {
+    padding-right: 4rem;
+    align-items: center;
+}
+
+
+.filterButtons {
+    border: 1px solid gray;
+    box-shadow:1px 1px 1px 1px;
+}
+
+.recordAmountSelected {
+    display: flex;
+    gap:1.5rem;
+    align-items: flex-end;
+}
+
+.clearBtn {
+    text-decoration: underline;
+}
+
+.clearBtn:hover {
+    color:rgb(95, 134, 160);
+}
+
+
+.amount {
+    font-weight: 700;
+}

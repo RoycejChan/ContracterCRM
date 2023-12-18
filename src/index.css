@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+li {
+    list-style-type:none;
+}
+
+html, body {
+    height:100%;
+    margin:0;
+    padding:0;
+    font-family: 'Barlow', sans-serif;
+}
+body {
+    background-color:#edf0f4 !important;
+}
+
+.background {
+    background-color:white;
+    height:100vh;
+}
+

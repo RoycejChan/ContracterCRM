@@ -1,0 +1,162 @@
+.records {
+    padding: 2rem;
+    display:flex;
+    gap:5rem;
+}
+
+.checkItem {
+    transform: scale(1.75); 
+    margin-right:2rem;
+    z-index:999;
+}
+
+.record:hover {
+    background-color:#f1f7ff;
+}
+
+
+#first-header {
+    border-left:none;
+    margin-right:-3.5rem;
+  }
+
+
+
+.backBtn {
+    font-size:2rem;
+}
+
+.sidebar {
+    width: 335px;
+    height:865px;
+    background-color:white;
+    transition: width 0.9s ease-in; 
+    border-radius: 28px 28px 25px 28px;
+    -moz-border-radius: 28px 28px 25px 28px;
+    -webkit-border-radius: 28px 28px 25px 28px;
+    border: 0px solid #000000;
+    -webkit-box-shadow: 2px 3px 11px -2px rgba(0,0,0,0.75);
+    -moz-box-shadow: 2px 3px 11px -2px rgba(0,0,0,0.75);
+    box-shadow: 2px 3px 11px -2px rgba(0,0,0,0.75);  
+  }
+
+  .mainContent {
+
+    background-color:white;
+    flex: 3;
+    height:100%; 
+    border-radius: 28px 28px 25px 28px;
+    -moz-border-radius: 28px 28px 25px 28px;
+    -webkit-border-radius: 28px 28px 25px 28px;
+    border: 0px solid #000000;
+    -webkit-box-shadow: 2px 3px 11px -2px rgba(0,0,0,0.75);
+    -moz-box-shadow: 2px 3px 11px -2px rgba(0,0,0,0.75);
+    box-shadow: 2px 3px 11px -2px rgba(0,0,0,0.75);
+  }
+  
+
+
+  //TABLE OF RECORDS FOR EACH PAGE
+  .record-headers {
+    display: flex;
+    width:100%;
+    gap: 10rem;
+  }
+  
+  
+  .record-headers li {
+    font-weight: bold;
+    padding: 1rem;
+    flex:1;
+    border-left:1px solid #eef1f4;
+    margin-left:1rem;
+    font-size:1.2rem;
+  }
+  
+  
+  .record {
+    display: flex;
+    gap: 10rem;
+    padding:.5rem 1rem;
+    border-bottom:1px solid #eef1f4;
+  }
+  
+  .record p {
+      font-size:1.2rem;
+      flex:1;
+      padding:1rem 1rem;
+  }
+  
+  //FOR NEW RECORDS PAGE
+  .new-container {
+    margin-left: auto;
+    margin-right: auto;
+    width:1500px;
+    padding-bottom: 2rem;
+}
+
+.selected {
+  background-color: #f1f7ff;
+}
+
+
+//BELOW CLASSES EFFECTING TABLE WHEN CHECKED ???
+
+.record-headers-wrapper {
+  display:flex;
+  width:100%;
+  border-bottom:3px solid #eef14;
+}
+
+#task-longer-headers {
+  width: 93%;
+  display: flex; 
+  
+}
+
+.record-list-wrapper {
+  width: 100%;
+}
+
+
+.recordlist-record {
+  width: 100%;
+  border-bottom: 1px solid #eef1f4;
+  display: flex; 
+}
+
+#task-longer {
+  width: 100%;
+
+}
+
+#task-longer p {
+  font-size:1rem;
+}
+
+
+.record-list {
+  width: 100%;
+}
+.record-list li {
+  width: 100%; /* Set the width to 100% of the wrapper */
+}
+
+
+
+#task-longer {
+  gap:1rem;
+}
+
+#firstRecordTask {
+  border-left:none;
+}
+
+
+
+/* END WIERD CLASSES */
+.record:hover .website {
+  color:#338cf0;
+}
+
+

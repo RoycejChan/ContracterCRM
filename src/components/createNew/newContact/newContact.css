@@ -1,0 +1,22 @@
+
+
+.new-PFP {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap:2rem;
+    margin-top: 2rem;
+}
+
+.contactpfp {
+      width: 150px; 
+      height: 150px; 
+      border-radius: 10%; 
+      object-fit: cover; 
+}
+
+.contactpfp img {
+    width:100%;
+    height: 100%;
+}
