@@ -102,9 +102,9 @@ const handleRecordsPerPageChange = (value: string) => {setRecordsPerPage(value)}
 
 //DELETE SELECTED RECORD(s)
 const deleteRecord = async () => {
+  console.log(checkedRecords);
     await deleteRecordFunction('Contact', 'deleteContact', checkedRecords)
-    .then(window.location.reload())
-    .catch((error:any) => console.error('Error deleting record:', error));
+    .catch((error:Error) => console.error('Error deleting record:', error));
 };
 
 
@@ -124,8 +124,6 @@ const handleSelectAll = () => {
   setSelectAll((prev) => !prev);
   setIsCheckboxChecked(!selectAll);
   setCheckedRecords(selectAll ? [] : contacts.map((contact) => contact.ContactID));
-  console.log(emailMsg);
-  console.log(emailSubject);
 };
 
 const nextPage = () => {

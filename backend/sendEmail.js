@@ -10,7 +10,7 @@ router.post('/', upload.single('file'), (req, res) => {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'roycecollege@gmail.com',
+      user: 'placeholderemailforproject@gmail.com',
       pass: process.env.SECRET_CODE,
     },
   });
