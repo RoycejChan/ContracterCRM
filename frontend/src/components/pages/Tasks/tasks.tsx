@@ -3,8 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@chakra-ui/react'
 import './tasks.css'
 import PageNav from "../../navigation/PageNav/PageNav";
+
+// @ts-ignore
+
 import { deleteRecordFunction } from "../deleteRecord.js"
+
+// @ts-ignore
+
 import { clearSelectedFunction } from "../clearSelection.js";
+// @ts-ignore
+
 import { handleCheckboxClickFunction } from "../handleCheckboxClick.js"
 import { Select } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
@@ -289,7 +297,7 @@ const clearFilter = () => {
       <input
         type="checkbox"
         name={filterName}
-        onChange={() => toggleDropdown(filterName)}
+        onChange={() => toggleDropdown(`${filterName}`)}
         checked={openDropdown === filterName}
       />
       <label htmlFor={filterName}>{filterName}</label>

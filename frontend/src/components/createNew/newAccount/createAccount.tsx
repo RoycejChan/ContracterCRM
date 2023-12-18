@@ -105,12 +105,12 @@ export default function CreateAccount() {
 
  // Format phone number
     const formattedPhoneNumber = formatPhoneNumber(AccountInfo.FrontDeskPhone || '');
-    // const formattedRevenue = parseFloat(AccountInfo.AnnualRevenue).toLocaleString(); // Format with commas
+    const formattedRevenueAsNumber = parseFloat(AccountInfo.AnnualRevenue); // Format with commas
     const updatedAccountInfo = {
       ...AccountInfo,
       FrontDeskPhone: formattedPhoneNumber,
       AccountSite: `https://${AccountInfo.AccountSite}.com`,
-      AnnualRevenue: formatCompactNumber(AccountInfo.AnnualRevenue),
+      AnnualRevenue: formatCompactNumber(formattedRevenueAsNumber),
     };
       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL.replace(/\/$/, '')}/Account/newAccount`, {
         method: 'POST',

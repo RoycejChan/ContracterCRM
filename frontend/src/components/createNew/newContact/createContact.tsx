@@ -24,6 +24,24 @@ interface ContactInfo {
 
 export default function CreateContact() {
     const navigate = useNavigate();
+
+
+    const inputFields = [
+      { label: 'First Name', key: 'firstName', required: true },
+      { label: 'Last Name', key: 'lastName', required: true },
+      { label: 'Account Name', key: 'accountName', required: true },
+      { label: 'Email', key: 'email', required: true, type:'email' },
+      { label: 'Work Phone', key: 'workPhone', required: true, type:"tel"},
+      { label: 'Mobile Phone (Optional)', key: 'mobilePhone', type:"tel"},
+      { label: 'Assistant Name (Optional)', key: 'assistantName' },
+      { label: 'Title', key: 'title', required: true },
+      { label: 'Department', key: 'department', required: true },
+      { label: 'Fax (Optional)', key: 'fax', type:"number" },
+      { label: 'Asst Phone (Optional)', key: 'asstPhone', type:"tel" },
+    ];
+
+
+
   const [contactInfo, setContactInfo] = useState<ContactInfo>({
     firstName: '',
     lastName: '',
@@ -51,7 +69,7 @@ export default function CreateContact() {
       const requiredFields = inputFields.filter((field) => field.required);
   
       for (const field of requiredFields) {
-        if (!contactInfo[field.key]) {
+        if (!contactInfo[field.key as keyof ContactInfo]) {
           alert(`${field.label} is required.`);
           return;
         }
@@ -94,19 +112,6 @@ export default function CreateContact() {
   };
 
 
-  const inputFields = [
-    { label: 'First Name', key: 'firstName', required: true },
-    { label: 'Last Name', key: 'lastName', required: true },
-    { label: 'Account Name', key: 'accountName', required: true },
-    { label: 'Email', key: 'email', required: true, type:'email' },
-    { label: 'Work Phone', key: 'workPhone', required: true, type:"tel"},
-    { label: 'Mobile Phone (Optional)', key: 'mobilePhone', type:"tel"},
-    { label: 'Assistant Name (Optional)', key: 'assistantName' },
-    { label: 'Title', key: 'title', required: true },
-    { label: 'Department', key: 'department', required: true },
-    { label: 'Fax (Optional)', key: 'fax', type:"number" },
-    { label: 'Asst Phone (Optional)', key: 'asstPhone', type:"tel" },
-  ];
 
   const handleInputChange = (field: string, value: string) => {
     const sanitizedValue = value.trim() === '' ? null : value;
