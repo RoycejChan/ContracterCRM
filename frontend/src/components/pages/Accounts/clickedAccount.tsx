@@ -119,35 +119,35 @@ const saveRecordChange = () => {
 }
 
 
- const renderField = (label:string, key:string, type:string, index:number, inputClass?:any) => (
-
+const renderField = (label: string, key: string, type: string, index?: any, inputClass?: any) => (
   <li className='overviewDetail' key={key}>
-  {label}
-<span className={`detail`}>
-        {editingFieldIndex === index ? (
-          <div className='flex items-center'>
-            <input
-              type={type}
-              value={account[key] || ''}
-              onChange={(e) => setAccount({ ...account, [key]: e.target.value })}
-              className={`${inputClass} p-2 editInput rounded-md`}
-            />
-            <div className="editBtns flex gap-3">
-              <p onClick={()=> saveRecordChange()}>✅</p>
-              <p onClick={() => cancelEdit()}>x</p>
-            </div>
+    {label}
+    <span className={`detail`}>
+      {editingFieldIndex === index ? (
+        <div className='flex items-center'>
+          <input
+            type={type}
+            value={account[key] || ''}
+            onChange={(e) => setAccount({ ...account, [key]: e.target.value })}
+            className={`${inputClass} p-2 editInput rounded-md`}
+          />
+          <div className="editBtns flex gap-3">
+            <p onClick={() => saveRecordChange()}>✅</p>
+            <p onClick={() => cancelEdit()}>x</p>
           </div>
-        ) : (
-          <span>{account[key] || '—'}</span>
-        )}
-        {editingFieldIndex !== index && (
-          <span className='detailIcon cursor-pointer' onClick={() => changeEditMode(index)}>
-            ✏️
-          </span>
-        )}
-      </span>
-    </li>
-  );
+        </div>
+      ) : (
+        <span>{account[key] || '—'}</span>
+      )}
+      {editingFieldIndex !== index && (
+        <span className='detailIcon cursor-pointer' onClick={() => changeEditMode(index)}>
+          ✏️
+        </span>
+      )}
+    </span>
+  </li>
+);
+
 
 
   
@@ -244,7 +244,7 @@ const saveRecordChange = () => {
           <div className="details-list">
           {detailsSections.map((section, index) => (
             <ul className='allDetails-col' key={index}>
-              {section.map((field, index) => renderField(field.label, field.key , field.type, index, field.className))}
+{section.map((field, sectionIndex) => renderField(field.label, field.key, field.type, sectionIndex, field.className))}
             </ul>
           ))}
           </div>
