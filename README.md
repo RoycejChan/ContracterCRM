@@ -8,7 +8,6 @@ Link to Project: <a src="https://lifein-e0258.web.app/">https://contractorcrm.on
 
 <img src="https://i.gyazo.com/76fbd87920b7816dc5558e134fade666.png" style="width:1500px; height:500px"/>
 
-<a href="https://gyazo.com/76fbd87920b7816dc5558e134fade666"><img src="https://i.gyazo.com/76fbd87920b7816dc5558e134fade666.png" alt="Image from Gyazo" width="1898"/></a>
 
 ## 👇 Getting Started 👇<br/>
 
