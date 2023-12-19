@@ -61,6 +61,8 @@ export default function Tasks() {
  
   useEffect(() => {
     const fetchData = async () => {
+      console.log(import.meta.env.VITE_BACKEND_URL.replace(/\/$/, ''));
+      
       try {
         const response = await fetch(`${import.meta.env.VITE_BACKEND_URL.replace(/\/$/, '')}/Task/Tasks?limit=${recordsPerPage}&page=${currentPage}&column=${column}&rank=${rank}`, {
             method: 'GET',
