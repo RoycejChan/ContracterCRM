@@ -6,7 +6,7 @@ REMINDER: This application is hosted on render's free hosting service with limit
   -  Server also takes about a minute to start up when the site it opened, then the site could be refreshed.
 Link to Project: <a src="https://lifein-e0258.web.app/">https://contractorcrm.onrender.com/</a><br/>
 
-<img src="https://gyazo.com/76fbd87920b7816dc5558e134fade666" style="width:1500px; height:500px"/>
+<img src="https://i.gyazo.com/76fbd87920b7816dc5558e134fade666.png" style="width:1500px; height:500px"/>
 
 
 
