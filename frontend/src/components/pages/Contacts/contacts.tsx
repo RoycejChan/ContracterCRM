@@ -72,7 +72,7 @@ export default function Contacts() {
 useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL.replace(/\/$/, '')}/Contact/Contacts?limit=${recordsPerPage}&page=${currentPage}&column=${column}&rank=${rank}`, {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/Contact/Contacts?limit=${recordsPerPage}&page=${currentPage}&column=${column}&rank=${rank}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',

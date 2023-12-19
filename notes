@@ -1,6 +1,8 @@
 
 // render free tier, low ram = cant delete lots of records at once
 // delete all function doesnt work because ram is on free server, max is 2, but works if theres more ram
+//!cann i edit clicked task records???
+changed router location to get rid of ts error
 
 // // done
 // added filter search on accounts page., need to add to contacts and task page, and add more dummy data.
@@ -23,3 +25,5 @@
 // pages and contacts.css has duplicated bc i dont wanna mess up the css rip
 
 // trouble aligning headers and records, next time I should plan out the Dom and make the widths consistent.
+https://contractorcrm.onrender.com/
+https://contractorcrn.onrender.com
